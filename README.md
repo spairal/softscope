@@ -1,0 +1,4 @@
+softscope
+=========
+
+A oscilloscope software
