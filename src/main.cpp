@@ -2,22 +2,26 @@
 #include <Configuration.hpp>
 #include <State.hpp>
 #include <Samples.hpp>
+#include <FPGA.hpp>
 #include <Display.hpp>
 
 class UserData
 {
 	public:
+		FPGA fpga;
 		Display display;
 	
 	public:
-		UserData(Configuration& configuration, State& state, Samples& samples) : display(configuration, state, samples)
+		UserData(Configuration& configuration, State& state, Samples& samples) : fpga(configuration, samples), display(configuration, state, samples)
 		{
 		}
 };
 
 void drawCallback(void* userData)
 {
+	FPGA& fpga = ((UserData*)userData)->fpga;
 	Display& display = ((UserData*)userData)->display;
+	fpga.fetchSamples();
 	display.print();
 }
 

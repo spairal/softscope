@@ -12,7 +12,7 @@ TARGET = target
 OBJ = $(TARGET)/obj
 
 EXECUTABLE = $(TARGET)/oscilloscope
-OBJECTS = $(addprefix $(OBJ)/, $(addsuffix .o, main Configuration State Samples Display polo))
+OBJECTS = $(addprefix $(OBJ)/, $(addsuffix .o, main Configuration State Samples Display FPGA polo))
 LIBRARIES = $(addprefix -l, glut)
 
 # LINKING
@@ -34,6 +34,9 @@ $(OBJ)/State.o : $(SOURCE)/State.cpp
 $(OBJ)/Samples.o : $(SOURCE)/Samples.cpp
 	$(COMPILER) $(COMPILERPARAMS) $(SOURCE)/Samples.cpp -I $(SOURCE) -o $(OBJ)/Samples.o
 
+$(OBJ)/FPGA.o : $(SOURCE)/FPGA.cpp
+	$(COMPILER) $(COMPILERPARAMS) $(SOURCE)/FPGA.cpp -I $(SOURCE) -o $(OBJ)/FPGA.o
+
 $(OBJ)/Display.o : $(SOURCE)/Display.cpp
 	$(COMPILER) $(COMPILERPARAMS) $(SOURCE)/Display.cpp -I $(SOURCE) -I $(LIBPOLO) -o $(OBJ)/Display.o
 
@@ -42,13 +45,15 @@ $(OBJ)/polo.o : $(LIBPOLO)/polo.c
 
 # SOURCES
 
-$(SOURCE)/main.cpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp $(SOURCE)/Display.hpp $(LIBPOLO)/polo.h
+$(SOURCE)/main.cpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp $(SOURCE)/FPGA.hpp $(SOURCE)/Display.hpp $(LIBPOLO)/polo.h
 
 $(SOURCE)/Configuration.cpp : $(SOURCE)/Configuration.hpp
 
 $(SOURCE)/State.cpp : $(SOURCE)/State.hpp
 
 $(SOURCE)/Samples.cpp : $(SOURCE)/Samples.hpp
+
+$(SOURCE)/FPGA.cpp : $(SOURCE)/FPGA.hpp
 
 $(SOURCE)/Display.cpp : $(SOURCE)/Display.hpp $(LIBPOLO)/polo.h
 
@@ -58,9 +63,11 @@ $(LIBPOLO)/polo.c : $(LIBPOLO)/polo.h
 
 $(SOURCE)/Configuration.hpp :
 
-$(SOURCE)/State.hpp :
+$(SOURCE)/State.hpp : $(SOURCE)/Configuration.hpp
 
-$(SOURCE)/Samples.hpp :
+$(SOURCE)/Samples.hpp : $(SOURCE)/Configuration.hpp
+
+$(SOURCE)/FPGA.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/Samples.hpp
 
 $(SOURCE)/Display.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp
 

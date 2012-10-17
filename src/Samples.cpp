@@ -4,28 +4,35 @@ using namespace std;
 
 Samples::Samples(void)
 {
-	this->samplesA.assign(1500,0);
-	this->samplesB.assign(1500,0);
-	this->delayA = 500;
-	this->delayB = 500;
+	samplesA.assign(1500,0.0);
+	samplesB.assign(1500,1.0);
+	delayA = 500;
+	delayB = 500;
 }
 
-vector<int> Samples::getSamplesA(void)
+vector<double>& Samples::getSamples(Configuration::Channels channel)
 {
-	return this->samplesA;
+	switch(channel)
+	{
+		case Configuration::CHANNEL_A:
+			return samplesA;
+		case Configuration::CHANNEL_B:
+			return samplesB;
+	}
 }
 
-vector<int> Samples::getSamplesB(void)
+int Samples::getDelay(Configuration::Channels channel)
 {
-	return this->samplesB;
+	int delay;
+	switch(channel)
+	{
+		case Configuration::CHANNEL_A:
+			delay = delayA;
+			break;
+		case Configuration::CHANNEL_B:
+			delay = delayB;
+			break;
+	}
+	return delay;
 }
 
-int Samples::getDelayA(void)
-{
-	return this->delayA;
-}
-
-int Samples::getDelayB(void)
-{
-	return this->delayB;
-}

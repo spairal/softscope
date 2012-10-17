@@ -9,48 +9,60 @@ Display::Display(Configuration& configuration, State& state, Samples& samples) :
 
 void Display::print(void)
 {
-	this->printGrid(140, 640, 80, 480);
-	switch(this->state.getSelectedChannel())
+	clearScreen();
+	printGrid(140, 640, 80, 480);
+	float Rs, Gs, Bs, Ru, Gu, Bu;
+	if(state.getSelectedChannel() != Configuration::CHANNEL_B)
 	{
-		case State::CHANNEL_A:
-			if(this->configuration.getChannelB())
-			{
-				this->printSamples(this->samples.getSamplesB(), this->samples.getDelayB(), 1.0, 0.0, 0.0, 140, 640, 80, 480);
-			}
-			if(this->configuration.getChannelA())
-			{
-				this->printSamples(this->samples.getSamplesA(), this->samples.getDelayA(), 0.2, 0.2, 1.0, 140, 640, 80, 480);
-			}
-			this->printOffset(this->configuration.getOffsetA() / this->configuration.getVerticalScale(Configuration::CHANNEL_A) * 50, this->configuration.getOffsetString(Configuration::CHANNEL_A), 0.2, 0.2, 1.0, 140, 640, 80, 480);
-			this->printVerticalScale(this->configuration.getVerticalScaleString(Configuration::CHANNEL_A), 0.2, 0.2, 1.0, 140, 640, 80, 480);
-			break;
-		case State::CHANNEL_B:
-			if(this->configuration.getChannelA())
-			{
-				this->printSamples(this->samples.getSamplesA(), this->samples.getDelayA(), 0.2, 0.2, 1.0, 140, 640, 80, 480);
-			}
-			if(this->configuration.getChannelB())
-			{
-				this->printSamples(this->samples.getSamplesB(), this->samples.getDelayB(), 1.0, 0.0, 0.0, 140, 640, 80, 480);
-			}
-			this->printOffset(this->configuration.getOffsetB() / this->configuration.getVerticalScale(Configuration::CHANNEL_B) * 50 , this->configuration.getOffsetString(Configuration::CHANNEL_B), 1.0, 0.0, 0.0, 140, 640, 80, 480);
-			this->printVerticalScale(this->configuration.getVerticalScaleString(Configuration::CHANNEL_B), 1.0, 0.0, 0.0, 140, 640, 80, 480);
-			break;
-		case State::NO_CHANNEL:
-			if(this->configuration.getChannelB())
-			{
-				this->printSamples(this->samples.getSamplesB(), this->samples.getDelayB(), 1.0, 0.0, 0.0, 140, 640, 80, 480);
-			}
-			if(this->configuration.getChannelA())
-			{
-				this->printSamples(this->samples.getSamplesA(), this->samples.getDelayA(), 0.2, 0.2, 1.0, 140, 640, 80, 480);
-			}
-			break;
+		Rs = 0.2;
+		Gs = 0.2;
+		Bs = 1.0;
+		Ru = 1.0;
+		Gu = 0.0;
+		Bu = 0.0;
 	}
-	this->printHorizontalScale(this->configuration.getHorizontalScaleString(), 140, 640, 80, 480);
-	this->printDelay(this->configuration.getDelay(), this->configuration.getDelayString(50), 140, 640, 80, 480);
-	this->printChannelButton("Channel A", this->configuration.getChannelA(), this->state.getSelectedChannel() == State::CHANNEL_A, 0.2, 0.2, 1.0, 0, 140, 330, 380);
-	this->printChannelButton("Channel B", this->configuration.getChannelB(), this->state.getSelectedChannel() == State::CHANNEL_B, 1.0, 0.0, 0.0, 0, 140, 180, 230);
+	else
+	{
+		Rs = 1.0;
+		Gs = 0.0;
+		Bs = 0.0;
+		Ru = 0.2;
+		Gu = 0.2;
+		Bu = 1.0;
+	}
+	if(configuration.getChannel(state.getUnselectedChannel()))
+	{
+		printSamples(samplesToPixels(samples.getSamples(state.getUnselectedChannel()), configuration.getVerticalScale(state.getUnselectedChannel()), 50), samples.getDelay(state.getUnselectedChannel()), Ru, Gu, Bu, 140, 640, 80, 480);
+	}
+	if(configuration.getChannel(state.getSelectedChannel()))
+	{
+		printSamples(samplesToPixels(samples.getSamples(state.getSelectedChannel()), configuration.getVerticalScale(state.getSelectedChannel()), 50), samples.getDelay(state.getSelectedChannel()), Rs, Gs, Bs, 140, 640, 80, 480);
+	}
+	if(state.getSelectedChannel() != Configuration::NO_CHANNEL)
+	{
+		printOffset(configuration.getOffset(state.getSelectedChannel()) / configuration.getVerticalScale(state.getSelectedChannel()) * 50, configuration.getOffsetString(state.getSelectedChannel()), Rs, Gs, Bs, 140, 640, 80, 480);
+		printVerticalScale(configuration.getVerticalScaleString(state.getSelectedChannel()), Rs, Gs, Bs, 140, 640, 80, 480);
+	}
+	printHorizontalScale(configuration.getHorizontalScaleString(), 140, 640, 80, 480);
+	printDelay(configuration.getDelay(), configuration.getDelayString(), 140, 640, 80, 480);
+	printChannelButton("Channel A", configuration.getChannel(Configuration::CHANNEL_A), state.getSelectedChannel() == Configuration::CHANNEL_A, 0.2, 0.2, 1.0, 0, 140, 330, 380);
+	printChannelButton("Channel B", configuration.getChannel(Configuration::CHANNEL_B), state.getSelectedChannel() == Configuration::CHANNEL_B, 1.0, 0.0, 0.0, 0, 140, 180, 230);
+	printCouplingButton(configuration.getCouplingString(Configuration::CHANNEL_A), state.getSelectedChannel() == Configuration::CHANNEL_A, 0.2, 0.2, 1.0, 20, 120, 290, 330);
+	printCouplingButton(configuration.getCouplingString(Configuration::CHANNEL_B), state.getSelectedChannel() == Configuration::CHANNEL_B, 1.0, 0.0, 0.0, 20, 120, 140, 180);
+	printButton("Meassures", configuration.getMeassureString(state.getSelectedChannel()), state.getMeassuresButtonActive(), 0, 213, 0, 80);
+	printButton("Mathematics", configuration.getMathematicString(), state.getMathematicsButtonActive(), 213, 427, 0, 80);
+	printButton("Mode", configuration.getModeString(), state.getModeButtonActive(), 427, 640, 0, 80);
+	updateScreen();
+}
+
+vector<int> Display::samplesToPixels(const vector<double>& samples, double verticalScale, int pixelsPerDivision)
+{
+	vector<int> pixels(samples.size(), 0);
+	for(int i = 0; i < samples.size(); i++)
+	{
+		pixels[i] = (int) (samples[i] * pixelsPerDivision / verticalScale);
+	}
+	return pixels;
 }
 
 void Display::printGrid(int x1, int x2, int y1, int y2)
@@ -77,7 +89,7 @@ void Display::printVerticalScale(string verticalScale, float R, float G, float B
 {
 	setTextFont(POLO_HELVETICA_12);
 	setPenColor(getColorFromRGB(R, G, B));
-	drawText(x2 - 45, (y1 + y2) / 2, verticalScale.data());
+	drawText(x2 - getTextDrawWidth(verticalScale.data()) - 5, (y1 + y2) / 2, verticalScale.data());
 }
 
 void Display::printDelay(int delayValue, std::string delayString, int x1, int x2, int y1, int y2)
@@ -91,7 +103,7 @@ void Display::printHorizontalScale(string horizontalScale, int x1, int x2, int y
 {
 	setTextFont(POLO_HELVETICA_12);
 	setPenColor(getColorFromRGB(0.5, 0.5, 0.5));
-	drawText((x1 + x2) / 2 + 5, y2 - 25, horizontalScale.data());
+	drawText((x1 + x2) / 2 + 5, y2 - getTextDrawHeight(horizontalScale.data()) - 5, horizontalScale.data());
 }
 
 void Display::printChannelButton(string channel, bool isActive, bool isSelected, float R, float G, float B, int x1, int x2, int y1, int y2)
@@ -103,7 +115,7 @@ void Display::printChannelButton(string channel, bool isActive, bool isSelected,
 	}
 	else
 	{
-		setFillColor(getColorFromRGB(0.2, 0.2, 0.2));
+		setFillColor(getColorFromRGB(R / 16, G / 16, B / 16));
 	}
 	drawRect(x1, y1, x2 - x1, y2 - y1);
 	if(isActive)
@@ -112,12 +124,47 @@ void Display::printChannelButton(string channel, bool isActive, bool isSelected,
 	}
 	else
 	{
-		setFillColor(getColorFromRGB(0.5, 0.5, 0.5));
+		setFillColor(getColorFromRGB(R / 16, G / 16, B / 16));
 	}
-	drawCircle(x1 + (y2 - y1) / 2, (y1 + y2) / 2, 10);
+	drawRect(x1 + (y2 - y1) / 4 , (3 * y1 + y2) / 4, (y2 - y1) / 2, (y2 - y1) / 2);
 	setTextFont(POLO_HELVETICA_18);
+	drawText(x1 + (y2 - y1), (y1 + y2 - getTextDrawHeight(channel.data())) / 2, channel.data());
+}
+
+void Display::printCouplingButton(string text, bool isSelected, float R, float G, float B, int x1, int x2, int y1, int y2)
+{
 	setPenColor(getColorFromRGB(R, G, B));
-	drawText(x1 + (y2 - y1), (y1 + y2) / 2 - 10, channel.data());
+	if(isSelected)
+	{
+		setFillColor(getColorFromRGB(R / 4, G / 4, B / 4));
+	}
+	else
+	{
+		setFillColor(getColorFromRGB(R / 16, G / 16, B / 16));
+	}
+	drawRect(x1, y1, x2 - x1, y2 - y1);
+	setTextFont(POLO_HELVETICA_12);
+	drawText((x1 + x2 - getTextDrawWidth("Coupling")) / 2, (y1 + 2 * y2) / 3 - getTextDrawHeight("Coupling") / 2, "Coupling");
+	setTextFont(POLO_HELVETICA_10);
+	drawText((x1 + x2 - getTextDrawWidth(text.data())) / 2, (2 * y1 + y2) / 3 - getTextDrawHeight(text.data()) / 2, text.data());
+}
+
+void Display::printButton(string title, string text, bool isActive, int x1, int x2, int y1, int y2)
+{
+	setPenColor(getColorFromRGB(0.5, 0.5, 0.5));
+	if(isActive)
+	{
+		setFillColor(getColorFromRGB(0.2, 0.2, 0.2));
+	}
+	else
+	{
+		setFillColor(getColorFromRGB(0.1, 0.1, 0.1));
+	}
+	drawRect(x1, y1, x2 - x1, y2 - y1);
+	setTextFont(POLO_HELVETICA_18);
+	drawText((x1 + x2 - getTextDrawWidth(title.data())) / 2, (y1 + 2 * y2) / 3 - getTextDrawHeight(title.data()) / 2, title.data());
+	setTextFont(POLO_HELVETICA_10);
+	drawText((x1 + x2 - getTextDrawWidth(text.data())) / 2, (2 * y1 + y2) / 3 - getTextDrawHeight(text.data()) / 2, text.data());
 }
 
 void Display::printSamples(std::vector<int> samples, int delay, float R, float G, float B, int x1, int x2, int y1, int y2)

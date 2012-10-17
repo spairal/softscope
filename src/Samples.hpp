@@ -1,22 +1,21 @@
 #ifndef SAMPLES_HPP
 #define SAMPLES_HPP
 
+#include <Configuration.hpp>
 #include <vector>
 
 class Samples
 {
 	private:
-		std::vector<int> samplesA;
-		std::vector<int> samplesB;
+		std::vector<double> samplesA;
+		std::vector<double> samplesB;
 		int delayA;
 		int delayB;
 
 	public:
 		Samples(void);
-		std::vector<int> getSamplesA(void);
-		std::vector<int> getSamplesB(void);
-		int getDelayA(void);
-		int getDelayB(void);
+		std::vector<double>& getSamples(Configuration::Channels channel);
+		int getDelay(Configuration::Channels channel);
 };
 
 #endif
