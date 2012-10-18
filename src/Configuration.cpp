@@ -14,9 +14,9 @@ Configuration::Configuration(void)
 	horizontalScale = ONE_S;
 	couplingA = DC;
 	couplingB = DC;
-	channelA = true;
-	channelB = true;
-	meassure = NOMEASSURE;
+	channelA = false;
+	channelB = false;
+	measure = NOMEASURE;
 	verticalCursor[0] = 0;
 	verticalCursor[1] = 0;
 	horizontalCursor[0] = 0;
@@ -332,9 +332,8 @@ string Configuration::getHorizontalScaleString(void)
 	return scale;
 }
 
-string Configuration::getCouplingString(Channels channel)
+Configuration::Couplings Configuration::getCoupling(Channels channel)
 {
-	string couplingString;
 	Couplings coupling;
 	switch(channel)
 	{
@@ -345,6 +344,13 @@ string Configuration::getCouplingString(Channels channel)
 			coupling = couplingB;
 			break;
 	}
+	return coupling;
+}
+
+string Configuration::getCouplingString(Channels channel)
+{
+	string couplingString;
+	Couplings coupling = getCoupling(channel);
 	switch(coupling)
 	{
 		case AC:
@@ -355,6 +361,19 @@ string Configuration::getCouplingString(Channels channel)
 			break;
 	}
 	return couplingString;
+}
+
+void Configuration::setCoupling(Channels channel, Couplings coupling)
+{
+	switch(channel)
+	{
+		case CHANNEL_A:
+			couplingA = coupling;
+			break;
+		case CHANNEL_B:
+			couplingB = coupling;
+			break;
+	}
 }
 
 bool Configuration::getChannel(Channels channel)
@@ -375,49 +394,62 @@ bool Configuration::getChannel(Channels channel)
 	return channelBool;
 }
 
-string Configuration::getMeassureString(Channels channel)
+void Configuration::setChannel(Channels channel, bool isActive)
 {
-	string meassureString;
-	switch(meassure)
+	switch(channel)
 	{
-		case NOMEASSURE:
-			meassureString = "No Meassure";
+		case CHANNEL_A:
+			channelA = isActive;
 			break;
-		case CURSORS:
-			meassureString = getCursorsString(channel);
-			break;
-		case MEAN:
-			meassureString = "Mean";
-			break;
-		case PEAK:
-			meassureString = "Peak";
-			break;
-		case RMS:
-			meassureString = "RMS";
-			break;
-		case FREQUENCY:
-			meassureString = "Frequency";
-			break;
-		case PERIOD:
-			meassureString = "Period";
-			break;
-		case RISETIME:
-			meassureString = "Rise Time";
-			break;
-		case FALLTIME:
-			meassureString = "Fall Time";
-			break;
-		case DUTYCYCLE:
-			meassureString = "Duty Cycle";
-			break;
-		case PHASE:
-			meassureString = "Phase";
-			break;
-		case RATIO:
-			meassureString = "Ratio";
+		case CHANNEL_B:
+			channelB = isActive;
 			break;
 	}
-	return meassureString;
+}
+
+string Configuration::getMeasureString(Channels channel)
+{
+	string measureString;
+	switch(measure)
+	{
+		case NOMEASURE:
+			measureString = "No Measure";
+			break;
+		case CURSORS:
+			measureString = getCursorsString(channel);
+			break;
+		case MEAN:
+			measureString = "Mean";
+			break;
+		case PEAK:
+			measureString = "Peak";
+			break;
+		case RMS:
+			measureString = "RMS";
+			break;
+		case FREQUENCY:
+			measureString = "Frequency";
+			break;
+		case PERIOD:
+			measureString = "Period";
+			break;
+		case RISETIME:
+			measureString = "Rise Time";
+			break;
+		case FALLTIME:
+			measureString = "Fall Time";
+			break;
+		case DUTYCYCLE:
+			measureString = "Duty Cycle";
+			break;
+		case PHASE:
+			measureString = "Phase";
+			break;
+		case RATIO:
+			measureString = "Ratio";
+			break;
+	}
+	return measureString;
 }
 
 string Configuration::getCursorsString(Channels channel)

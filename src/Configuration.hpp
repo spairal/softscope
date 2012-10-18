@@ -9,7 +9,7 @@ class Configuration
 		enum VerticalScales {TEN_MV, TWENTY_MV, FIFTY_MV, HUNDRED_MV, TWOHUNDRED_MV, FIVEHUNDRED_MV, ONE_V, TWO_V, FIVE_V, TEN_V};
 		enum HorizontalScales {TEN_NS, TWENTY_NS, FIFTY_NS, HUNDRED_NS, TWOHUNDRED_NS, FIVEHUNDRED_NS, ONE_US, TWO_US, FIVE_US, TEN_US, TWENTY_US, FIFTY_US, HUNDRED_US, TWOHUNDRED_US, FIVEHUNDRED_US, ONE_MS, TWO_MS, FIVE_MS, TEN_MS, TWENTY_MS, FIFTY_MS, HUNDRED_MS, TWOHUNDRED_MS, FIVEHUNDRED_MS, ONE_S};
 		enum Couplings {AC, DC};
-		enum Meassures {NOMEASSURE, CURSORS, MEAN, PEAK, RMS, FREQUENCY, PERIOD, RISETIME, FALLTIME, DUTYCYCLE, PHASE, RATIO};
+		enum Measures {NOMEASURE, CURSORS, MEAN, PEAK, RMS, FREQUENCY, PERIOD, RISETIME, FALLTIME, DUTYCYCLE, PHASE, RATIO};
 		enum Mathematics {NOMATHEMATIC, DIFFERENCE, FFT};
 		enum Modes {RUN, STOP, SINGLE, ROLL};
 		enum TriggerModes {NORMAL, AUTOMATIC};
@@ -28,7 +28,7 @@ class Configuration
 		Couplings couplingB;
 		bool channelA;
 		bool channelB;
-		Meassures meassure;
+		Measures measure;
 		double verticalCursor[2];
 		double horizontalCursor[2];
 		Mathematics mathematic;
@@ -52,9 +52,12 @@ class Configuration
 		std::string getDelayString(void);
 		double getHorizontalScale(void);
 		std::string getHorizontalScaleString(void);
+		Couplings getCoupling(Channels channel);
 		std::string getCouplingString(Channels channel);
+		void setCoupling(Channels channel, Couplings coupling);
 		bool getChannel(Channels channel);
-		std::string getMeassureString(Channels channel);
+		void setChannel(Channels channel, bool isActive);
+		std::string getMeasureString(Channels channel);
 		std::string getCursorsString(Channels channel);
 		std::string getMathematicString(void);
 		std::string getModeString(void);
