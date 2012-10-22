@@ -28,14 +28,26 @@ State::State(void)
 	measuresCoordenates.push_back(213);
 	measuresCoordenates.push_back(0);
 	measuresCoordenates.push_back(80);
+	measuresMenuCoordenates.push_back(0);
+	measuresMenuCoordenates.push_back(213);
+	measuresMenuCoordenates.push_back(80);
+	measuresMenuCoordenates.push_back(110);
 	mathematicsCoordenates.push_back(213);
 	mathematicsCoordenates.push_back(427);
 	mathematicsCoordenates.push_back(0);
 	mathematicsCoordenates.push_back(80);
+	mathematicsMenuCoordenates.push_back(213);
+	mathematicsMenuCoordenates.push_back(427);
+	mathematicsMenuCoordenates.push_back(80);
+	mathematicsMenuCoordenates.push_back(110);
 	modeCoordenates.push_back(427);
 	modeCoordenates.push_back(640);
 	modeCoordenates.push_back(0);
 	modeCoordenates.push_back(80);
+	modeMenuCoordenates.push_back(427);
+	modeMenuCoordenates.push_back(640);
+	modeMenuCoordenates.push_back(80);
+	modeMenuCoordenates.push_back(110);
 	colorA.push_back(0.2);
 	colorA.push_back(0.2);
 	colorA.push_back(1.0);
@@ -103,6 +115,21 @@ vector<int> State::getModeCoordenates(void)
 	return modeCoordenates;
 }
 
+vector<int> State::getMeasuresMenuCoordenates(void)
+{
+	return measuresMenuCoordenates;
+}
+
+vector<int> State::getMathematicsMenuCoordenates(void)
+{
+	return mathematicsMenuCoordenates;
+}
+
+vector<int> State::getModeMenuCoordenates(void)
+{
+	return modeMenuCoordenates;
+}
+
 vector<float> State::getColor(Configuration::Channels channel)
 {
 	vector<float> color;
@@ -159,5 +186,20 @@ bool State::getMathematicsButtonActive(void)
 bool State::getModeButtonActive(void)
 {
 	return modeButtonActive;
+}
+
+void State::setMeasuresButtonActive(bool active)
+{
+	measuresButtonActive = active;
+}
+
+void State::setMathematicsButtonActive(bool active)
+{
+	mathematicsButtonActive = active;
+}
+
+void State::setModeButtonActive(bool active)
+{
+	modeButtonActive = active;
 }
 

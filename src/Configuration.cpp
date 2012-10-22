@@ -17,10 +17,10 @@ Configuration::Configuration(void)
 	channelA = false;
 	channelB = false;
 	measure = NOMEASURE;
-	verticalCursor[0] = 0;
-	verticalCursor[1] = 0;
-	horizontalCursor[0] = 0;
-	horizontalCursor[1] = 0;
+	verticalCursor.push_back(0);
+	verticalCursor.push_back(0);
+	horizontalCursor.push_back(0);
+	horizontalCursor.push_back(0);
 	mathematic = NOMATHEMATIC;
 	mode = RUN;
 	triggerMode = NORMAL;
@@ -577,6 +577,58 @@ string Configuration::getTriggerSlopeString(void)
 string Configuration::getTriggerLevelString(void)
 {
 	return voltageToString(triggerLevel);
+}
+
+vector<string> Configuration::getAllMeasures(void)
+{
+	vector<string> allMeasures;
+	allMeasures.push_back("No Measure");
+	allMeasures.push_back("Cursors");
+	allMeasures.push_back("Mean");
+	allMeasures.push_back("Peak");
+	allMeasures.push_back("RMS");
+	allMeasures.push_back("Frequency");
+	allMeasures.push_back("Period");
+	allMeasures.push_back("Rise Time");
+	allMeasures.push_back("Fall Time");
+	allMeasures.push_back("Duty Cycle");
+	allMeasures.push_back("Phase");
+	allMeasures.push_back("Ratio");
+	return allMeasures;
+}
+
+vector<string> Configuration::getAllMathematics(void)
+{
+	vector<string> allMathematics;
+	allMathematics.push_back("No Mathematic");
+	allMathematics.push_back("Difference");
+	allMathematics.push_back("FFT");
+	return allMathematics;
+}
+
+vector<string> Configuration::getAllModes(void)
+{
+	vector<string> allModes;
+	allModes.push_back("Run");
+	allModes.push_back("Stop");
+	allModes.push_back("Single");
+	allModes.push_back("Roll");
+	return allModes;
+}
+
+void Configuration::setMeasure(Measures selected)
+{
+	measure = selected;
+}
+
+void Configuration::setMathematic(Mathematics selected)
+{
+	mathematic = selected;
+}
+
+void Configuration::setMode(Modes selected)
+{
+	mode = selected;
 }
 
 int Configuration::getAverage(void)

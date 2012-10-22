@@ -28,6 +28,7 @@ class Display
 		void printChannelButton(std::string channel, bool isActive, bool isSelected, std::vector<float> color, std::vector<int> coordenates);
 		void printCouplingButton(std::string text, std::vector<float> color, std::vector<int> coordenates);
 		void printButton(std::string title, std::string text, bool isActive, std::vector<int> coordenates);
+		void printMenu(std::vector<std::string> options, std::vector<int> coordenates);
 		void printSamples(std::vector<int> samples, int delay, std::vector<float> color, std::vector<int> coordenates);
 };
 

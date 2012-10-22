@@ -16,7 +16,7 @@ class UserData
 		Display display;
 	
 	public:
-		UserData(Configuration& configuration, State& state, Samples& samples) : touch(configuration, state, samples), fpga(configuration, samples), display(configuration, state, samples)
+		UserData(Configuration& configuration, State& state, Samples& samples) : touch(configuration, state), fpga(configuration, samples), display(configuration, state, samples)
 		{
 		}
 };

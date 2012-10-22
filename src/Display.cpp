@@ -33,6 +33,18 @@ void Display::print(void)
 	printButton("Measures", configuration.getMeasureString(state.getSelectedChannel()), state.getMeasuresButtonActive(), state.getMeasuresCoordenates());
 	printButton("Mathematics", configuration.getMathematicString(), state.getMathematicsButtonActive(), state.getMathematicsCoordenates());
 	printButton("Mode", configuration.getModeString(), state.getModeButtonActive(), state.getModeCoordenates());
+	if(state.getMeasuresButtonActive())
+	{
+		printMenu(configuration.getAllMeasures(), state.getMeasuresMenuCoordenates());
+	}
+	if(state.getMathematicsButtonActive())
+	{
+		printMenu(configuration.getAllMathematics(), state.getMathematicsMenuCoordenates());
+	}
+	if(state.getModeButtonActive())
+	{
+		printMenu(configuration.getAllModes(), state.getModeMenuCoordenates());
+	}
 	updateScreen();
 }
 
@@ -139,6 +151,18 @@ void Display::printButton(string title, string text, bool isActive, vector<int> 
 	drawText((coordenates[0] + coordenates[1] - getTextDrawWidth(title.data())) / 2, (coordenates[2] + 2 * coordenates[3]) / 3 - getTextDrawHeight(title.data()) / 2, title.data());
 	setTextFont(POLO_HELVETICA_10);
 	drawText((coordenates[0] + coordenates[1] - getTextDrawWidth(text.data())) / 2, (2 * coordenates[2] + coordenates[3]) / 3 - getTextDrawHeight(text.data()) / 2, text.data());
+}
+
+void Display::printMenu(vector<string> options, vector<int> coordenates)
+{
+	setPenColor(getColorFromRGB(0.5, 0.5, 0.5));
+	setFillColor(getColorFromRGB(0.1, 0.1, 0.1));
+	setTextFont(POLO_HELVETICA_12);
+	drawRect(coordenates[0], coordenates[2], coordenates[1] - coordenates[0], (coordenates[3] - coordenates[2]) * options.size());
+	for(int i = 0; i < options.size(); i++)
+	{
+		drawText((coordenates[0] + coordenates[1] - getTextDrawWidth(options[i].data())) / 2, coordenates[2] + (options.size() - i - 0.5) * (coordenates[3] - coordenates[2]) - getTextDrawHeight(options[i].data()) / 2, options[i].data());
+	}
 }
 
 void Display::printSamples(std::vector<int> samples, int delay, vector<float> color, vector<int> coordenates)

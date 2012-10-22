@@ -2,6 +2,7 @@
 #define CONFIGURATION_HPP
 
 #include <string>
+#include <vector>
 
 class Configuration
 {
@@ -29,8 +30,8 @@ class Configuration
 		bool channelA;
 		bool channelB;
 		Measures measure;
-		double verticalCursor[2];
-		double horizontalCursor[2];
+		std::vector<double> verticalCursor;
+		std::vector<double> horizontalCursor;
 		Mathematics mathematic;
 		Modes mode;
 		TriggerModes triggerMode;
@@ -68,6 +69,12 @@ class Configuration
 		std::string getTriggerChannelString(void);
 		std::string getTriggerSlopeString(void);
 		std::string getTriggerLevelString(void);
+		std::vector<std::string> getAllMeasures(void);
+		std::vector<std::string> getAllMathematics(void);
+		std::vector<std::string> getAllModes(void);
+		void setMeasure(Measures selected);
+		void setMathematic(Mathematics selected);
+		void setMode(Modes selected);
 		int getAverage(void);
 		std::string getAverageString(void);
 	private:

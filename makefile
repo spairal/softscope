@@ -86,7 +86,7 @@ $(SOURCE)/State.hpp : $(SOURCE)/Configuration.hpp
 $(SOURCE)/Samples.hpp : $(SOURCE)/Configuration.hpp
 	$(TOUCH) $(SOURCE)/Samples.hpp
 
-$(SOURCE)/Touch.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp
+$(SOURCE)/Touch.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp
 	$(TOUCH) $(SOURCE)/Touch.hpp
 
 $(SOURCE)/FPGA.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/Samples.hpp
