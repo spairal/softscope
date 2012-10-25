@@ -6,8 +6,8 @@ Samples::Samples(void)
 {
 	samplesA.assign(1500,0.0);
 	samplesB.assign(1500,1.0);
-	delayA = 500;
-	delayB = 500;
+	delayA = 750;
+	delayB = 750;
 }
 
 vector<double>& Samples::getSamples(Configuration::Channels channel)

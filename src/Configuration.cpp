@@ -11,7 +11,7 @@ Configuration::Configuration(void)
 	verticalScaleA = ONE_V;
 	verticalScaleB = ONE_V;
 	delay = 0;
-	horizontalScale = ONE_S;
+	horizontalScale = HUNDRED_MS;
 	couplingA = DC;
 	couplingB = DC;
 	channelA = false;
@@ -56,9 +56,21 @@ string Configuration::getOffsetString(Channels channel)
 	return voltageToString(getOffset(channel));
 }
 
-double Configuration::getVerticalScale(Channels channel)
+void Configuration::setOffset(Channels channel, double offset)
 {
-	double scale;
+	switch(channel)
+	{
+		case CHANNEL_A:
+			offsetA = offset;
+			break;
+		case CHANNEL_B:
+			offsetB = offset;
+			break;
+	}
+}
+
+Configuration::VerticalScales Configuration::getVerticalScale(Channels channel)
+{
 	VerticalScales verticalScale;
 	switch(channel)
 	{
@@ -69,6 +81,13 @@ double Configuration::getVerticalScale(Channels channel)
 			verticalScale = verticalScaleB;
 			break;
 	}
+	return verticalScale;
+}
+
+double Configuration::getVerticalScaleValue(Channels channel)
+{
+	double scale;
+	VerticalScales verticalScale = getVerticalScale(channel);
 	switch(verticalScale)
 	{
 		case TEN_MV:
@@ -108,16 +127,7 @@ double Configuration::getVerticalScale(Channels channel)
 string Configuration::getVerticalScaleString(Channels channel)
 {
 	string scale;
-	VerticalScales verticalScale;
-	switch(channel)
-	{
-		case CHANNEL_A:
-			verticalScale = verticalScaleA;
-			break;
-		case CHANNEL_B:
-			verticalScale = verticalScaleB;
-			break;
-	}
+	VerticalScales verticalScale = getVerticalScale(channel);
 	switch(verticalScale)
 	{
 		case TEN_MV:
@@ -154,17 +164,48 @@ string Configuration::getVerticalScaleString(Channels channel)
 	return scale;
 }
 
-int Configuration::getDelay(void)
+void Configuration::setVerticalScale(Channels channel, VerticalScales verticalScale)
+{
+	if(verticalScale < TEN_MV)
+	{
+		verticalScale = TEN_MV;
+	}
+	if(verticalScale > TEN_V)
+	{
+		verticalScale = TEN_V;
+	}
+	switch(channel)
+	{
+		case CHANNEL_A:
+			verticalScaleA = verticalScale;
+			break;
+		case CHANNEL_B:
+			verticalScaleB = verticalScale;
+			break;
+	}
+}
+
+double Configuration::getDelay(void)
 {
 	return delay;
 }
 
 string Configuration::getDelayString(void)
 {
-	return timeToString(getHorizontalScale() * delay);
+	return timeToString(getHorizontalScaleValue() * delay);
 }
 
-double Configuration::getHorizontalScale(void)
+Configuration::HorizontalScales Configuration::getHorizontalScale(void)
+{
+	return horizontalScale;
+}
+
+void Configuration::setDelay(double d)
+{
+	delay = d;
+}
+
+double Configuration::getHorizontalScaleValue(void)
 {
 	double scale;
 	switch(horizontalScale)
@@ -332,6 +373,19 @@ string Configuration::getHorizontalScaleString(void)
 	return scale;
 }
 
+void Configuration::setHorizontalScale(HorizontalScales scale)
+{
+	if(scale < TEN_NS)
+	{
+		scale = TEN_NS;
+	}
+	if(scale > ONE_S)
+	{
+		scale = ONE_S;
+	}
+	horizontalScale = scale;
+}
+
 Configuration::Couplings Configuration::getCoupling(Channels channel)
 {
 	Couplings coupling;
@@ -457,9 +511,9 @@ string Configuration::getCursorsString(Channels channel)
 	stringstream ss;
 	ss.precision(2);
 	ss << "Cursors:" << endl;
-	double x1 = getHorizontalScale() * horizontalCursor[0];
-	ss << "x1 = " << timeToString(getHorizontalScale() * horizontalCursor[0]) << " ; x2 = " << timeToString(getHorizontalScale() * horizontalCursor[1]) << endl;
-	ss << "y1 = " << voltageToString(getVerticalScale(channel) * verticalCursor[0]) << " ; y2 = " << voltageToString(getVerticalScale(channel) * verticalCursor[1]);
+	double x1 = getHorizontalScaleValue() * horizontalCursor[0];
+	ss << "x1 = " << timeToString(getHorizontalScaleValue() * horizontalCursor[0]) << " ; x2 = " << timeToString(getHorizontalScaleValue() * horizontalCursor[1]) << endl;
+	ss << "y1 = " << voltageToString(getVerticalScaleValue(channel) * verticalCursor[0]) << " ; y2 = " << voltageToString(getVerticalScaleValue(channel) * verticalCursor[1]);
 	return ss.str();
 }
 

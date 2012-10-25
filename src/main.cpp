@@ -34,6 +34,10 @@ void mouseButtonCallback(void* userData, int button, int pressed)
 	{
 		touch.setButtonPressed(true);
 	}
+	else
+	{
+		touch.setButtonReleased(true);
+	}
 }
 
 void drawCallback(void* userData)

@@ -11,13 +11,23 @@ class Touch
 		Configuration& configuration;
 		State& state;
 		bool buttonPressed;
+		bool buttonReleased;
 
 	public:
 		Touch(Configuration& configuration, State& state);
 		void setButtonPressed(bool pressed);
+		void setButtonReleased(bool released);
 		void parseScreen(int x, int y);
 
 	private:
+		void startDragOffset(int x, int y);
+		void startDragVerticalScale(int y);
+		void startDragHorizontalScale(int x);
+		void resetDrag(void);
+		void dragOffset(int x, int y);
+		void dragVerticalScale(int y);
+		void dragHorizontalScale(int x);
+		void resetButtons(void);
 		void pressChannelButton(Configuration::Channels channel);
 		void pressCouplingButton(Configuration::Channels channel);
 		void pressMeasuresButton(void);

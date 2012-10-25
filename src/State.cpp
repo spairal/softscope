@@ -54,6 +54,13 @@ State::State(void)
 	colorB.push_back(1.0);
 	colorB.push_back(0.0);
 	colorB.push_back(0.0);
+	offsetDrag = false;
+	verticalScaleDrag = false;
+	horizontalScaleDrag = false;
+	initialOffset.push_back(0);
+	initialOffset.push_back(0);
+	initialVerticalScale = 0;
+	initialHorizontalScale = 0;
 	selectedChannel = Configuration::NO_CHANNEL;
 	measuresButtonActive = false;
 	mathematicsButtonActive = false;
@@ -143,6 +150,66 @@ vector<float> State::getColor(Configuration::Channels channel)
 			break;
 	}
 	return color;
+}
+
+bool State::getOffsetDrag(void)
+{
+	return offsetDrag;
+}
+
+bool State::getVerticalScaleDrag(void)
+{
+	return verticalScaleDrag;
+}
+
+bool State::getHorizontalScaleDrag(void)
+{
+	return horizontalScaleDrag;
+}
+
+void State::setOffsetDrag(bool drag)
+{
+	offsetDrag = drag;
+}
+
+void State::setVerticalScaleDrag(bool drag)
+{
+	verticalScaleDrag = drag;
+}
+
+void State::setHorizontalScaleDrag(bool drag)
+{
+	horizontalScaleDrag = drag;
+}
+
+vector<int> State::getInitialOffset(void)
+{
+	return initialOffset;
+}
+
+int State::getInitialVerticalScale(void)
+{
+	return initialVerticalScale;
+}
+
+int State::getInitialHorizontalScale(void)
+{
+	return initialHorizontalScale;
+}
+
+void State::setInitialOffset(vector<int> offset)
+{
+	initialOffset = offset;
+}
+
+void State::setInitialVerticalScale(int scale)
+{
+	initialVerticalScale = scale;
+}
+
+void State::setInitialHorizontalScale(int scale)
+{
+	initialHorizontalScale = scale;
 }
 
 Configuration::Channels State::getSelectedChannel(void)

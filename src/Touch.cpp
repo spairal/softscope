@@ -5,6 +5,7 @@ using namespace std;
 Touch::Touch(Configuration& configuration, State& state) : configuration(configuration), state(state)
 {
 	buttonPressed = false;
+	buttonReleased = false;
 }
 
 void Touch::setButtonPressed(bool pressed)
@@ -12,11 +13,41 @@ void Touch::setButtonPressed(bool pressed)
 	buttonPressed = pressed;
 }
 
+void Touch::setButtonReleased(bool released)
+{
+	buttonReleased = released;
+}
+
 void Touch::parseScreen(int x, int y)
 {
 	if(buttonPressed)
 	{
 		buttonPressed = false;
+		if(!state.getMeasuresButtonActive() && !state.getMathematicsButtonActive() && !state.getModeButtonActive())
+		{
+			vector<int> coordenates = state.getGridCoordenates();
+			vector<int> verticalScaleCoordenates = coordenates;
+			verticalScaleCoordenates[0] = verticalScaleCoordenates[1] - state.getPixelsPerDivision();
+			vector<int> horizontalScaleCoordenates = coordenates;
+			horizontalScaleCoordenates[2] = horizontalScaleCoordenates[3] - state.getPixelsPerDivision();
+			if(isIn(x, y, verticalScaleCoordenates))
+			{
+				startDragVerticalScale(y);
+			}
+			else if(isIn(x, y, horizontalScaleCoordenates))
+			{
+				startDragHorizontalScale(x);
+			}
+			else if(isIn(x, y, coordenates))
+			{
+				startDragOffset(x, y);
+			}
+		}
+	}
+	if(buttonReleased)
+	{
+		buttonReleased = false;
+		resetDrag();
 		if(state.getMeasuresButtonActive() || state.getMathematicsButtonActive() || state.getModeButtonActive())
 		{
 			vector<int> measuresMenuCoordenates = state.getMeasuresMenuCoordenates();
@@ -42,9 +73,7 @@ void Touch::parseScreen(int x, int y)
 			}
 			if(!isIn(x, y, state.getMeasuresCoordenates()) && !isIn(x, y, state.getMathematicsCoordenates()) && !isIn(x, y, state.getModeCoordenates()) && !isIn(x, y, measuresMenuCoordenates) && !isIn(x, y, mathematicsMenuCoordenates) && !isIn(x, y, modeMenuCoordenates))
 			{
-				state.setMeasuresButtonActive(false);
-				state.setMathematicsButtonActive(false);
-				state.setModeButtonActive(false);
+				resetButtons();
 			}
 		}
 		else
@@ -79,6 +108,86 @@ void Touch::parseScreen(int x, int y)
 			pressModeButton();
 		}
 	}
+	if(state.getOffsetDrag())
+	{
+		dragOffset(x, y);
+	}
+	if(state.getVerticalScaleDrag())
+	{
+		dragVerticalScale(y);
+	}
+	if(state.getHorizontalScaleDrag())
+	{
+		dragHorizontalScale(x);
+	}
+}
+
+void Touch::startDragOffset(int x, int y)
+{
+	state.setOffsetDrag(true);
+	vector<int> offset;
+	offset.push_back(x);
+	offset.push_back(y);
+	state.setInitialOffset(offset);
+}
+
+void Touch::startDragVerticalScale(int y)
+{
+	state.setVerticalScaleDrag(true);
+	state.setInitialVerticalScale(y);
+}
+
+void Touch::startDragHorizontalScale(int x)
+{
+	state.setHorizontalScaleDrag(true);
+	state.setInitialHorizontalScale(x);
+}
+
+void Touch::resetDrag(void)
+{
+	state.setOffsetDrag(false);
+	state.setVerticalScaleDrag(false);
+	state.setHorizontalScaleDrag(false);
+}
+
+void Touch::dragOffset(int x, int y)
+{
+	vector<int> initialOffset = state.getInitialOffset();
+	if(state.getSelectedChannel() != Configuration::NO_CHANNEL)
+	{
+		configuration.setOffset(state.getSelectedChannel(), configuration.getOffset(state.getSelectedChannel()) + configuration.getVerticalScaleValue(state.getSelectedChannel()) * (y - initialOffset[1]) / state.getPixelsPerDivision());
+		initialOffset[1] = y;
+	}
+	configuration.setDelay(configuration.getDelay() + (double)(x - initialOffset[0]) / state.getPixelsPerDivision());
+	initialOffset[0] = x;
+	state.setInitialOffset(initialOffset);
+}
+
+void Touch::dragVerticalScale(int y)
+{
+	int levels = (y - state.getInitialVerticalScale()) / state.getPixelsPerDivision();
+	if((state.getSelectedChannel() != Configuration::NO_CHANNEL) && (levels != 0))
+	{
+		configuration.setVerticalScale(state.getSelectedChannel(), (Configuration::VerticalScales)(configuration.getVerticalScale(state.getSelectedChannel()) + levels));
+		state.setInitialVerticalScale(y);
+	}
+}
+
+void Touch::dragHorizontalScale(int x)
+{
+	int levels = (x - state.getInitialHorizontalScale()) / state.getPixelsPerDivision();
+	if(levels != 0)
+	{
+		configuration.setHorizontalScale((Configuration::HorizontalScales)(configuration.getHorizontalScale() + levels));
+		state.setInitialHorizontalScale(x);
+	}
+}
+
+void Touch::resetButtons(void)
+{
+	state.setMeasuresButtonActive(false);
+	state.setMathematicsButtonActive(false);
+	state.setModeButtonActive(false);
 }
 
 void Touch::pressChannelButton(Configuration::Channels channel)
