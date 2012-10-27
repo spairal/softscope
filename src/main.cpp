@@ -2,6 +2,8 @@
 #include <Configuration.hpp>
 #include <State.hpp>
 #include <Samples.hpp>
+#include <Measurer.hpp>
+#include <Mathematician.hpp>
 #include <Touch.hpp>
 #include <FPGA.hpp>
 #include <Display.hpp>
@@ -16,7 +18,7 @@ class UserData
 		Display display;
 	
 	public:
-		UserData(Configuration& configuration, State& state, Samples& samples, Measurer& measurer) : touch(configuration, state), fpga(configuration, samples), display(configuration, state, samples, measurer)
+		UserData(Configuration& configuration, State& state, Samples& samples, Measurer& measurer, Mathematician& mathematician) : touch(configuration, state), fpga(configuration, samples), display(configuration, state, samples, measurer, mathematician)
 		{
 		}
 };
@@ -59,7 +61,8 @@ int main(int argc, char** argv)
 	State state;
 	Samples samples;
 	Measurer measurer(configuration, state, samples);
-	UserData userData(configuration, state, samples, measurer);
+	Mathematician mathematician(configuration, state, samples);
+	UserData userData(configuration, state, samples, measurer, mathematician);
 	setPoloUserData(&userData);
 	setMouseMotionCallback(mouseMotionCallback);
 	setMouseButtonCallback(mouseButtonCallback);

@@ -202,6 +202,14 @@ Configuration::HorizontalScales Configuration::getHorizontalScale(void)
 
 void Configuration::setDelay(double d)
 {
+	if(d < -5)
+	{
+		d = -5;
+	}
+	if(d > 5)
+	{
+		d = 5;
+	}
 	delay = d;
 }
 
@@ -519,6 +527,11 @@ string Configuration::getCursorsString(Channels channel)
 	ss << "x1 = " << timeToString(getHorizontalScaleValue() * horizontalCursor[0]) << " ; x2 = " << timeToString(getHorizontalScaleValue() * horizontalCursor[1]) << endl;
 	ss << "y1 = " << voltageToString(getVerticalScaleValue(channel) * verticalCursor[0]) << " ; y2 = " << voltageToString(getVerticalScaleValue(channel) * verticalCursor[1]);
 	return ss.str();
+}
+
+Configuration::Mathematics Configuration::getMathematic(void)
+{
+	return mathematic;
 }
 
 string Configuration::getMathematicString(void)

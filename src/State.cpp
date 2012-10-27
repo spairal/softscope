@@ -54,6 +54,9 @@ State::State(void)
 	colorB.push_back(1.0);
 	colorB.push_back(0.0);
 	colorB.push_back(0.0);
+	colorMathematics.push_back(1.0);
+	colorMathematics.push_back(1.0);
+	colorMathematics.push_back(0.0);
 	offsetDrag = false;
 	verticalScaleDrag = false;
 	horizontalScaleDrag = false;
@@ -150,6 +153,11 @@ vector<float> State::getColor(Configuration::Channels channel)
 			break;
 	}
 	return color;
+}
+
+vector<float> State::getColorMathematics(void)
+{
+	return colorMathematics;
 }
 
 bool State::getOffsetDrag(void)

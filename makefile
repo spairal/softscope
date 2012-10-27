@@ -15,8 +15,8 @@ LIBPOLO = $(SOURCE)/libpolo
 TARGET = target
 OBJ = $(TARGET)/obj
 EXECUTABLE = $(TARGET)/oscilloscope
-OBJECTS = $(addprefix $(OBJ)/, $(addsuffix .o, main Configuration State Samples Measurer Touch FPGA Display polo))
-LIBRARIES = $(addprefix -l, glut)
+OBJECTS = $(addprefix $(OBJ)/, $(addsuffix .o, main Configuration State Samples Measurer Mathematician Touch FPGA Display polo))
+LIBRARIES = $(addprefix -l, fftw3 glut)
 
 # LINKING
 
@@ -40,6 +40,9 @@ $(OBJ)/Samples.o : $(SOURCE)/Samples.cpp
 $(OBJ)/Measurer.o : $(SOURCE)/Measurer.cpp
 	$(COMPILER) $(COMPILERPARAMS) $(SOURCE)/Measurer.cpp $(INCLUDE) $(SOURCE) $(OUTPUT) $(OBJ)/Measurer.o
 
+$(OBJ)/Mathematician.o : $(SOURCE)/Mathematician.cpp
+	$(COMPILER) $(COMPILERPARAMS) $(SOURCE)/Mathematician.cpp $(INCLUDE) $(SOURCE) $(OUTPUT) $(OBJ)/Mathematician.o
+
 $(OBJ)/Touch.o : $(SOURCE)/Touch.cpp
 	$(COMPILER) $(COMPILERPARAMS) $(SOURCE)/Touch.cpp $(INCLUDE) $(SOURCE) $(OUTPUT) $(OBJ)/Touch.o
 
@@ -54,7 +57,7 @@ $(OBJ)/polo.o : $(LIBPOLO)/polo.c
 
 # SOURCES
 
-$(SOURCE)/main.cpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp $(SOURCE)/Touch.hpp $(SOURCE)/FPGA.hpp $(SOURCE)/Display.hpp $(LIBPOLO)/polo.h
+$(SOURCE)/main.cpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp $(SOURCE)/Measurer.hpp $(SOURCE)/Mathematician.hpp $(SOURCE)/Touch.hpp $(SOURCE)/FPGA.hpp $(SOURCE)/Display.hpp $(LIBPOLO)/polo.h
 	$(TOUCH) $(SOURCE)/main.cpp
 
 $(SOURCE)/Configuration.cpp : $(SOURCE)/Configuration.hpp
@@ -68,6 +71,9 @@ $(SOURCE)/Samples.cpp : $(SOURCE)/Samples.hpp
 
 $(SOURCE)/Measurer.cpp : $(SOURCE)/Measurer.hpp
 	$(TOUCH) $(SOURCE)/Measurer.cpp
+
+$(SOURCE)/Mathematician.cpp : $(SOURCE)/Mathematician.hpp
+	$(TOUCH) $(SOURCE)/Mathematician.cpp
 
 $(SOURCE)/Touch.cpp : $(SOURCE)/Touch.hpp
 	$(TOUCH) $(SOURCE)/Touch.cpp
@@ -94,6 +100,9 @@ $(SOURCE)/Samples.hpp : $(SOURCE)/Configuration.hpp
 
 $(SOURCE)/Measurer.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp
 	$(TOUCH) $(SOURCE)/Measurer.hpp
+
+$(SOURCE)/Mathematician.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp
+	$(TOUCH) $(SOURCE)/Mathematician.hpp
 
 $(SOURCE)/Touch.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp
 	$(TOUCH) $(SOURCE)/Touch.hpp

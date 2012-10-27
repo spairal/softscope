@@ -67,6 +67,7 @@ class Configuration
 		Measures getMeasure(void);
 		std::string getMeasureString(Channels channel);
 		std::string getCursorsString(Channels channel);
+		Mathematics getMathematic(void);
 		std::string getMathematicString(void);
 		std::string getModeString(void);
 		std::string getRunString(void);
