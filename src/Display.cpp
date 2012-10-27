@@ -3,7 +3,7 @@
 
 using namespace std;
 
-Display::Display(Configuration& configuration, State& state, Samples& samples) : configuration(configuration), state(state), samples(samples)
+Display::Display(Configuration& configuration, State& state, Samples& samples, Measurer& measurer) : configuration(configuration), state(state), samples(samples), measurer(measurer)
 {
 }
 
@@ -32,7 +32,7 @@ void Display::print(void)
 	printChannelButton("Channel B", configuration.getChannel(Configuration::CHANNEL_B), state.getSelectedChannel() == Configuration::CHANNEL_B, state.getColor(Configuration::CHANNEL_B), state.getChannelCoordenates(Configuration::CHANNEL_B));
 	printCouplingButton(configuration.getCouplingString(Configuration::CHANNEL_A), state.getColor(Configuration::CHANNEL_A), state.getCouplingCoordenates(Configuration::CHANNEL_A));
 	printCouplingButton(configuration.getCouplingString(Configuration::CHANNEL_B), state.getColor(Configuration::CHANNEL_B), state.getCouplingCoordenates(Configuration::CHANNEL_B));
-	printButton("Measures", configuration.getMeasureString(state.getSelectedChannel()), state.getMeasuresButtonActive(), state.getMeasuresCoordenates());
+	printButton("Measures", measurer.getMeasure(), state.getMeasuresButtonActive(), state.getMeasuresCoordenates());
 	printButton("Mathematics", configuration.getMathematicString(), state.getMathematicsButtonActive(), state.getMathematicsCoordenates());
 	printButton("Mode", configuration.getModeString(), state.getModeButtonActive(), state.getModeCoordenates());
 	if(state.getMeasuresButtonActive())

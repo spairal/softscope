@@ -15,7 +15,7 @@ LIBPOLO = $(SOURCE)/libpolo
 TARGET = target
 OBJ = $(TARGET)/obj
 EXECUTABLE = $(TARGET)/oscilloscope
-OBJECTS = $(addprefix $(OBJ)/, $(addsuffix .o, main Configuration State Samples Touch FPGA Display polo))
+OBJECTS = $(addprefix $(OBJ)/, $(addsuffix .o, main Configuration State Samples Measurer Touch FPGA Display polo))
 LIBRARIES = $(addprefix -l, glut)
 
 # LINKING
@@ -36,6 +36,9 @@ $(OBJ)/State.o : $(SOURCE)/State.cpp
 
 $(OBJ)/Samples.o : $(SOURCE)/Samples.cpp
 	$(COMPILER) $(COMPILERPARAMS) $(SOURCE)/Samples.cpp $(INCLUDE) $(SOURCE) $(OUTPUT) $(OBJ)/Samples.o
+
+$(OBJ)/Measurer.o : $(SOURCE)/Measurer.cpp
+	$(COMPILER) $(COMPILERPARAMS) $(SOURCE)/Measurer.cpp $(INCLUDE) $(SOURCE) $(OUTPUT) $(OBJ)/Measurer.o
 
 $(OBJ)/Touch.o : $(SOURCE)/Touch.cpp
 	$(COMPILER) $(COMPILERPARAMS) $(SOURCE)/Touch.cpp $(INCLUDE) $(SOURCE) $(OUTPUT) $(OBJ)/Touch.o
@@ -63,6 +66,9 @@ $(SOURCE)/State.cpp : $(SOURCE)/State.hpp
 $(SOURCE)/Samples.cpp : $(SOURCE)/Samples.hpp
 	$(TOUCH) $(SOURCE)/Samples.cpp
 
+$(SOURCE)/Measurer.cpp : $(SOURCE)/Measurer.hpp
+	$(TOUCH) $(SOURCE)/Measurer.cpp
+
 $(SOURCE)/Touch.cpp : $(SOURCE)/Touch.hpp
 	$(TOUCH) $(SOURCE)/Touch.cpp
 
@@ -86,13 +92,16 @@ $(SOURCE)/State.hpp : $(SOURCE)/Configuration.hpp
 $(SOURCE)/Samples.hpp : $(SOURCE)/Configuration.hpp
 	$(TOUCH) $(SOURCE)/Samples.hpp
 
+$(SOURCE)/Measurer.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp
+	$(TOUCH) $(SOURCE)/Measurer.hpp
+
 $(SOURCE)/Touch.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp
 	$(TOUCH) $(SOURCE)/Touch.hpp
 
 $(SOURCE)/FPGA.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/Samples.hpp
 	$(TOUCH) $(SOURCE)/FPGA.hpp
 
-$(SOURCE)/Display.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp
+$(SOURCE)/Display.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp $(SOURCE)/Measurer.hpp
 	$(TOUCH) $(SOURCE)/Display.hpp
 
 $(LIBPOLO)/polo.h :

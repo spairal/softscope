@@ -16,7 +16,7 @@ class UserData
 		Display display;
 	
 	public:
-		UserData(Configuration& configuration, State& state, Samples& samples) : touch(configuration, state), fpga(configuration, samples), display(configuration, state, samples)
+		UserData(Configuration& configuration, State& state, Samples& samples, Measurer& measurer) : touch(configuration, state), fpga(configuration, samples), display(configuration, state, samples, measurer)
 		{
 		}
 };
@@ -58,7 +58,8 @@ int main(int argc, char** argv)
 	Configuration configuration;
 	State state;
 	Samples samples;
-	UserData userData(configuration, state, samples);
+	Measurer measurer(configuration, state, samples);
+	UserData userData(configuration, state, samples, measurer);
 	setPoloUserData(&userData);
 	setMouseMotionCallback(mouseMotionCallback);
 	setMouseButtonCallback(mouseButtonCallback);

@@ -461,6 +461,11 @@ void Configuration::setChannel(Channels channel, bool isActive)
 	}
 }
 
+Configuration::Measures Configuration::getMeasure(void)
+{
+	return measure;
+}
+
 string Configuration::getMeasureString(Channels channel)
 {
 	string measureString;
@@ -509,7 +514,6 @@ string Configuration::getMeasureString(Channels channel)
 string Configuration::getCursorsString(Channels channel)
 {
 	stringstream ss;
-	ss.precision(2);
 	ss << "Cursors:" << endl;
 	double x1 = getHorizontalScaleValue() * horizontalCursor[0];
 	ss << "x1 = " << timeToString(getHorizontalScaleValue() * horizontalCursor[0]) << " ; x2 = " << timeToString(getHorizontalScaleValue() * horizontalCursor[1]) << endl;
@@ -771,3 +775,43 @@ string Configuration::timeToString(double time)
 	}
 	return ss.str();
 }
+
+string Configuration::frequencyToString(double frequency)
+{
+	stringstream ss;
+	ss.precision(2);
+	if(abs(frequency) >= 1000000)
+	{
+		ss << fixed << frequency / 1000000 << " MHz";
+	}
+	else if(abs(frequency) >= 1000)
+	{
+		ss << fixed << frequency / 1000 << " kHz";
+	}
+	else if(abs(frequency) >= 1)
+	{
+		ss << fixed << frequency << " Hz";
+	}
+	else
+	{
+		ss << fixed << frequency * 1000 << " mHz";
+	}
+	return ss.str();
+}
+
+string Configuration::percentageToString(double percentage)
+{
+	stringstream ss;
+	ss.precision(2);
+	ss << fixed << percentage * 100 << " %";
+	return ss.str();
+}
+
+string Configuration::deciBellToString(double deciBell)
+{
+	stringstream ss;
+	ss.precision(2);
+	ss << fixed << deciBell << " dB";
+	return ss.str();
+}
+

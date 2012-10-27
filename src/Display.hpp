@@ -4,6 +4,7 @@
 #include <Configuration.hpp>
 #include <State.hpp>
 #include <Samples.hpp>
+#include <Measurer.hpp>
 #include <string>
 #include <vector>
 
@@ -13,9 +14,10 @@ class Display
 		Configuration& configuration;
 		State& state;
 		Samples& samples;
+		Measurer& measurer;
 
 	public:
-		Display(Configuration& configuration, State& state, Samples& samples);
+		Display(Configuration& configuration, State& state, Samples& samples, Measurer& measurer);
 		void print(void);
 
 	private:

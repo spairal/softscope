@@ -64,6 +64,7 @@ class Configuration
 		void setCoupling(Channels channel, Couplings coupling);
 		bool getChannel(Channels channel);
 		void setChannel(Channels channel, bool isActive);
+		Measures getMeasure(void);
 		std::string getMeasureString(Channels channel);
 		std::string getCursorsString(Channels channel);
 		std::string getMathematicString(void);
@@ -83,9 +84,11 @@ class Configuration
 		void setMode(Modes selected);
 		int getAverage(void);
 		std::string getAverageString(void);
-	private:
 		std::string voltageToString(double voltage);
 		std::string timeToString(double time);
+		std::string frequencyToString(double frequency);
+		std::string percentageToString(double percentage);
+		std::string deciBellToString(double deciBell);
 };
 
 #endif
