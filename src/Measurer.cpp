@@ -126,6 +126,11 @@ string Measurer::getRiseTime(void)
 		{
 			tmp++;
 		}
+		if(count && (signal[i] <= low) && (signal[i - 1] > low))
+		{
+			count = false;
+			tmp = 0;
+		}
 		if(count && (signal[i] >= high) && (signal[i - 1] < high))
 		{
 			count = false;
@@ -166,6 +171,11 @@ string Measurer::getFallTime(void)
 		if(count)
 		{
 			tmp++;
+		}
+		if(count && (signal[i] >= high) && (signal[i - 1] < high))
+		{
+			count = false;
+			tmp = 0;
 		}
 		if(count && (signal[i] <= low) && (signal[i - 1] > low))
 		{
@@ -209,7 +219,23 @@ string Measurer::getPhase(void)
 	string phase;
 	if(configuration.getChannel(Configuration::CHANNEL_A) && configuration.getChannel(Configuration::CHANNEL_B))
 	{
-		phase = "";
+		vector<double> signalA = samples.getSamples(state.getSelectedChannel());
+		vector<double> signalB = samples.getSamples(state.getUnselectedChannel());
+		int periodA = getMaxCorrelation(signalA, signalA);
+		int periodB = getMaxCorrelation(signalB, signalB);
+		int correlation = getMaxCorrelation(signalA, signalB);
+		double p = 2.0 * 360 * correlation / (periodA + periodB);
+		bool wrap = true;
+		while(wrap)
+		{
+			wrap = false;
+			if(p > 180)
+			{
+				wrap = true;
+				p -= 360;
+			}
+		}
+		phase = configuration.degreesToString(p);
 	}
 	else
 	{

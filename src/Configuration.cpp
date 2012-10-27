@@ -807,6 +807,14 @@ string Configuration::percentageToString(double percentage)
 	return ss.str();
 }
 
+string Configuration::degreesToString(double degrees)
+{
+	stringstream ss;
+	ss.precision(2);
+	ss << fixed << degrees << " °";
+	return ss.str();
+}
+
 string Configuration::deciBellToString(double deciBell)
 {
 	stringstream ss;

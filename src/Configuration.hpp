@@ -88,6 +88,7 @@ class Configuration
 		std::string timeToString(double time);
 		std::string frequencyToString(double frequency);
 		std::string percentageToString(double percentage);
+		std::string degreesToString(double degrees);
 		std::string deciBellToString(double deciBell);
 };
 

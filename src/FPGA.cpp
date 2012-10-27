@@ -21,7 +21,8 @@ void FPGA::fetchSamples(void)
 	for(int i = 0; i < samplesB.size(); i++)
 	{
 		int mod = (int)(i - samples.getDelay(Configuration::CHANNEL_B) - configuration.getDelay() * 50) % (int)(20 / configuration.getHorizontalScaleValue());
-		samplesB[i] = (((mod > (10 / configuration.getHorizontalScaleValue())) || ((mod > -10 / configuration.getHorizontalScaleValue()) && (mod < 0))) ? 2.0 : -2.0) + 0.3 * rand() / RAND_MAX - 0.15 + configuration.getOffset(Configuration::CHANNEL_B);
+		samplesB[i] = (((mod > (10 / configuration.getHorizontalScaleValue())) || ((mod > -10 / configuration.getHorizontalScaleValue()) && (mod < 0))) ? 2.0 : -2.0) + 0.6 * rand() / RAND_MAX - 0.3 + configuration.getOffset(Configuration::CHANNEL_B);
+		//samplesB[i] = 3.0 * sin(2.0 * 3.141592 * configuration.getHorizontalScaleValue() * (i - samples.getDelay(Configuration::CHANNEL_B) - configuration.getDelay() * 50 - 100) / 30) + 0.4 * rand() / RAND_MAX - 0.2 + configuration.getOffset(Configuration::CHANNEL_B);
 	}
 }
 
