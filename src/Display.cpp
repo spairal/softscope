@@ -1,5 +1,6 @@
 #include <Display.hpp>
 #include <polo.h>
+#include <iostream>
 
 using namespace std;
 
@@ -37,6 +38,17 @@ void Display::print(void)
 	printButton("Measures", measurer.getMeasure(), state.getMeasuresButtonActive(), state.getMeasuresCoordenates());
 	printButton("Mathematics", configuration.getMathematicString(), state.getMathematicsButtonActive(), state.getMathematicsCoordenates());
 	printButton("Mode", configuration.getModeString(), state.getModeButtonActive(), state.getModeCoordenates());
+	if(configuration.getMeasure() == Configuration::CURSORS)
+	{
+		vector<double> cursor = configuration.getCursor();
+		vector<int> gridCoordenates = state.getGridCoordenates();
+		vector<int> cursorCoordenates;
+		cursorCoordenates.push_back(min(cursor[0], cursor[1]) * state.getPixelsPerDivision() + gridCoordenates[0] + 5 * state.getPixelsPerDivision());
+		cursorCoordenates.push_back(max(cursor[0], cursor[1]) * state.getPixelsPerDivision() + gridCoordenates[0] + 5 * state.getPixelsPerDivision());
+		cursorCoordenates.push_back(min(cursor[2], cursor[3]) * state.getPixelsPerDivision() + gridCoordenates[2] + 4 * state.getPixelsPerDivision());
+		cursorCoordenates.push_back(max(cursor[2], cursor[3]) * state.getPixelsPerDivision() + gridCoordenates[2] + 4 * state.getPixelsPerDivision());
+		printCursor(cursorCoordenates);
+	}
 	if(state.getMeasuresButtonActive())
 	{
 		printMenu(configuration.getAllMeasures(), state.getMeasuresMenuCoordenates());
@@ -194,5 +206,12 @@ void Display::printSamples(std::vector<int> samples, int delay, vector<float> co
 		}
 		drawLine(coordenates[0] + i - delay, ya, coordenates[0] + i - delay + 1, yb);
 	}
+}
+
+void Display::printCursor(vector<int> coordenates)
+{
+	setPenColor(getColorFromRGB(0.5, 0.5, 0.5));
+	setFillColor(getColorFromRGBA(0.0, 0.0, 0.0, 0.0));
+	drawRect(coordenates[0], coordenates[2], coordenates[1] - coordenates[0], coordenates[3] - coordenates[2]);
 }
 

@@ -141,18 +141,10 @@ void Touch::startDragCursors(int x, int y)
 	state.setCursorDrag(true);
 	vector<int> coordenates = state.getGridCoordenates();
 	vector<double> cursor;
-	cursor.push_back(configuration.getHorizontalScaleValue() * (x - coordenates[0] - 5 * state.getPixelsPerDivision()) / state.getPixelsPerDivision());
-	cursor.push_back(configuration.getHorizontalScaleValue() * (x - coordenates[0] - 5 * state.getPixelsPerDivision()) / state.getPixelsPerDivision());
-	if(state.getSelectedChannel() == Configuration::NO_CHANNEL)
-	{
-		cursor.push_back(0);
-		cursor.push_back(0);
-	}
-	else
-	{
-		cursor.push_back(configuration.getVerticalScaleValue(state.getSelectedChannel()) * (y - coordenates[2] - 4 * state.getPixelsPerDivision()) / state.getPixelsPerDivision());
-		cursor.push_back(configuration.getVerticalScaleValue(state.getSelectedChannel()) * (y - coordenates[2] - 4 * state.getPixelsPerDivision()) / state.getPixelsPerDivision());
-	}
+	cursor.push_back((double)(x - coordenates[0] - 5 * state.getPixelsPerDivision()) / state.getPixelsPerDivision());
+	cursor.push_back((double)(x - coordenates[0] - 5 * state.getPixelsPerDivision()) / state.getPixelsPerDivision());
+	cursor.push_back((double)(y - coordenates[2] - 4 * state.getPixelsPerDivision()) / state.getPixelsPerDivision());
+	cursor.push_back((double)(y - coordenates[2] - 4 * state.getPixelsPerDivision()) / state.getPixelsPerDivision());
 	configuration.setCursor(cursor);
 }
 
@@ -189,11 +181,8 @@ void Touch::dragCursor(int x, int y)
 {
 	vector<int> coordenates = state.getGridCoordenates();
 	vector<double> cursor = configuration.getCursor();
-	cursor[1] = configuration.getHorizontalScaleValue() * (x - coordenates[0] - 5 * state.getPixelsPerDivision()) / state.getPixelsPerDivision();
-	if(state.getSelectedChannel() != Configuration::NO_CHANNEL)
-	{
-		cursor[3] = configuration.getVerticalScaleValue(state.getSelectedChannel()) * (y - coordenates[2] - 4 * state.getPixelsPerDivision()) / state.getPixelsPerDivision();
-	}
+	cursor[1] = (double)(x - coordenates[0] - 5 * state.getPixelsPerDivision()) / state.getPixelsPerDivision();
+	cursor[3] = (double)(y - coordenates[2] - 4 * state.getPixelsPerDivision()) / state.getPixelsPerDivision();
 	configuration.setCursor(cursor);
 }
 

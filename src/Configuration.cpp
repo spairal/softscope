@@ -523,8 +523,8 @@ string Configuration::getCursorsString(Channels channel)
 {
 	stringstream ss;
 	ss << "Cursors:" << endl;
-	ss << "x1 = " << timeToString(cursor[0]) << " ; x2 = " << timeToString(cursor[1]) << endl;
-	ss << "y1 = " << voltageToString(cursor[2]) << " ; y2 = " << voltageToString(cursor[3]);
+	ss << "x1 = " << timeToString(getHorizontalScaleValue() * cursor[0]) << " ; x2 = " << timeToString(getHorizontalScaleValue() * cursor[1]) << endl;
+	ss << "y1 = " << voltageToString(getVerticalScaleValue(channel) * cursor[2]) << " ; y2 = " << voltageToString(getVerticalScaleValue(channel) * cursor[3]);
 	return ss.str();
 }
 
