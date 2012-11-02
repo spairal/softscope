@@ -26,21 +26,31 @@ void Touch::parseScreen(int x, int y)
 		if(!state.getMeasuresButtonActive() && !state.getMathematicsButtonActive() && !state.getModeButtonActive())
 		{
 			vector<int> coordenates = state.getGridCoordenates();
-			vector<int> verticalScaleCoordenates = coordenates;
-			verticalScaleCoordenates[0] = verticalScaleCoordenates[1] - state.getPixelsPerDivision();
-			vector<int> horizontalScaleCoordenates = coordenates;
-			horizontalScaleCoordenates[2] = horizontalScaleCoordenates[3] - state.getPixelsPerDivision();
-			if(isIn(x, y, verticalScaleCoordenates))
+			if(configuration.getMeasure() == Configuration::CURSORS)
 			{
-				startDragVerticalScale(y);
+				if(isIn(x, y, coordenates))
+				{
+					startDragCursors(x, y);
+				}
 			}
-			else if(isIn(x, y, horizontalScaleCoordenates))
+			else
 			{
-				startDragHorizontalScale(x);
-			}
-			else if(isIn(x, y, coordenates))
-			{
-				startDragOffset(x, y);
+				vector<int> verticalScaleCoordenates = coordenates;
+				verticalScaleCoordenates[0] = verticalScaleCoordenates[1] - state.getPixelsPerDivision();
+				vector<int> horizontalScaleCoordenates = coordenates;
+				horizontalScaleCoordenates[2] = horizontalScaleCoordenates[3] - state.getPixelsPerDivision();
+				if(isIn(x, y, verticalScaleCoordenates))
+				{
+					startDragVerticalScale(y);
+				}
+				else if(isIn(x, y, horizontalScaleCoordenates))
+				{
+					startDragHorizontalScale(x);
+				}
+				else if(isIn(x, y, coordenates))
+				{
+					startDragOffset(x, y);
+				}
 			}
 		}
 	}
@@ -108,6 +118,10 @@ void Touch::parseScreen(int x, int y)
 			pressModeButton();
 		}
 	}
+	if(state.getCursorDrag())
+	{
+		dragCursor(x, y);
+	}
 	if(state.getOffsetDrag())
 	{
 		dragOffset(x, y);
@@ -120,6 +134,26 @@ void Touch::parseScreen(int x, int y)
 	{
 		dragHorizontalScale(x);
 	}
+}
+
+void Touch::startDragCursors(int x, int y)
+{
+	state.setCursorDrag(true);
+	vector<int> coordenates = state.getGridCoordenates();
+	vector<double> cursor;
+	cursor.push_back(configuration.getHorizontalScaleValue() * (x - coordenates[0] - 5 * state.getPixelsPerDivision()) / state.getPixelsPerDivision());
+	cursor.push_back(configuration.getHorizontalScaleValue() * (x - coordenates[0] - 5 * state.getPixelsPerDivision()) / state.getPixelsPerDivision());
+	if(state.getSelectedChannel() == Configuration::NO_CHANNEL)
+	{
+		cursor.push_back(0);
+		cursor.push_back(0);
+	}
+	else
+	{
+		cursor.push_back(configuration.getVerticalScaleValue(state.getSelectedChannel()) * (y - coordenates[2] - 4 * state.getPixelsPerDivision()) / state.getPixelsPerDivision());
+		cursor.push_back(configuration.getVerticalScaleValue(state.getSelectedChannel()) * (y - coordenates[2] - 4 * state.getPixelsPerDivision()) / state.getPixelsPerDivision());
+	}
+	configuration.setCursor(cursor);
 }
 
 void Touch::startDragOffset(int x, int y)
@@ -145,9 +179,22 @@ void Touch::startDragHorizontalScale(int x)
 
 void Touch::resetDrag(void)
 {
+	state.setCursorDrag(false);
 	state.setOffsetDrag(false);
 	state.setVerticalScaleDrag(false);
 	state.setHorizontalScaleDrag(false);
+}
+
+void Touch::dragCursor(int x, int y)
+{
+	vector<int> coordenates = state.getGridCoordenates();
+	vector<double> cursor = configuration.getCursor();
+	cursor[1] = configuration.getHorizontalScaleValue() * (x - coordenates[0] - 5 * state.getPixelsPerDivision()) / state.getPixelsPerDivision();
+	if(state.getSelectedChannel() != Configuration::NO_CHANNEL)
+	{
+		cursor[3] = configuration.getVerticalScaleValue(state.getSelectedChannel()) * (y - coordenates[2] - 4 * state.getPixelsPerDivision()) / state.getPixelsPerDivision();
+	}
+	configuration.setCursor(cursor);
 }
 
 void Touch::dragOffset(int x, int y)

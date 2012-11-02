@@ -30,8 +30,7 @@ class Configuration
 		bool channelA;
 		bool channelB;
 		Measures measure;
-		std::vector<double> verticalCursor;
-		std::vector<double> horizontalCursor;
+		std::vector<double> cursor;
 		Mathematics mathematic;
 		Modes mode;
 		TriggerModes triggerMode;
@@ -83,6 +82,8 @@ class Configuration
 		void setMeasure(Measures selected);
 		void setMathematic(Mathematics selected);
 		void setMode(Modes selected);
+		std::vector<double> getCursor(void);
+		void setCursor(std::vector<double> cursors);
 		int getAverage(void);
 		std::string getAverageString(void);
 		std::string voltageToString(double voltage);

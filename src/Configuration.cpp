@@ -17,10 +17,10 @@ Configuration::Configuration(void)
 	channelA = false;
 	channelB = false;
 	measure = NOMEASURE;
-	verticalCursor.push_back(0);
-	verticalCursor.push_back(0);
-	horizontalCursor.push_back(0);
-	horizontalCursor.push_back(0);
+	cursor.push_back(0);
+	cursor.push_back(0);
+	cursor.push_back(0);
+	cursor.push_back(0);
 	mathematic = NOMATHEMATIC;
 	mode = RUN;
 	triggerMode = NORMAL;
@@ -523,9 +523,8 @@ string Configuration::getCursorsString(Channels channel)
 {
 	stringstream ss;
 	ss << "Cursors:" << endl;
-	double x1 = getHorizontalScaleValue() * horizontalCursor[0];
-	ss << "x1 = " << timeToString(getHorizontalScaleValue() * horizontalCursor[0]) << " ; x2 = " << timeToString(getHorizontalScaleValue() * horizontalCursor[1]) << endl;
-	ss << "y1 = " << voltageToString(getVerticalScaleValue(channel) * verticalCursor[0]) << " ; y2 = " << voltageToString(getVerticalScaleValue(channel) * verticalCursor[1]);
+	ss << "x1 = " << timeToString(cursor[0]) << " ; x2 = " << timeToString(cursor[1]) << endl;
+	ss << "y1 = " << voltageToString(cursor[2]) << " ; y2 = " << voltageToString(cursor[3]);
 	return ss.str();
 }
 
@@ -700,6 +699,16 @@ void Configuration::setMathematic(Mathematics selected)
 void Configuration::setMode(Modes selected)
 {
 	mode = selected;
+}
+
+vector<double> Configuration::getCursor(void)
+{
+	return cursor;
+}
+
+void Configuration::setCursor(vector<double> cursors)
+{
+	cursor = cursors;
 }
 
 int Configuration::getAverage(void)

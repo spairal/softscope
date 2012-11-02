@@ -20,10 +20,12 @@ class Touch
 		void parseScreen(int x, int y);
 
 	private:
+		void startDragCursors(int x, int y);
 		void startDragOffset(int x, int y);
 		void startDragVerticalScale(int y);
 		void startDragHorizontalScale(int x);
 		void resetDrag(void);
+		void dragCursor(int x, int y);
 		void dragOffset(int x, int y);
 		void dragVerticalScale(int y);
 		void dragHorizontalScale(int x);

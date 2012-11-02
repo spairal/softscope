@@ -57,6 +57,7 @@ State::State(void)
 	colorMathematics.push_back(1.0);
 	colorMathematics.push_back(1.0);
 	colorMathematics.push_back(0.0);
+	cursorDrag = false;
 	offsetDrag = false;
 	verticalScaleDrag = false;
 	horizontalScaleDrag = false;
@@ -160,6 +161,11 @@ vector<float> State::getColorMathematics(void)
 	return colorMathematics;
 }
 
+bool State::getCursorDrag(void)
+{
+	return cursorDrag;
+}
+
 bool State::getOffsetDrag(void)
 {
 	return offsetDrag;
@@ -173,6 +179,11 @@ bool State::getVerticalScaleDrag(void)
 bool State::getHorizontalScaleDrag(void)
 {
 	return horizontalScaleDrag;
+}
+
+void State::setCursorDrag(bool drag)
+{
+	cursorDrag = drag;
 }
 
 void State::setOffsetDrag(bool drag)
