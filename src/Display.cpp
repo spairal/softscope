@@ -13,15 +13,15 @@ void Display::print(void)
 	printGrid(state.getGridCoordenates());
 	if(configuration.getChannel(state.getUnselectedChannel()))
 	{
-		printSamples(samplesToPixels(samples.getSamples(state.getUnselectedChannel()), configuration.getVerticalScaleValue(state.getUnselectedChannel()), state.getPixelsPerDivision()), samples.getDelay(state.getUnselectedChannel()) - 5 * state.getPixelsPerDivision(), state.getColor(state.getUnselectedChannel()), state.getGridCoordenates());
+		printSamples(samplesToPixels(samples.getSamples(state.getUnselectedChannel()), configuration.getOffset(state.getUnselectedChannel()), configuration.getVerticalScaleValue(state.getUnselectedChannel()), state.getPixelsPerDivision()), samples.getDelay(state.getUnselectedChannel()) - 5 * state.getPixelsPerDivision(), state.getColor(state.getUnselectedChannel()), state.getGridCoordenates());
 	}
 	if(configuration.getChannel(state.getSelectedChannel()))
 	{
-		printSamples(samplesToPixels(samples.getSamples(state.getSelectedChannel()), configuration.getVerticalScaleValue(state.getSelectedChannel()), state.getPixelsPerDivision()), samples.getDelay(state.getSelectedChannel()) - 5 * state.getPixelsPerDivision(), state.getColor(state.getSelectedChannel()), state.getGridCoordenates());
+		printSamples(samplesToPixels(samples.getSamples(state.getSelectedChannel()), configuration.getOffset(state.getSelectedChannel()), configuration.getVerticalScaleValue(state.getSelectedChannel()), state.getPixelsPerDivision()), samples.getDelay(state.getSelectedChannel()) - 5 * state.getPixelsPerDivision(), state.getColor(state.getSelectedChannel()), state.getGridCoordenates());
 	}
 	if(configuration.getMathematic() != Configuration::NOMATHEMATIC)
 	{
-		printSamples(samplesToPixels(mathematician.getSamples(), configuration.getVerticalScaleValue(state.getSelectedChannel()), state.getPixelsPerDivision()), 0, state.getColorMathematics(), state.getGridCoordenates());
+		printSamples(samplesToPixels(mathematician.getSamples(), 0, configuration.getVerticalScaleValue(state.getSelectedChannel()), state.getPixelsPerDivision()), 0, state.getColorMathematics(), state.getGridCoordenates());
 	}
 	if(state.getSelectedChannel() != Configuration::NO_CHANNEL)
 	{
@@ -52,12 +52,12 @@ void Display::print(void)
 	updateScreen();
 }
 
-vector<int> Display::samplesToPixels(const vector<double>& samples, double verticalScale, int pixelsPerDivision)
+vector<int> Display::samplesToPixels(const vector<double>& samples, double offset, double verticalScale, int pixelsPerDivision)
 {
 	vector<int> pixels(samples.size(), 0);
 	for(int i = 0; i < samples.size(); i++)
 	{
-		pixels[i] = (int) (samples[i] * pixelsPerDivision / verticalScale);
+		pixels[i] = (int) ((samples[i] + offset) * pixelsPerDivision / verticalScale);
 	}
 	return pixels;
 }

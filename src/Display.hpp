@@ -23,7 +23,7 @@ class Display
 		void print(void);
 
 	private:
-		std::vector<int> samplesToPixels(const std::vector<double>& samples, double verticalScale, int pixelsPerDivision);
+		std::vector<int> samplesToPixels(const std::vector<double>& samples, double offset, double verticalScale, int pixelsPerDivision);
 		void printGrid(std::vector<int> coordenates);
 		void printOffset(int offsetValue, std::string offsetString, std::vector<float> color, std::vector<int> coordenates);
 		void printVerticalScale(std::string verticalScale, std::vector<float> color, std::vector<int> coordenates);
