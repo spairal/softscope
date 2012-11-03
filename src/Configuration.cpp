@@ -202,14 +202,6 @@ Configuration::HorizontalScales Configuration::getHorizontalScale(void)
 
 void Configuration::setDelay(double d)
 {
-	if(d < -5)
-	{
-		d = -5;
-	}
-	if(d > 5)
-	{
-		d = 5;
-	}
 	delay = d;
 }
 
@@ -549,6 +541,11 @@ string Configuration::getMathematicString(void)
 			break;
 	}
 	return mathematicString;
+}
+
+Configuration::Modes Configuration::getMode(void)
+{
+	return mode;
 }
 
 string Configuration::getModeString(void)

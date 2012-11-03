@@ -4,20 +4,43 @@ using namespace std;
 
 Samples::Samples(void)
 {
-	samplesA.assign(1500,0.0);
-	samplesB.assign(1500,1.0);
-	delayA = 750;
-	delayB = 750;
+	memoryDepth = 1500;
+	samplesA.assign(memoryDepth,0.0);
+	samplesB.assign(memoryDepth,0.0);
+	delayA = memoryDepth / 2;
+	delayB = memoryDepth / 2;
 }
 
-vector<double>& Samples::getSamples(Configuration::Channels channel)
+int Samples::getMemoryDepth(void)
+{
+	return memoryDepth;
+}
+
+vector<double> Samples::getSamples(Configuration::Channels channel)
+{
+	vector<double> samples;
+	switch(channel)
+	{
+		case Configuration::CHANNEL_A:
+			samples = samplesA;
+			break;
+		case Configuration::CHANNEL_B:
+			samples = samplesB;
+			break;
+	}
+	return samples;
+}
+
+void Samples::setSamples(Configuration::Channels channel, vector<double> samples)
 {
 	switch(channel)
 	{
 		case Configuration::CHANNEL_A:
-			return samplesA;
+			samplesA = samples;
+			break;
 		case Configuration::CHANNEL_B:
-			return samplesB;
+			samplesB = samples;
+			break;
 	}
 }
 
@@ -34,5 +57,18 @@ int Samples::getDelay(Configuration::Channels channel)
 			break;
 	}
 	return delay;
+}
+
+void Samples::setDelay(Configuration::Channels channel, int delay)
+{
+	switch(channel)
+	{
+		case Configuration::CHANNEL_A:
+			delayA = delay;
+			break;
+		case Configuration::CHANNEL_B:
+			delayB = delay;
+			break;
+	}
 }
 

@@ -3,6 +3,7 @@
 
 #include <Configuration.hpp>
 #include <State.hpp>
+#include <Samples.hpp>
 #include <vector>
 
 class Touch
@@ -10,11 +11,12 @@ class Touch
 	private:
 		Configuration& configuration;
 		State& state;
+		Samples& samples;
 		bool buttonPressed;
 		bool buttonReleased;
 
 	public:
-		Touch(Configuration& configuration, State& state);
+		Touch(Configuration& configuration, State& state, Samples& samples);
 		void setButtonPressed(bool pressed);
 		void setButtonReleased(bool released);
 		void parseScreen(int x, int y);

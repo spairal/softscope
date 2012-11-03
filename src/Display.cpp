@@ -14,23 +14,23 @@ void Display::print(void)
 	printGrid(state.getGridCoordenates());
 	if(configuration.getChannel(state.getUnselectedChannel()))
 	{
-		printSamples(samplesToPixels(samples.getSamples(state.getUnselectedChannel()), configuration.getOffset(state.getUnselectedChannel()), configuration.getVerticalScaleValue(state.getUnselectedChannel()), state.getPixelsPerDivision()), samples.getDelay(state.getUnselectedChannel()) - 5 * state.getPixelsPerDivision(), state.getColor(state.getUnselectedChannel()), state.getGridCoordenates());
+		printSamples(samplesToPixels(samples.getSamples(state.getUnselectedChannel()), configuration.getOffset(state.getUnselectedChannel()), configuration.getVerticalScaleValue(state.getUnselectedChannel()), state.getPixelsPerDivision()), samples.getDelay(state.getUnselectedChannel()) - 5 * state.getPixelsPerDivision(), samples.getMemoryDepth(), state.getColor(state.getUnselectedChannel()), state.getGridCoordenates());
 	}
 	if(configuration.getChannel(state.getSelectedChannel()))
 	{
-		printSamples(samplesToPixels(samples.getSamples(state.getSelectedChannel()), configuration.getOffset(state.getSelectedChannel()), configuration.getVerticalScaleValue(state.getSelectedChannel()), state.getPixelsPerDivision()), samples.getDelay(state.getSelectedChannel()) - 5 * state.getPixelsPerDivision(), state.getColor(state.getSelectedChannel()), state.getGridCoordenates());
+		printSamples(samplesToPixels(samples.getSamples(state.getSelectedChannel()), configuration.getOffset(state.getSelectedChannel()), configuration.getVerticalScaleValue(state.getSelectedChannel()), state.getPixelsPerDivision()), samples.getDelay(state.getSelectedChannel()) - 5 * state.getPixelsPerDivision(), samples.getMemoryDepth(), state.getColor(state.getSelectedChannel()), state.getGridCoordenates());
 	}
 	if(configuration.getMathematic() != Configuration::NOMATHEMATIC)
 	{
-		printSamples(samplesToPixels(mathematician.getSamples(), 0, configuration.getVerticalScaleValue(state.getSelectedChannel()), state.getPixelsPerDivision()), 0, state.getColorMathematics(), state.getGridCoordenates());
+		printSamples(samplesToPixels(mathematician.getSamples(), 0, configuration.getVerticalScaleValue(state.getSelectedChannel()), state.getPixelsPerDivision()), 0, samples.getMemoryDepth(), state.getColorMathematics(), state.getGridCoordenates());
 	}
 	if(state.getSelectedChannel() != Configuration::NO_CHANNEL)
 	{
-		printOffset(configuration.getOffset(state.getSelectedChannel()) / configuration.getVerticalScaleValue(state.getSelectedChannel()) * state.getPixelsPerDivision(), configuration.getOffsetString(state.getSelectedChannel()), state.getColor(state.getSelectedChannel()), state.getGridCoordenates());
+		printOffset(max(min(configuration.getOffset(state.getSelectedChannel()) / configuration.getVerticalScaleValue(state.getSelectedChannel()) * state.getPixelsPerDivision(), 3.5 * state.getPixelsPerDivision()), - 4.0 * state.getPixelsPerDivision()), configuration.getOffsetString(state.getSelectedChannel()), state.getColor(state.getSelectedChannel()), state.getGridCoordenates());
 		printVerticalScale(configuration.getVerticalScaleString(state.getSelectedChannel()), state.getColor(state.getSelectedChannel()), state.getGridCoordenates());
 	}
 	printHorizontalScale(configuration.getHorizontalScaleString(), state.getGridCoordenates());
-	printDelay(configuration.getDelay() * state.getPixelsPerDivision(), configuration.getDelayString(), state.getGridCoordenates());
+	printDelay(max(min(configuration.getDelay() * state.getPixelsPerDivision(), 3.5 * state.getPixelsPerDivision()), -5.0 * state.getPixelsPerDivision()), configuration.getDelayString(), state.getGridCoordenates());
 	printChannelButton("Channel A", configuration.getChannel(Configuration::CHANNEL_A), state.getSelectedChannel() == Configuration::CHANNEL_A, state.getColor(Configuration::CHANNEL_A), state.getChannelCoordenates(Configuration::CHANNEL_A));
 	printChannelButton("Channel B", configuration.getChannel(Configuration::CHANNEL_B), state.getSelectedChannel() == Configuration::CHANNEL_B, state.getColor(Configuration::CHANNEL_B), state.getChannelCoordenates(Configuration::CHANNEL_B));
 	printCouplingButton(configuration.getCouplingString(Configuration::CHANNEL_A), state.getColor(Configuration::CHANNEL_A), state.getCouplingCoordenates(Configuration::CHANNEL_A));
@@ -181,10 +181,10 @@ void Display::printMenu(vector<string> options, vector<int> coordenates)
 	}
 }
 
-void Display::printSamples(std::vector<int> samples, int delay, vector<float> color, vector<int> coordenates)
+void Display::printSamples(std::vector<int> samples, int delay, int memoryDepth, vector<float> color, vector<int> coordenates)
 {
 	setPenColor(getColorFromRGB(color[0], color[1], color[2]));
-	for(int i = delay; i < (delay + coordenates[1] - coordenates[0]); i++)
+	for(int i = max(delay, 0); i < min((delay + coordenates[1] - coordenates[0]), memoryDepth); i++)
 	{
 		int ya = (coordenates[2] + coordenates[3]) / 2 + samples[i];
 		int yb = (coordenates[2] + coordenates[3]) / 2 + samples[i + 1];

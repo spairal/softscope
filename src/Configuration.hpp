@@ -68,6 +68,7 @@ class Configuration
 		std::string getCursorsString(Channels channel);
 		Mathematics getMathematic(void);
 		std::string getMathematicString(void);
+		Modes getMode(void);
 		std::string getModeString(void);
 		std::string getRunString(void);
 		std::string getSingleString(void);

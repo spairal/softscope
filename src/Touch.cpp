@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Touch::Touch(Configuration& configuration, State& state) : configuration(configuration), state(state)
+Touch::Touch(Configuration& configuration, State& state, Samples& samples) : configuration(configuration), state(state), samples(samples)
 {
 	buttonPressed = false;
 	buttonReleased = false;
@@ -195,6 +195,11 @@ void Touch::dragOffset(int x, int y)
 		initialOffset[1] = y;
 	}
 	configuration.setDelay(configuration.getDelay() + (double)(x - initialOffset[0]) / state.getPixelsPerDivision());
+	if(configuration.getMode() == Configuration::STOP)
+	{
+		samples.setDelay(Configuration::CHANNEL_A, samples.getDelay(Configuration::CHANNEL_A) - x + initialOffset[0]);
+		samples.setDelay(Configuration::CHANNEL_B, samples.getDelay(Configuration::CHANNEL_B) - x + initialOffset[0]);
+	}
 	initialOffset[0] = x;
 	state.setInitialOffset(initialOffset);
 }
@@ -319,6 +324,11 @@ void Touch::selectMode(Configuration::Modes mode)
 {
 	state.setModeButtonActive(false);
 	configuration.setMode(mode);
+	if(mode != Configuration::STOP)
+	{
+		samples.setDelay(Configuration::CHANNEL_A, samples.getMemoryDepth() / 2);
+		samples.setDelay(Configuration::CHANNEL_B, samples.getMemoryDepth() / 2);
+	}
 }
 
 bool Touch::isIn(int x, int y, vector<int> coordenates)

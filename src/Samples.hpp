@@ -7,6 +7,7 @@
 class Samples
 {
 	private:
+		int memoryDepth;
 		std::vector<double> samplesA;
 		std::vector<double> samplesB;
 		int delayA;
@@ -14,8 +15,11 @@ class Samples
 
 	public:
 		Samples(void);
-		std::vector<double>& getSamples(Configuration::Channels channel);
+		int getMemoryDepth(void);
+		std::vector<double> getSamples(Configuration::Channels channel);
+		void setSamples(Configuration::Channels channel, std::vector<double> samples);
 		int getDelay(Configuration::Channels channel);
+		void setDelay(Configuration::Channels channel, int delay);
 };
 
 #endif

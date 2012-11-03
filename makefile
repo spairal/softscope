@@ -104,10 +104,10 @@ $(SOURCE)/Measurer.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURC
 $(SOURCE)/Mathematician.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp
 	$(TOUCH) $(SOURCE)/Mathematician.hpp
 
-$(SOURCE)/Touch.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp
+$(SOURCE)/Touch.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp
 	$(TOUCH) $(SOURCE)/Touch.hpp
 
-$(SOURCE)/FPGA.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/Samples.hpp
+$(SOURCE)/FPGA.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp
 	$(TOUCH) $(SOURCE)/FPGA.hpp
 
 $(SOURCE)/Display.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp $(SOURCE)/Measurer.hpp
