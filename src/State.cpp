@@ -69,6 +69,7 @@ State::State(void)
 	measuresButtonActive = false;
 	mathematicsButtonActive = false;
 	modeButtonActive = false;
+	averageActive = false;
 }
 
 vector<int> State::getGridCoordenates(void)
@@ -274,6 +275,11 @@ bool State::getModeButtonActive(void)
 	return modeButtonActive;
 }
 
+bool State::getAverageActive(void)
+{
+	return averageActive;
+}
+
 void State::setMeasuresButtonActive(bool active)
 {
 	measuresButtonActive = active;
@@ -287,5 +293,10 @@ void State::setMathematicsButtonActive(bool active)
 void State::setModeButtonActive(bool active)
 {
 	modeButtonActive = active;
+}
+
+void State::setAverageActive(bool active)
+{
+	averageActive = active;
 }
 

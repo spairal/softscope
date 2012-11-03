@@ -40,6 +40,7 @@ class Touch
 		void selectMeasure(Configuration::Measures measure);
 		void selectMathematic(Configuration::Mathematics mathematic);
 		void selectMode(Configuration::Modes mode);
+		void selectAverage(Configuration::Averages average);
 		bool isIn(int x, int y, std::vector<int> coordenates);
 };
 

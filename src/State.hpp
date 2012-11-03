@@ -32,6 +32,7 @@ class State
 		bool measuresButtonActive;
 		bool mathematicsButtonActive;
 		bool modeButtonActive;
+		bool averageActive;
 
 	public:
 		State(void);
@@ -67,9 +68,11 @@ class State
 		bool getMeasuresButtonActive(void);
 		bool getMathematicsButtonActive(void);
 		bool getModeButtonActive(void);
+		bool getAverageActive(void);
 		void setMeasuresButtonActive(bool active);
 		void setMathematicsButtonActive(bool active);
 		void setModeButtonActive(bool active);
+		void setAverageActive(bool active);
 };
 
 #endif

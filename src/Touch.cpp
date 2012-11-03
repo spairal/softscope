@@ -23,7 +23,7 @@ void Touch::parseScreen(int x, int y)
 	if(buttonPressed)
 	{
 		buttonPressed = false;
-		if(!state.getMeasuresButtonActive() && !state.getMathematicsButtonActive() && !state.getModeButtonActive())
+		if(!state.getMeasuresButtonActive() && !state.getMathematicsButtonActive() && !state.getModeButtonActive() && !state.getAverageActive())
 		{
 			vector<int> coordenates = state.getGridCoordenates();
 			if(configuration.getMeasure() == Configuration::CURSORS)
@@ -58,14 +58,16 @@ void Touch::parseScreen(int x, int y)
 	{
 		buttonReleased = false;
 		resetDrag();
-		if(state.getMeasuresButtonActive() || state.getMathematicsButtonActive() || state.getModeButtonActive())
+		if(state.getMeasuresButtonActive() || state.getMathematicsButtonActive() || state.getModeButtonActive() || state.getAverageActive())
 		{
 			vector<int> measuresMenuCoordenates = state.getMeasuresMenuCoordenates();
 			vector<int> mathematicsMenuCoordenates = state.getMathematicsMenuCoordenates();
 			vector<int> modeMenuCoordenates = state.getModeMenuCoordenates();
+			vector<int> averageCoordenates = modeMenuCoordenates;
 			measuresMenuCoordenates[3] = measuresMenuCoordenates[2] + (measuresMenuCoordenates[3] - measuresMenuCoordenates[2]) * configuration.getAllMeasures().size();
 			mathematicsMenuCoordenates[3] = mathematicsMenuCoordenates[2] + (mathematicsMenuCoordenates[3] - mathematicsMenuCoordenates[2]) * configuration.getAllMathematics().size();
 			modeMenuCoordenates[3] = modeMenuCoordenates[2] + (modeMenuCoordenates[3] - modeMenuCoordenates[2]) * configuration.getAllModes().size();
+			averageCoordenates[3] = averageCoordenates[2] + (averageCoordenates[3] - averageCoordenates[2]) * configuration.getAllAverages().size();
 			if(state.getMeasuresButtonActive() && isIn(x, y, measuresMenuCoordenates))
 			{
 				vector<int> coordenates = state.getMeasuresMenuCoordenates();
@@ -80,6 +82,11 @@ void Touch::parseScreen(int x, int y)
 			{
 				vector<int> coordenates = state.getModeMenuCoordenates();
 				selectMode((Configuration::Modes)(configuration.getAllModes().size() - (y - coordenates[2]) / (coordenates[3] - coordenates[2]) - 1));
+			}
+			else if(state.getAverageActive() && isIn(x, y, averageCoordenates))
+			{
+				vector<int> coordenates = state.getModeMenuCoordenates();
+				selectAverage((Configuration::Averages)(configuration.getAllAverages().size() - (y - coordenates[2]) / (coordenates[3] - coordenates[2]) - 1));
 			}
 			if(!isIn(x, y, state.getMeasuresCoordenates()) && !isIn(x, y, state.getMathematicsCoordenates()) && !isIn(x, y, state.getModeCoordenates()) && !isIn(x, y, measuresMenuCoordenates) && !isIn(x, y, mathematicsMenuCoordenates) && !isIn(x, y, modeMenuCoordenates))
 			{
@@ -229,6 +236,7 @@ void Touch::resetButtons(void)
 	state.setMeasuresButtonActive(false);
 	state.setMathematicsButtonActive(false);
 	state.setModeButtonActive(false);
+	state.setAverageActive(false);
 }
 
 void Touch::pressChannelButton(Configuration::Channels channel)
@@ -282,6 +290,9 @@ void Touch::pressMeasuresButton(void)
 	{
 		state.setMeasuresButtonActive(true);
 	}
+	state.setMathematicsButtonActive(false);
+	state.setModeButtonActive(false);
+	state.setAverageActive(false);
 }
 
 void Touch::pressMathematicsButton(void)
@@ -294,6 +305,9 @@ void Touch::pressMathematicsButton(void)
 	{
 		state.setMathematicsButtonActive(true);
 	}
+	state.setMeasuresButtonActive(false);
+	state.setModeButtonActive(false);
+	state.setAverageActive(false);
 }
 
 void Touch::pressModeButton(void)
@@ -306,6 +320,9 @@ void Touch::pressModeButton(void)
 	{
 		state.setModeButtonActive(true);
 	}
+	state.setMeasuresButtonActive(false);
+	state.setMathematicsButtonActive(false);
+	state.setAverageActive(false);
 }
 
 void Touch::selectMeasure(Configuration::Measures measure)
@@ -329,6 +346,16 @@ void Touch::selectMode(Configuration::Modes mode)
 		samples.setDelay(Configuration::CHANNEL_A, samples.getMemoryDepth() / 2);
 		samples.setDelay(Configuration::CHANNEL_B, samples.getMemoryDepth() / 2);
 	}
+	if(mode == Configuration::RUN)
+	{
+		state.setAverageActive(true);
+	}
+}
+
+void Touch::selectAverage(Configuration::Averages average)
+{
+	state.setAverageActive(false);
+	configuration.setAverage(average);
 }
 
 bool Touch::isIn(int x, int y, vector<int> coordenates)

@@ -80,12 +80,14 @@ class Configuration
 		std::vector<std::string> getAllMeasures(void);
 		std::vector<std::string> getAllMathematics(void);
 		std::vector<std::string> getAllModes(void);
+		std::vector<std::string> getAllAverages(void);
 		void setMeasure(Measures selected);
 		void setMathematic(Mathematics selected);
 		void setMode(Modes selected);
 		std::vector<double> getCursor(void);
 		void setCursor(std::vector<double> cursors);
-		int getAverage(void);
+		int getAverageValue(void);
+		void setAverage(Averages avg);
 		std::string getAverageString(void);
 		std::string voltageToString(double voltage);
 		std::string timeToString(double time);

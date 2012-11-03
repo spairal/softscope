@@ -683,6 +683,23 @@ vector<string> Configuration::getAllModes(void)
 	return allModes;
 }
 
+vector<string> Configuration::getAllAverages(void)
+{
+	vector<string> allAverages;
+	allAverages.push_back("1");
+	allAverages.push_back("2");
+	allAverages.push_back("4");
+	allAverages.push_back("8");
+	allAverages.push_back("16");
+	allAverages.push_back("32");
+	allAverages.push_back("64");
+	allAverages.push_back("128");
+	allAverages.push_back("256");
+	allAverages.push_back("512");
+	allAverages.push_back("1024");
+	return allAverages;
+}
+
 void Configuration::setMeasure(Measures selected)
 {
 	measure = selected;
@@ -708,7 +725,7 @@ void Configuration::setCursor(vector<double> cursors)
 	cursor = cursors;
 }
 
-int Configuration::getAverage(void)
+int Configuration::getAverageValue(void)
 {
 	int averageInt;
 	switch(average)
@@ -750,10 +767,15 @@ int Configuration::getAverage(void)
 	return averageInt;
 }
 
+void Configuration::setAverage(Averages avg)
+{
+	average = avg;
+}
+
 string Configuration::getAverageString(void)
 {
 	stringstream ss;
-	ss << "Average: " << getAverage();
+	ss << "Average: " << getAverageValue();
 	return ss.str();
 }
 
