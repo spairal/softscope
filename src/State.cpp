@@ -69,6 +69,11 @@ State::State(void)
 	measuresButtonActive = false;
 	mathematicsButtonActive = false;
 	modeButtonActive = false;
+	triggerModeActive = false;
+	triggerChannelActive = false;
+	triggerSlopeActive = false;
+	triggerNoiseRejectActive = false;
+	triggerHighFrequencyRejectActive = false;
 	averageActive = false;
 }
 
@@ -275,6 +280,31 @@ bool State::getModeButtonActive(void)
 	return modeButtonActive;
 }
 
+bool State::getTriggerModeActive(void)
+{
+	return triggerModeActive;
+}
+
+bool State::getTriggerChannelActive(void)
+{
+	return triggerChannelActive;
+}
+
+bool State::getTriggerSlopeActive(void)
+{
+	return triggerSlopeActive;
+}
+
+bool State::getTriggerNoiseRejectActive(void)
+{
+	return triggerNoiseRejectActive;
+}
+
+bool State::getTriggerHighFrequencyRejectActive(void)
+{
+	return triggerHighFrequencyRejectActive;
+}
+
 bool State::getAverageActive(void)
 {
 	return averageActive;
@@ -293,6 +323,31 @@ void State::setMathematicsButtonActive(bool active)
 void State::setModeButtonActive(bool active)
 {
 	modeButtonActive = active;
+}
+
+void State::setTriggerModeActive(bool active)
+{
+	triggerModeActive = active;
+}
+
+void State::setTriggerChannelActive(bool active)
+{
+	triggerChannelActive = active;
+}
+
+void State::setTriggerSlopeActive(bool active)
+{
+	triggerSlopeActive = active;
+}
+
+void State::setTriggerNoiseRejectActive(bool active)
+{
+	triggerNoiseRejectActive = active;
+}
+
+void State::setTriggerHighFrequencyRejectActive(bool active)
+{
+	triggerHighFrequencyRejectActive = active;
 }
 
 void State::setAverageActive(bool active)

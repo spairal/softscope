@@ -683,6 +683,46 @@ vector<string> Configuration::getAllModes(void)
 	return allModes;
 }
 
+vector<string> Configuration::getAllTriggerModes(void)
+{
+	vector<string> allModes;
+	allModes.push_back("Trigger mode: Normal");
+	allModes.push_back("Trigger mode: Automatic");
+	return allModes;
+}
+
+vector<string> Configuration::getAllChannels(void)
+{
+	vector<string> allChannels;
+	allChannels.push_back("Trigger channel: A");
+	allChannels.push_back("Trigger channel: B");
+	return allChannels;
+}
+
+vector<string> Configuration::getAllTriggerSlopes(void)
+{
+	vector<string> allSlopes;
+	allSlopes.push_back("Trigger slope: Positive");
+	allSlopes.push_back("Trigger slope: Negative");
+	return allSlopes;
+}
+
+vector<string> Configuration::getAllTriggerNoiseRejects(void)
+{
+	vector<string> allNoiseReject;
+	allNoiseReject.push_back("Trigger noise reject: off");
+	allNoiseReject.push_back("Trigger noise reject: on");
+	return allNoiseReject;
+}
+
+vector<string> Configuration::getAllTriggerHighFrequencyRejects(void)
+{
+	vector<string> allHighFrequencyReject;
+	allHighFrequencyReject.push_back("Trigger high frequency reject: off");
+	allHighFrequencyReject.push_back("Trigger high frequency reject: on");
+	return allHighFrequencyReject;
+}
+
 vector<string> Configuration::getAllAverages(void)
 {
 	vector<string> allAverages;
@@ -713,6 +753,31 @@ void Configuration::setMathematic(Mathematics selected)
 void Configuration::setMode(Modes selected)
 {
 	mode = selected;
+}
+
+void Configuration::setTriggerMode(TriggerModes mode)
+{
+	triggerMode = mode;
+}
+
+void Configuration::setTriggerChannel(Channels channel)
+{
+	triggerChannel = channel;
+}
+
+void Configuration::setTriggerSlope(TriggerSlopes slope)
+{
+	triggerSlope = slope;
+}
+
+void Configuration::setTriggerNoiseReject(bool reject)
+{
+	triggerNoiseReject = reject;
+}
+
+void Configuration::setTriggerHighFrequencyReject(bool reject)
+{
+	triggerHighFrequencyReject = reject;
 }
 
 vector<double> Configuration::getCursor(void)

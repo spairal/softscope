@@ -15,7 +15,7 @@ class Configuration
 		enum Modes {RUN, STOP, SINGLE, ROLL};
 		enum TriggerModes {NORMAL, AUTOMATIC};
 		enum TriggerSlopes {POSITIVE, NEGATIVE};
-		enum Channels {NO_CHANNEL, CHANNEL_A, CHANNEL_B};
+		enum Channels {CHANNEL_A, CHANNEL_B, NO_CHANNEL};
 		enum Averages {TWO_CERO, TWO_ONE, TWO_TWO, TWO_THREE, TWO_FOUR, TWO_FIVE, TWO_SIX, TWO_SEVEN, TWO_EIGHT, TWO_NINE, TWO_TEN};
 
 	private:
@@ -80,10 +80,20 @@ class Configuration
 		std::vector<std::string> getAllMeasures(void);
 		std::vector<std::string> getAllMathematics(void);
 		std::vector<std::string> getAllModes(void);
+		std::vector<std::string> getAllTriggerModes(void);
+		std::vector<std::string> getAllChannels(void);
+		std::vector<std::string> getAllTriggerSlopes(void);
+		std::vector<std::string> getAllTriggerNoiseRejects(void);
+		std::vector<std::string> getAllTriggerHighFrequencyRejects(void);
 		std::vector<std::string> getAllAverages(void);
 		void setMeasure(Measures selected);
 		void setMathematic(Mathematics selected);
 		void setMode(Modes selected);
+		void setTriggerMode(TriggerModes mode);
+		void setTriggerChannel(Channels channel);
+		void setTriggerSlope(TriggerSlopes slope);
+		void setTriggerNoiseReject(bool reject);
+		void setTriggerHighFrequencyReject(bool reject);
 		std::vector<double> getCursor(void);
 		void setCursor(std::vector<double> cursors);
 		int getAverageValue(void);

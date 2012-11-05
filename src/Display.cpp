@@ -65,6 +65,26 @@ void Display::print(void)
 	{
 		printMenu(configuration.getAllAverages(), state.getModeMenuCoordenates());
 	}
+	if(state.getTriggerModeActive())
+	{
+		printMenu(configuration.getAllTriggerModes(), state.getModeMenuCoordenates());
+	}
+	if(state.getTriggerChannelActive())
+	{
+		printMenu(configuration.getAllChannels(), state.getModeMenuCoordenates());
+	}
+	if(state.getTriggerSlopeActive())
+	{
+		printMenu(configuration.getAllTriggerSlopes(), state.getModeMenuCoordenates());
+	}
+	if(state.getTriggerNoiseRejectActive())
+	{
+		printMenu(configuration.getAllTriggerNoiseRejects(), state.getModeMenuCoordenates());
+	}
+	if(state.getTriggerHighFrequencyRejectActive())
+	{
+		printMenu(configuration.getAllTriggerHighFrequencyRejects(), state.getModeMenuCoordenates());
+	}
 	updateScreen();
 }
 

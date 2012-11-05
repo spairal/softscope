@@ -40,6 +40,11 @@ class Touch
 		void selectMeasure(Configuration::Measures measure);
 		void selectMathematic(Configuration::Mathematics mathematic);
 		void selectMode(Configuration::Modes mode);
+		void selectTriggerMode(Configuration::TriggerModes mode);
+		void selectTriggerChannel(Configuration::Channels channel);
+		void selectTriggerSlope(Configuration::TriggerSlopes slope);
+		void selectTriggerNoiseReject(bool reject);
+		void selectTriggerHighFrequencyReject(bool reject);
 		void selectAverage(Configuration::Averages average);
 		bool isIn(int x, int y, std::vector<int> coordenates);
 };

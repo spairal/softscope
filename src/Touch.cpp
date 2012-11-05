@@ -23,7 +23,7 @@ void Touch::parseScreen(int x, int y)
 	if(buttonPressed)
 	{
 		buttonPressed = false;
-		if(!state.getMeasuresButtonActive() && !state.getMathematicsButtonActive() && !state.getModeButtonActive() && !state.getAverageActive())
+		if(!state.getMeasuresButtonActive() && !state.getMathematicsButtonActive() && !state.getModeButtonActive() && !state.getTriggerModeActive() && !state.getTriggerChannelActive() && !state.getTriggerSlopeActive() && !state.getTriggerNoiseRejectActive() && !state.getTriggerHighFrequencyRejectActive() && !state.getAverageActive())
 		{
 			vector<int> coordenates = state.getGridCoordenates();
 			if(configuration.getMeasure() == Configuration::CURSORS)
@@ -58,37 +58,72 @@ void Touch::parseScreen(int x, int y)
 	{
 		buttonReleased = false;
 		resetDrag();
-		if(state.getMeasuresButtonActive() || state.getMathematicsButtonActive() || state.getModeButtonActive() || state.getAverageActive())
+		if(state.getMeasuresButtonActive() || state.getMathematicsButtonActive() || state.getModeButtonActive() || state.getTriggerModeActive() || state.getTriggerChannelActive() || state.getTriggerSlopeActive() || state.getTriggerNoiseRejectActive() || state.getTriggerHighFrequencyRejectActive() || state.getAverageActive())
 		{
 			vector<int> measuresMenuCoordenates = state.getMeasuresMenuCoordenates();
 			vector<int> mathematicsMenuCoordenates = state.getMathematicsMenuCoordenates();
 			vector<int> modeMenuCoordenates = state.getModeMenuCoordenates();
+			vector<int> triggerModeCoordenates = modeMenuCoordenates;
+			vector<int> triggerChannelCoordenates = modeMenuCoordenates;
+			vector<int> triggerSlopeCoordenates = modeMenuCoordenates;
+			vector<int> triggerNoiseRejectCoordenates = modeMenuCoordenates;
+			vector<int> triggerHighFrequencyRejectCoordenates = modeMenuCoordenates;
 			vector<int> averageCoordenates = modeMenuCoordenates;
 			measuresMenuCoordenates[3] = measuresMenuCoordenates[2] + (measuresMenuCoordenates[3] - measuresMenuCoordenates[2]) * configuration.getAllMeasures().size();
 			mathematicsMenuCoordenates[3] = mathematicsMenuCoordenates[2] + (mathematicsMenuCoordenates[3] - mathematicsMenuCoordenates[2]) * configuration.getAllMathematics().size();
 			modeMenuCoordenates[3] = modeMenuCoordenates[2] + (modeMenuCoordenates[3] - modeMenuCoordenates[2]) * configuration.getAllModes().size();
+			triggerModeCoordenates[3] = triggerModeCoordenates[2] + (triggerModeCoordenates[3] - triggerModeCoordenates[2]) * configuration.getAllTriggerModes().size();
+			triggerChannelCoordenates[3] = triggerChannelCoordenates[2] + (triggerChannelCoordenates[3] - triggerChannelCoordenates[2]) * configuration.getAllChannels().size();
+			triggerSlopeCoordenates[3] = triggerSlopeCoordenates[2] + (triggerSlopeCoordenates[3] - triggerSlopeCoordenates[2]) * configuration.getAllTriggerSlopes().size();
+			triggerNoiseRejectCoordenates[3] = triggerNoiseRejectCoordenates[2] + (triggerNoiseRejectCoordenates[3] - triggerNoiseRejectCoordenates[2]) * configuration.getAllTriggerNoiseRejects().size();
+			triggerHighFrequencyRejectCoordenates[3] = triggerHighFrequencyRejectCoordenates[2] + (triggerHighFrequencyRejectCoordenates[3] - triggerHighFrequencyRejectCoordenates[2]) * configuration.getAllTriggerHighFrequencyRejects().size();
 			averageCoordenates[3] = averageCoordenates[2] + (averageCoordenates[3] - averageCoordenates[2]) * configuration.getAllAverages().size();
 			if(state.getMeasuresButtonActive() && isIn(x, y, measuresMenuCoordenates))
 			{
 				vector<int> coordenates = state.getMeasuresMenuCoordenates();
 				selectMeasure((Configuration::Measures)(configuration.getAllMeasures().size() - (y - coordenates[2]) / (coordenates[3] - coordenates[2]) - 1));
 			}
-			if(state.getMathematicsButtonActive() && isIn(x, y, mathematicsMenuCoordenates))
+			else if(state.getMathematicsButtonActive() && isIn(x, y, mathematicsMenuCoordenates))
 			{
 				vector<int> coordenates = state.getMathematicsMenuCoordenates();
 				selectMathematic((Configuration::Mathematics)(configuration.getAllMathematics().size() - (y - coordenates[2]) / (coordenates[3] - coordenates[2]) - 1));
 			}
-			if(state.getModeButtonActive() && isIn(x, y, modeMenuCoordenates))
+			else if(state.getModeButtonActive() && isIn(x, y, modeMenuCoordenates))
 			{
 				vector<int> coordenates = state.getModeMenuCoordenates();
 				selectMode((Configuration::Modes)(configuration.getAllModes().size() - (y - coordenates[2]) / (coordenates[3] - coordenates[2]) - 1));
+			}
+			else if(state.getTriggerModeActive() && isIn(x, y, triggerModeCoordenates))
+			{
+				vector<int> coordenates = state.getModeMenuCoordenates();
+				selectTriggerMode((Configuration::TriggerModes)(configuration.getAllTriggerModes().size() - (y - coordenates[2]) / (coordenates[3] - coordenates[2]) - 1));
+			}
+			else if(state.getTriggerChannelActive() && isIn(x, y, triggerChannelCoordenates))
+			{
+				vector<int> coordenates = state.getModeMenuCoordenates();
+				selectTriggerChannel((Configuration::Channels)(configuration.getAllChannels().size() - (y - coordenates[2]) / (coordenates[3] - coordenates[2]) - 1));
+			}
+			else if(state.getTriggerSlopeActive() && isIn(x, y, triggerSlopeCoordenates))
+			{
+				vector<int> coordenates = state.getModeMenuCoordenates();
+				selectTriggerSlope((Configuration::TriggerSlopes)(configuration.getAllTriggerSlopes().size() - (y - coordenates[2]) / (coordenates[3] - coordenates[2]) - 1));
+			}
+			else if(state.getTriggerNoiseRejectActive() && isIn(x, y, triggerNoiseRejectCoordenates))
+			{
+				vector<int> coordenates = state.getModeMenuCoordenates();
+				selectTriggerNoiseReject(((configuration.getAllTriggerModes().size() - (y - coordenates[2]) / (coordenates[3] - coordenates[2]) - 1) < 0.5) ? false : true);
+			}
+			else if(state.getTriggerHighFrequencyRejectActive() && isIn(x, y, triggerHighFrequencyRejectCoordenates))
+			{
+				vector<int> coordenates = state.getModeMenuCoordenates();
+				selectTriggerHighFrequencyReject(((configuration.getAllTriggerModes().size() - (y - coordenates[2]) / (coordenates[3] - coordenates[2]) - 1) < 0.5) ? false : true);
 			}
 			else if(state.getAverageActive() && isIn(x, y, averageCoordenates))
 			{
 				vector<int> coordenates = state.getModeMenuCoordenates();
 				selectAverage((Configuration::Averages)(configuration.getAllAverages().size() - (y - coordenates[2]) / (coordenates[3] - coordenates[2]) - 1));
 			}
-			if(!isIn(x, y, state.getMeasuresCoordenates()) && !isIn(x, y, state.getMathematicsCoordenates()) && !isIn(x, y, state.getModeCoordenates()) && !isIn(x, y, measuresMenuCoordenates) && !isIn(x, y, mathematicsMenuCoordenates) && !isIn(x, y, modeMenuCoordenates))
+			else
 			{
 				resetButtons();
 			}
@@ -236,6 +271,11 @@ void Touch::resetButtons(void)
 	state.setMeasuresButtonActive(false);
 	state.setMathematicsButtonActive(false);
 	state.setModeButtonActive(false);
+	state.setTriggerModeActive(false);
+	state.setTriggerChannelActive(false);
+	state.setTriggerSlopeActive(false);
+	state.setTriggerNoiseRejectActive(false);
+	state.setTriggerHighFrequencyRejectActive(false);
 	state.setAverageActive(false);
 }
 
@@ -292,6 +332,11 @@ void Touch::pressMeasuresButton(void)
 	}
 	state.setMathematicsButtonActive(false);
 	state.setModeButtonActive(false);
+	state.setTriggerModeActive(false);
+	state.setTriggerChannelActive(false);
+	state.setTriggerSlopeActive(false);
+	state.setTriggerNoiseRejectActive(false);
+	state.setTriggerHighFrequencyRejectActive(false);
 	state.setAverageActive(false);
 }
 
@@ -307,6 +352,11 @@ void Touch::pressMathematicsButton(void)
 	}
 	state.setMeasuresButtonActive(false);
 	state.setModeButtonActive(false);
+	state.setTriggerModeActive(false);
+	state.setTriggerChannelActive(false);
+	state.setTriggerSlopeActive(false);
+	state.setTriggerNoiseRejectActive(false);
+	state.setTriggerHighFrequencyRejectActive(false);
 	state.setAverageActive(false);
 }
 
@@ -322,6 +372,11 @@ void Touch::pressModeButton(void)
 	}
 	state.setMeasuresButtonActive(false);
 	state.setMathematicsButtonActive(false);
+	state.setTriggerModeActive(false);
+	state.setTriggerChannelActive(false);
+	state.setTriggerSlopeActive(false);
+	state.setTriggerNoiseRejectActive(false);
+	state.setTriggerHighFrequencyRejectActive(false);
 	state.setAverageActive(false);
 }
 
@@ -350,12 +405,51 @@ void Touch::selectMode(Configuration::Modes mode)
 	{
 		state.setAverageActive(true);
 	}
+	if(mode == Configuration::SINGLE)
+	{
+		state.setTriggerModeActive(true);
+	}
+}
+
+void Touch::selectTriggerMode(Configuration::TriggerModes mode)
+{
+	state.setTriggerModeActive(false);
+	configuration.setTriggerMode(mode);
+	state.setTriggerChannelActive(true);
+}
+
+void Touch::selectTriggerChannel(Configuration::Channels channel)
+{
+	state.setTriggerChannelActive(false);
+	configuration.setTriggerChannel(channel);
+	state.setTriggerSlopeActive(true);
+}
+
+void Touch::selectTriggerSlope(Configuration::TriggerSlopes slope)
+{
+	state.setTriggerSlopeActive(false);
+	configuration.setTriggerSlope(slope);
+	state.setTriggerNoiseRejectActive(true);
+}
+
+void Touch::selectTriggerNoiseReject(bool reject)
+{
+	state.setTriggerNoiseRejectActive(false);
+	configuration.setTriggerNoiseReject(reject);
+	state.setTriggerHighFrequencyRejectActive(true);
+}
+
+void Touch::selectTriggerHighFrequencyReject(bool reject)
+{
+	state.setTriggerHighFrequencyRejectActive(false);
+	configuration.setTriggerHighFrequencyReject(reject);
 }
 
 void Touch::selectAverage(Configuration::Averages average)
 {
 	state.setAverageActive(false);
 	configuration.setAverage(average);
+	state.setTriggerModeActive(true);
 }
 
 bool Touch::isIn(int x, int y, vector<int> coordenates)

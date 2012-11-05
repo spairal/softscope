@@ -32,6 +32,11 @@ class State
 		bool measuresButtonActive;
 		bool mathematicsButtonActive;
 		bool modeButtonActive;
+		bool triggerModeActive;
+		bool triggerChannelActive;
+		bool triggerSlopeActive;
+		bool triggerNoiseRejectActive;
+		bool triggerHighFrequencyRejectActive;
 		bool averageActive;
 
 	public:
@@ -68,10 +73,20 @@ class State
 		bool getMeasuresButtonActive(void);
 		bool getMathematicsButtonActive(void);
 		bool getModeButtonActive(void);
+		bool getTriggerModeActive(void);
+		bool getTriggerChannelActive(void);
+		bool getTriggerSlopeActive(void);
+		bool getTriggerNoiseRejectActive(void);
+		bool getTriggerHighFrequencyRejectActive(void);
 		bool getAverageActive(void);
 		void setMeasuresButtonActive(bool active);
 		void setMathematicsButtonActive(bool active);
 		void setModeButtonActive(bool active);
+		void setTriggerModeActive(bool active);
+		void setTriggerChannelActive(bool active);
+		void setTriggerSlopeActive(bool active);
+		void setTriggerNoiseRejectActive(bool active);
+		void setTriggerHighFrequencyRejectActive(bool active);
 		void setAverageActive(bool active);
 };
 
