@@ -123,7 +123,7 @@ void Touch::parseScreen(int x, int y)
 				vector<int> coordenates = state.getModeMenuCoordenates();
 				selectAverage((Configuration::Averages)(configuration.getAllAverages().size() - (y - coordenates[2]) / (coordenates[3] - coordenates[2]) - 1));
 			}
-			else
+			else if(!isIn(x, y, state.getMeasuresCoordenates()) && !isIn(x, y, state.getMathematicsCoordenates()) && !isIn(x, y, state.getModeCoordenates()))
 			{
 				resetButtons();
 			}
@@ -396,18 +396,24 @@ void Touch::selectMode(Configuration::Modes mode)
 {
 	state.setModeButtonActive(false);
 	configuration.setMode(mode);
-	if(mode != Configuration::STOP)
+	switch(mode)
 	{
-		samples.setDelay(Configuration::CHANNEL_A, samples.getMemoryDepth() / 2);
-		samples.setDelay(Configuration::CHANNEL_B, samples.getMemoryDepth() / 2);
-	}
-	if(mode == Configuration::RUN)
-	{
-		state.setAverageActive(true);
-	}
-	if(mode == Configuration::SINGLE)
-	{
-		state.setTriggerModeActive(true);
+		case Configuration::RUN:
+			state.setAverageActive(true);
+			samples.setDelay(Configuration::CHANNEL_A, samples.getMemoryDepth() / 2);
+			samples.setDelay(Configuration::CHANNEL_B, samples.getMemoryDepth() / 2);
+			break;
+		case Configuration::STOP:
+			break;
+		case Configuration::SINGLE:
+			state.setTriggerModeActive(true);
+			samples.setDelay(Configuration::CHANNEL_A, samples.getMemoryDepth() / 2);
+			samples.setDelay(Configuration::CHANNEL_B, samples.getMemoryDepth() / 2);
+			break;
+		case Configuration::ROLL:
+			samples.setDelay(Configuration::CHANNEL_A, samples.getMemoryDepth() - 5 * state.getPixelsPerDivision());
+			samples.setDelay(Configuration::CHANNEL_B, samples.getMemoryDepth() - 5 * state.getPixelsPerDivision());
+			break;
 	}
 }
 
