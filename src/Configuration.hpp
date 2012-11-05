@@ -77,6 +77,9 @@ class Configuration
 		std::string getTriggerChannelString(void);
 		std::string getTriggerSlopeString(void);
 		std::string getTriggerLevelString(void);
+		std::string getTriggerNoiseRejectString(void);
+		std::string getTriggerHighFrequencyRejectString(void);
+		std::string getTriggerHoldOffString(void);
 		std::vector<std::string> getAllMeasures(void);
 		std::vector<std::string> getAllMathematics(void);
 		std::vector<std::string> getAllModes(void);
@@ -105,6 +108,7 @@ class Configuration
 		std::string percentageToString(double percentage);
 		std::string degreesToString(double degrees);
 		std::string deciBellToString(double deciBell);
+		std::string boolToString(bool b);
 };
 
 #endif

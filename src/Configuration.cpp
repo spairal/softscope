@@ -131,34 +131,34 @@ string Configuration::getVerticalScaleString(Channels channel)
 	switch(verticalScale)
 	{
 		case TEN_MV:
-			scale = "10 mV/div";
+			scale = "10mV/div";
 			break;
 		case TWENTY_MV:
-			scale = "20 mV/div";
+			scale = "20mV/div";
 			break;
 		case FIFTY_MV:
-			scale = "50 mV/div";
+			scale = "50mV/div";
 			break;
 		case HUNDRED_MV:
-			scale = "100 mV/div";
+			scale = "100mV/div";
 			break;
 		case TWOHUNDRED_MV:
-			scale = "200 mV/div";
+			scale = "200mV/div";
 			break;
 		case FIVEHUNDRED_MV:
-			scale = "500 mV/div";
+			scale = "500mV/div";
 			break;
 		case ONE_V:
-			scale = "1 V/div";
+			scale = "1V/div";
 			break;
 		case TWO_V:
-			scale = "2 V/div";
+			scale = "2V/div";
 			break;
 		case FIVE_V:
-			scale = "5 V/div";
+			scale = "5V/div";
 			break;
 		case TEN_V:
-			scale = "10 V/div";
+			scale = "10V/div";
 			break;
 	}
 	return scale;
@@ -295,79 +295,79 @@ string Configuration::getHorizontalScaleString(void)
 	switch(horizontalScale)
 	{
 		case TEN_NS:
-			scale = "10 ns/div";
+			scale = "10ns/div";
 			break;
 		case TWENTY_NS:
-			scale = "20 ns/div";
+			scale = "20ns/div";
 			break;
 		case FIFTY_NS:
-			scale = "50 ns/div";
+			scale = "50ns/div";
 			break;
 		case HUNDRED_NS:
-			scale = "100 ns/div";
+			scale = "100ns/div";
 			break;
 		case TWOHUNDRED_NS:
-			scale = "200 ns/div";
+			scale = "200ns/div";
 			break;
 		case FIVEHUNDRED_NS:
-			scale = "500 ns/div";
+			scale = "500ns/div";
 			break;
 		case ONE_US:
-			scale = "1 us/div";
+			scale = "1us/div";
 			break;
 		case TWO_US:
-			scale = "2 us/div";
+			scale = "2us/div";
 			break;
 		case FIVE_US:
-			scale = "5 us/div";
+			scale = "5us/div";
 			break;
 		case TEN_US:
-			scale = "10 us/div";
+			scale = "10us/div";
 			break;
 		case TWENTY_US:
-			scale = "20 us/div";
+			scale = "20us/div";
 			break;
 		case FIFTY_US:
-			scale = "50 us/div";
+			scale = "50us/div";
 			break;
 		case HUNDRED_US:
-			scale = "100 us/div";
+			scale = "100us/div";
 			break;
 		case TWOHUNDRED_US:
-			scale = "200 us/div";
+			scale = "200us/div";
 			break;
 		case FIVEHUNDRED_US:
-			scale = "500 us/div";
+			scale = "500us/div";
 			break;
 		case ONE_MS:
-			scale = "1 ms/div";
+			scale = "1ms/div";
 			break;
 		case TWO_MS:
-			scale = "2 ms/div";
+			scale = "2ms/div";
 			break;
 		case FIVE_MS:
-			scale = "5 ms/div";
+			scale = "5ms/div";
 			break;
 		case TEN_MS:
-			scale = "10 ms/div";
+			scale = "10ms/div";
 			break;
 		case TWENTY_MS:
-			scale = "20 ms/div";
+			scale = "20ms/div";
 			break;
 		case FIFTY_MS:
-			scale = "50 ms/div";
+			scale = "50ms/div";
 			break;
 		case HUNDRED_MS:
-			scale = "100 ms/div";
+			scale = "100ms/div";
 			break;
 		case TWOHUNDRED_MS:
-			scale = "200 ms/div";
+			scale = "200ms/div";
 			break;
 		case FIVEHUNDRED_MS:
-			scale = "500 ms/div";
+			scale = "500ms/div";
 			break;
 		case ONE_S:
-			scale = "1 s/div";
+			scale = "1s/div";
 			break;
 	}
 	return scale;
@@ -589,7 +589,8 @@ string Configuration::getSingleString(void)
 string Configuration::getTriggerString(void)
 {
 	stringstream ss;
-	ss << "Trigger: " << getTriggerModeString() << " " << getTriggerChannelString() << " " << getTriggerSlopeString() << " " << getTriggerLevelString();
+	ss << "Trigger: " << getTriggerModeString() << " " << getTriggerChannelString() << " " << getTriggerSlopeString() << endl;
+	ss << getTriggerLevelString() << " " << getTriggerHoldOffString() << " NR:" << getTriggerNoiseRejectString() << " HFR:" << getTriggerHighFrequencyRejectString();
 	return ss.str();
 }
 
@@ -644,6 +645,21 @@ string Configuration::getTriggerSlopeString(void)
 string Configuration::getTriggerLevelString(void)
 {
 	return voltageToString(triggerLevel);
+}
+
+string Configuration::getTriggerNoiseRejectString(void)
+{
+	return boolToString(triggerNoiseReject);
+}
+
+string Configuration::getTriggerHighFrequencyRejectString(void)
+{
+	return boolToString(triggerHighFrequencyReject);
+}
+
+string Configuration::getTriggerHoldOffString(void)
+{
+	return timeToString(triggerHoldOff);
 }
 
 vector<string> Configuration::getAllMeasures(void)
@@ -850,11 +866,11 @@ string Configuration::voltageToString(double voltage)
 	ss.precision(2);
 	if(abs(voltage) >= 1)
 	{
-		ss << fixed << voltage << " V";
+		ss << fixed << voltage << "V";
 	}
 	else
 	{
-		ss << fixed << voltage * 1000 << " mV";
+		ss << fixed << voltage * 1000 << "mV";
 	}
 	return ss.str();
 }
@@ -865,19 +881,19 @@ string Configuration::timeToString(double time)
 	ss.precision(2);
 	if(abs(time) >= 1)
 	{
-		ss << fixed << time << " s";
+		ss << fixed << time << "s";
 	}
 	else if(abs(time) >= 0.001)
 	{
-		ss << fixed << time * 1000 << " ms";
+		ss << fixed << time * 1000 << "ms";
 	}
 	else if(abs(time) >= 0.000001)
 	{
-		ss << fixed << time * 1000000 << " us";
+		ss << fixed << time * 1000000 << "us";
 	}
 	else
 	{
-		ss << fixed << time * 1000000000 << " ns";
+		ss << fixed << time * 1000000000 << "ns";
 	}
 	return ss.str();
 }
@@ -888,19 +904,19 @@ string Configuration::frequencyToString(double frequency)
 	ss.precision(2);
 	if(abs(frequency) >= 1000000)
 	{
-		ss << fixed << frequency / 1000000 << " MHz";
+		ss << fixed << frequency / 1000000 << "MHz";
 	}
 	else if(abs(frequency) >= 1000)
 	{
-		ss << fixed << frequency / 1000 << " kHz";
+		ss << fixed << frequency / 1000 << "kHz";
 	}
 	else if(abs(frequency) >= 1)
 	{
-		ss << fixed << frequency << " Hz";
+		ss << fixed << frequency << "Hz";
 	}
 	else
 	{
-		ss << fixed << frequency * 1000 << " mHz";
+		ss << fixed << frequency * 1000 << "mHz";
 	}
 	return ss.str();
 }
@@ -909,7 +925,7 @@ string Configuration::percentageToString(double percentage)
 {
 	stringstream ss;
 	ss.precision(2);
-	ss << fixed << percentage * 100 << " %";
+	ss << fixed << percentage * 100 << "%";
 	return ss.str();
 }
 
@@ -917,7 +933,7 @@ string Configuration::degreesToString(double degrees)
 {
 	stringstream ss;
 	ss.precision(2);
-	ss << fixed << degrees << " °";
+	ss << fixed << degrees << "°";
 	return ss.str();
 }
 
@@ -927,5 +943,19 @@ string Configuration::deciBellToString(double deciBell)
 	ss.precision(2);
 	ss << fixed << deciBell << " dB";
 	return ss.str();
+}
+
+string Configuration::boolToString(bool b)
+{
+	string boolean;
+	if(b)
+	{
+		boolean = "On";
+	}
+	else
+	{
+		boolean = "Off";
+	}
+	return boolean;
 }
 

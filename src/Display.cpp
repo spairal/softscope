@@ -188,9 +188,9 @@ void Display::printButton(string title, string text, bool isActive, vector<int> 
 	}
 	drawRect(coordenates[0], coordenates[2], coordenates[1] - coordenates[0], coordenates[3] - coordenates[2]);
 	setTextFont(POLO_HELVETICA_18);
-	drawText((coordenates[0] + coordenates[1] - getTextDrawWidth(title.data())) / 2, (coordenates[2] + 2 * coordenates[3]) / 3 - getTextDrawHeight(title.data()) / 2, title.data());
+	drawText((coordenates[0] + coordenates[1] - getTextDrawWidth(title.data())) / 2, (coordenates[2] + 6 * coordenates[3]) / 7 - getTextDrawHeight(title.data()) / 2, title.data());
 	setTextFont(POLO_HELVETICA_10);
-	drawText((coordenates[0] + coordenates[1] - getTextDrawWidth(text.data())) / 2, (2 * coordenates[2] + coordenates[3]) / 3 - getTextDrawHeight(text.data()) / 2, text.data());
+	drawText((coordenates[0] + coordenates[1] - getTextDrawWidth(text.data())) / 2, (4 * coordenates[2] + 3 * coordenates[3]) / 7 - getTextDrawHeight(text.data()) / 2, text.data());
 }
 
 void Display::printMenu(vector<string> options, vector<int> coordenates)
