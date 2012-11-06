@@ -12,7 +12,7 @@ FPGA::FPGA(Configuration& configuration, State& state, Samples& samples) : confi
 
 void FPGA::fetchSamples(void)
 {
-	static int roll;
+	static double roll = 0;
 	if(configuration.getMode() != Configuration::STOP)
 	{
 		vector<double> samplesA;
@@ -20,7 +20,6 @@ void FPGA::fetchSamples(void)
 		if(configuration.getMode() == Configuration::ROLL)
 		{
 			int step = state.getPixelsPerDivision() / configuration.getHorizontalScaleValue() / 30;
-			roll += step; 
 			samplesA = samples.getSamples(Configuration::CHANNEL_A);
 			samplesB = samples.getSamples(Configuration::CHANNEL_B);
 			int i;
@@ -29,23 +28,24 @@ void FPGA::fetchSamples(void)
 				samplesA[i] = samplesA[i + step];
 				samplesB[i] = samplesB[i + step];
 			}
+			roll = roll / configuration.getHorizontalScaleValue() - i;
 			for(; i < samples.getMemoryDepth(); i++)
 			{
-				samplesA[i] = 3.0 * sin(2.0 * 3.141592 * configuration.getHorizontalScaleValue() * (i + roll - samples.getDelay(Configuration::CHANNEL_A) - configuration.getDelay() * 50) / 30) + 0.4 * rand() / RAND_MAX - 0.2;
-				int mod = (int)(i + roll - samples.getDelay(Configuration::CHANNEL_B) - configuration.getDelay() * 50) % (int)(20 / configuration.getHorizontalScaleValue());
+				samplesA[i] = 3.0 * sin(2.0 * 3.141592 * configuration.getHorizontalScaleValue() * (i + roll) / 30) + 0.4 * rand() / RAND_MAX - 0.2;
+				int mod = (int)(i + roll) % (int)(20 / configuration.getHorizontalScaleValue());
 				samplesB[i] = (((mod > (10 / configuration.getHorizontalScaleValue())) || ((mod > -10 / configuration.getHorizontalScaleValue()) && (mod < 0))) ? 2.0 : -2.0) + 0.6 * rand() / RAND_MAX - 0.3;
-				//samplesB[i] = 3.0 * sin(2.0 * 3.141592 * configuration.getHorizontalScaleValue() * (i + roll - samples.getDelay(Configuration::CHANNEL_B) - configuration.getDelay() * 50 - 100) / 30) + 0.4 * rand() / RAND_MAX - 0.2;
+				//samplesB[i] = 3.0 * sin(2.0 * 3.141592 * configuration.getHorizontalScaleValue() * (i + roll) / 30 - 0.02) + 0.4 * rand() / RAND_MAX - 0.2;
 			}
+			roll = configuration.getHorizontalScaleValue() * (i + roll);
 		}
 		else
 		{
-			roll = 0;
 			for(int i = 0; i < samples.getMemoryDepth(); i++)
 			{
-				samplesA.push_back(3.0 * sin(2.0 * 3.141592 * configuration.getHorizontalScaleValue() * (i - samples.getDelay(Configuration::CHANNEL_A) - configuration.getDelay() * 50) / 30) + 0.4 * rand() / RAND_MAX - 0.2);
-				int mod = (int)(i - samples.getDelay(Configuration::CHANNEL_B) - configuration.getDelay() * 50) % (int)(20 / configuration.getHorizontalScaleValue());
+				samplesA.push_back(3.0 * sin(2.0 * 3.141592 * configuration.getHorizontalScaleValue() * (i - samples.getDelay() - configuration.getDelay() * 50) / 30) + 0.4 * rand() / RAND_MAX - 0.2);
+				int mod = (int)(i - samples.getDelay() - configuration.getDelay() * 50) % (int)(20 / configuration.getHorizontalScaleValue());
 				samplesB.push_back((((mod > (10 / configuration.getHorizontalScaleValue())) || ((mod > -10 / configuration.getHorizontalScaleValue()) && (mod < 0))) ? 2.0 : -2.0) + 0.6 * rand() / RAND_MAX - 0.3);
-				//samplesB.push_back(3.0 * sin(2.0 * 3.141592 * configuration.getHorizontalScaleValue() * (i - samples.getDelay(Configuration::CHANNEL_B) - configuration.getDelay() * 50 - 100) / 30) + 0.4 * rand() / RAND_MAX - 0.2);
+				//samplesB.push_back(3.0 * sin(2.0 * 3.141592 * configuration.getHorizontalScaleValue() * (i - samples.getDelay() - configuration.getDelay() * 50 - 100) / 30) + 0.4 * rand() / RAND_MAX - 0.2);
 			}
 		}
 		samples.setSamples(Configuration::CHANNEL_A, samplesA);

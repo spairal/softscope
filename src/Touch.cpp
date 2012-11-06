@@ -239,8 +239,7 @@ void Touch::dragOffset(int x, int y)
 	configuration.setDelay(configuration.getDelay() + (double)(x - initialOffset[0]) / state.getPixelsPerDivision());
 	if(configuration.getMode() == Configuration::STOP)
 	{
-		samples.setDelay(Configuration::CHANNEL_A, samples.getDelay(Configuration::CHANNEL_A) - x + initialOffset[0]);
-		samples.setDelay(Configuration::CHANNEL_B, samples.getDelay(Configuration::CHANNEL_B) - x + initialOffset[0]);
+		samples.setDelay(samples.getDelay() - x + initialOffset[0]);
 	}
 	initialOffset[0] = x;
 	state.setInitialOffset(initialOffset);
@@ -261,7 +260,13 @@ void Touch::dragHorizontalScale(int x)
 	int levels = (x - state.getInitialHorizontalScale()) / state.getPixelsPerDivision();
 	if(levels != 0)
 	{
+		double oldScale = configuration.getHorizontalScaleValue();
 		configuration.setHorizontalScale((Configuration::HorizontalScales)(configuration.getHorizontalScale() + levels));
+		double newScale = configuration.getHorizontalScaleValue();
+		if(configuration.getMode() == Configuration::STOP)
+		{
+			samples.setStep(samples.getStep() * newScale / oldScale);
+		}
 		state.setInitialHorizontalScale(x);
 	}
 }
@@ -400,19 +405,19 @@ void Touch::selectMode(Configuration::Modes mode)
 	{
 		case Configuration::RUN:
 			state.setAverageActive(true);
-			samples.setDelay(Configuration::CHANNEL_A, samples.getMemoryDepth() / 2);
-			samples.setDelay(Configuration::CHANNEL_B, samples.getMemoryDepth() / 2);
+			samples.setDelay(samples.getMemoryDepth() / 2);
+			samples.setStep(1);
 			break;
 		case Configuration::STOP:
 			break;
 		case Configuration::SINGLE:
 			state.setTriggerModeActive(true);
-			samples.setDelay(Configuration::CHANNEL_A, samples.getMemoryDepth() / 2);
-			samples.setDelay(Configuration::CHANNEL_B, samples.getMemoryDepth() / 2);
+			samples.setDelay(samples.getMemoryDepth() / 2);
+			samples.setStep(1);
 			break;
 		case Configuration::ROLL:
-			samples.setDelay(Configuration::CHANNEL_A, samples.getMemoryDepth() - 5 * state.getPixelsPerDivision());
-			samples.setDelay(Configuration::CHANNEL_B, samples.getMemoryDepth() - 5 * state.getPixelsPerDivision());
+			samples.setDelay(samples.getMemoryDepth() - 5 * state.getPixelsPerDivision());
+			samples.setStep(1);
 			break;
 	}
 }

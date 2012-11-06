@@ -5,10 +5,10 @@ using namespace std;
 Samples::Samples(void)
 {
 	memoryDepth = 1500;
-	samplesA.assign(memoryDepth,0.0);
-	samplesB.assign(memoryDepth,0.0);
-	delayA = memoryDepth / 2;
-	delayB = memoryDepth / 2;
+	samplesA.assign(memoryDepth, 0.0);
+	samplesB.assign(memoryDepth, 0.0);
+	delay = memoryDepth / 2;
+	step = 1;
 }
 
 int Samples::getMemoryDepth(void)
@@ -44,31 +44,23 @@ void Samples::setSamples(Configuration::Channels channel, vector<double> samples
 	}
 }
 
-int Samples::getDelay(Configuration::Channels channel)
+int Samples::getDelay(void)
 {
-	int delay;
-	switch(channel)
-	{
-		case Configuration::CHANNEL_A:
-			delay = delayA;
-			break;
-		case Configuration::CHANNEL_B:
-			delay = delayB;
-			break;
-	}
 	return delay;
 }
 
-void Samples::setDelay(Configuration::Channels channel, int delay)
+void Samples::setDelay(int d)
 {
-	switch(channel)
-	{
-		case Configuration::CHANNEL_A:
-			delayA = delay;
-			break;
-		case Configuration::CHANNEL_B:
-			delayB = delay;
-			break;
-	}
+	delay = d;
+}
+
+double Samples::getStep(void)
+{
+	return step;
+}
+
+void Samples::setStep(double s)
+{
+	step = s;
 }
 

@@ -1,6 +1,6 @@
 #include <Display.hpp>
 #include <polo.h>
-#include <iostream>
+#include <cmath>
 
 using namespace std;
 
@@ -14,15 +14,15 @@ void Display::print(void)
 	printGrid(state.getGridCoordenates());
 	if(configuration.getChannel(state.getUnselectedChannel()))
 	{
-		printSamples(samplesToPixels(samples.getSamples(state.getUnselectedChannel()), configuration.getOffset(state.getUnselectedChannel()), configuration.getVerticalScaleValue(state.getUnselectedChannel()), state.getPixelsPerDivision()), samples.getDelay(state.getUnselectedChannel()) - 5 * state.getPixelsPerDivision(), samples.getMemoryDepth(), state.getColor(state.getUnselectedChannel()), state.getGridCoordenates());
+		printSamples(samplesToPixels(samples.getSamples(state.getUnselectedChannel()), configuration.getOffset(state.getUnselectedChannel()), configuration.getVerticalScaleValue(state.getUnselectedChannel()), state.getPixelsPerDivision()), samples.getDelay() - 5 * state.getPixelsPerDivision(), samples.getMemoryDepth(), samples.getStep(), state.getColor(state.getUnselectedChannel()), state.getGridCoordenates());
 	}
 	if(configuration.getChannel(state.getSelectedChannel()))
 	{
-		printSamples(samplesToPixels(samples.getSamples(state.getSelectedChannel()), configuration.getOffset(state.getSelectedChannel()), configuration.getVerticalScaleValue(state.getSelectedChannel()), state.getPixelsPerDivision()), samples.getDelay(state.getSelectedChannel()) - 5 * state.getPixelsPerDivision(), samples.getMemoryDepth(), state.getColor(state.getSelectedChannel()), state.getGridCoordenates());
+		printSamples(samplesToPixels(samples.getSamples(state.getSelectedChannel()), configuration.getOffset(state.getSelectedChannel()), configuration.getVerticalScaleValue(state.getSelectedChannel()), state.getPixelsPerDivision()), samples.getDelay() - 5 * state.getPixelsPerDivision(), samples.getMemoryDepth(), samples.getStep(), state.getColor(state.getSelectedChannel()), state.getGridCoordenates());
 	}
 	if(configuration.getMathematic() != Configuration::NOMATHEMATIC)
 	{
-		printSamples(samplesToPixels(mathematician.getSamples(), 0, configuration.getVerticalScaleValue(state.getSelectedChannel()), state.getPixelsPerDivision()), 0, samples.getMemoryDepth(), state.getColorMathematics(), state.getGridCoordenates());
+		printSamples(samplesToPixels(mathematician.getSamples(), 0, configuration.getVerticalScaleValue(state.getSelectedChannel()), state.getPixelsPerDivision()), 0, samples.getMemoryDepth(), samples.getStep(), state.getColorMathematics(), state.getGridCoordenates());
 	}
 	if(state.getSelectedChannel() != Configuration::NO_CHANNEL)
 	{
@@ -205,13 +205,15 @@ void Display::printMenu(vector<string> options, vector<int> coordenates)
 	}
 }
 
-void Display::printSamples(std::vector<int> samples, int delay, int memoryDepth, vector<float> color, vector<int> coordenates)
+void Display::printSamples(std::vector<int> samples, int delay, int memoryDepth, double step, vector<float> color, vector<int> coordenates)
 {
 	setPenColor(getColorFromRGB(color[0], color[1], color[2]));
-	for(int i = max(delay, 0); i < min((delay + coordenates[1] - coordenates[0]), memoryDepth); i++)
+	int upStep = max(1.0, round(step));
+	int start = (delay - memoryDepth / 2) * step + memoryDepth / 2;
+	for(int i = max(start, 0); i < min((int) (start + round((coordenates[1] - coordenates[0]) * step)), memoryDepth - upStep); i += upStep)
 	{
 		int ya = (coordenates[2] + coordenates[3]) / 2 + samples[i];
-		int yb = (coordenates[2] + coordenates[3]) / 2 + samples[i + 1];
+		int yb = (coordenates[2] + coordenates[3]) / 2 + samples[i + upStep];
 		if(ya < coordenates[2])
 		{
 			ya = coordenates[2];
@@ -228,7 +230,7 @@ void Display::printSamples(std::vector<int> samples, int delay, int memoryDepth,
 		{
 			yb = coordenates[3];
 		}
-		drawLine(coordenates[0] + i - delay, ya, coordenates[0] + i - delay + 1, yb);
+		drawLine(round(coordenates[0] + (i - start) / step), ya, round(coordenates[0] + (i - start + upStep) / step), yb);
 	}
 }
 

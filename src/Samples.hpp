@@ -10,16 +10,18 @@ class Samples
 		int memoryDepth;
 		std::vector<double> samplesA;
 		std::vector<double> samplesB;
-		int delayA;
-		int delayB;
+		int delay;
+		double step;
 
 	public:
 		Samples(void);
 		int getMemoryDepth(void);
 		std::vector<double> getSamples(Configuration::Channels channel);
 		void setSamples(Configuration::Channels channel, std::vector<double> samples);
-		int getDelay(Configuration::Channels channel);
-		void setDelay(Configuration::Channels channel, int delay);
+		int getDelay(void);
+		void setDelay(int d);
+		double getStep(void);
+		void setStep(double s);
 };
 
 #endif

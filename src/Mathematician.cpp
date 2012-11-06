@@ -29,12 +29,11 @@ vector<double> Mathematician::getDifference(void)
 	if(configuration.getChannel(Configuration::CHANNEL_A) && configuration.getChannel(Configuration::CHANNEL_B))
 	{
 		vector<double> signalA = samples.getSamples(state.getSelectedChannel());
-		int delayA = samples.getDelay(state.getSelectedChannel());
+		int delay = samples.getDelay();
 		vector<double> signalB = samples.getSamples(state.getUnselectedChannel());
-		int delayB = samples.getDelay(state.getUnselectedChannel());
 		for(int i = 0; i < signal.size(); i++)
 		{
-			signal[i] = signalA[delayA - 5 * state.getPixelsPerDivision() + i] - signalB[delayB - 5 * state.getPixelsPerDivision() + i];
+			signal[i] = signalA[delay - 5 * state.getPixelsPerDivision() + i] - signalB[delay - 5 * state.getPixelsPerDivision() + i];
 		}
 	}
 	return signal;
@@ -46,7 +45,7 @@ vector<double> Mathematician::getFFT(void)
 	if(state.getSelectedChannel() != Configuration::NO_CHANNEL)
 	{
 		vector<double> signal = samples.getSamples(state.getSelectedChannel());
-		int delay = samples.getDelay(state.getSelectedChannel());
+		int delay = samples.getDelay();
 		double verticalScale = configuration.getVerticalScale(state.getSelectedChannel());
 		int pixelsPerDivision = state.getPixelsPerDivision();
 		int N = fft.size();
@@ -55,9 +54,18 @@ vector<double> Mathematician::getFFT(void)
 		fftw_complex* out = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * N);
 		fftw_plan p = fftw_plan_dft_r2c_1d(M, in, out, FFTW_ESTIMATE);
 		vector<double> w = hamming(M);
+		int start = delay - 10 * state.getPixelsPerDivision();
+		if(start < 0)
+		{
+			start = 0;
+		}
+		if((start + M) > samples.getMemoryDepth())
+		{
+			start = samples.getMemoryDepth() - M;
+		}
 		for(int i = 0; i < M; i++)
 		{
-			in[i] = w[i] * pixelsPerDivision * signal[delay - 10 * state.getPixelsPerDivision() + i] / verticalScale;
+			in[i] = w[i] * pixelsPerDivision * signal[start + i] / verticalScale;
 		}
 		fftw_execute(p);
 		for(int i = 0; i < N; i++)

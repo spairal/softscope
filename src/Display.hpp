@@ -33,7 +33,7 @@ class Display
 		void printCouplingButton(std::string text, std::vector<float> color, std::vector<int> coordenates);
 		void printButton(std::string title, std::string text, bool isActive, std::vector<int> coordenates);
 		void printMenu(std::vector<std::string> options, std::vector<int> coordenates);
-		void printSamples(std::vector<int> samples, int delay, int memoryDepth, std::vector<float> color, std::vector<int> coordenates);
+		void printSamples(std::vector<int> samples, int delay, int memoryDepth, double step, std::vector<float> color, std::vector<int> coordenates);
 		void printCursor(std::vector<int> coordenates);
 };
 
