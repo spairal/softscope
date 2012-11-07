@@ -85,6 +85,10 @@ void Display::print(void)
 	{
 		printMenu(configuration.getAllTriggerHighFrequencyRejects(), state.getModeMenuCoordenates());
 	}
+	if(state.getTriggerLevelActive())
+	{
+		printAlert("Select the trigger level and hold off", state.getGridCoordenates());
+	}
 	updateScreen();
 }
 
@@ -203,6 +207,13 @@ void Display::printMenu(vector<string> options, vector<int> coordenates)
 	{
 		drawText((coordenates[0] + coordenates[1] - getTextDrawWidth(options[i].data())) / 2, coordenates[2] + (options.size() - i - 0.5) * (coordenates[3] - coordenates[2]) - getTextDrawHeight(options[i].data()) / 2, options[i].data());
 	}
+}
+
+void Display::printAlert(string text, vector<int> coordenates)
+{
+	setPenColor(getColorFromRGB(0.5, 0.5, 0.5));
+	setTextFont(POLO_HELVETICA_12);
+	drawText(coordenates[0] + state.getPixelsPerDivision(), coordenates[3] - state.getPixelsPerDivision(), text.data());
 }
 
 void Display::printSamples(std::vector<int> samples, int delay, int memoryDepth, double step, vector<float> color, vector<int> coordenates)

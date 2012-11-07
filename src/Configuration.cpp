@@ -515,8 +515,8 @@ string Configuration::getCursorsString(Channels channel)
 {
 	stringstream ss;
 	ss << "Cursors:" << endl;
-	ss << "x1 = " << timeToString(getHorizontalScaleValue() * cursor[0]) << " ; x2 = " << timeToString(getHorizontalScaleValue() * cursor[1]) << endl;
-	ss << "y1 = " << voltageToString(getVerticalScaleValue(channel) * cursor[2]) << " ; y2 = " << voltageToString(getVerticalScaleValue(channel) * cursor[3]);
+	ss << "x1 = " << timeToString(getHorizontalScaleValue() * (cursor[0] - delay)) << " ; x2 = " << timeToString(getHorizontalScaleValue() * (cursor[1] - delay)) << endl;
+	ss << "y1 = " << voltageToString(getVerticalScaleValue(channel) * cursor[2] - getOffset(channel)) << " ; y2 = " << voltageToString(getVerticalScaleValue(channel) * cursor[3] - getOffset(channel));
 	return ss.str();
 }
 
@@ -794,6 +794,16 @@ void Configuration::setTriggerNoiseReject(bool reject)
 void Configuration::setTriggerHighFrequencyReject(bool reject)
 {
 	triggerHighFrequencyReject = reject;
+}
+
+void Configuration::setTriggerLevel(double level)
+{
+	triggerLevel = level;
+}
+
+void Configuration::setTriggerHoldOff(double holdOff)
+{
+	triggerHoldOff = holdOff;
 }
 
 vector<double> Configuration::getCursor(void)

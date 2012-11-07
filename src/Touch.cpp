@@ -26,7 +26,14 @@ void Touch::parseScreen(int x, int y)
 		if(!state.getMeasuresButtonActive() && !state.getMathematicsButtonActive() && !state.getModeButtonActive() && !state.getTriggerModeActive() && !state.getTriggerChannelActive() && !state.getTriggerSlopeActive() && !state.getTriggerNoiseRejectActive() && !state.getTriggerHighFrequencyRejectActive() && !state.getAverageActive())
 		{
 			vector<int> coordenates = state.getGridCoordenates();
-			if(configuration.getMeasure() == Configuration::CURSORS)
+			if(state.getTriggerLevelActive())
+			{
+				if(isIn(x, y, coordenates))
+				{
+					startDragTriggerLevel();
+				}
+			}
+			else if(configuration.getMeasure() == Configuration::CURSORS)
 			{
 				if(isIn(x, y, coordenates))
 				{
@@ -176,6 +183,10 @@ void Touch::parseScreen(int x, int y)
 	{
 		dragHorizontalScale(x);
 	}
+	if(state.getTriggerLevelDrag())
+	{
+		dragTriggerLevel(x, y);
+	}
 }
 
 void Touch::startDragCursors(int x, int y)
@@ -211,12 +222,19 @@ void Touch::startDragHorizontalScale(int x)
 	state.setInitialHorizontalScale(x);
 }
 
+void Touch::startDragTriggerLevel(void)
+{
+	state.setTriggerLevelDrag(true);
+}
+
 void Touch::resetDrag(void)
 {
 	state.setCursorDrag(false);
 	state.setOffsetDrag(false);
 	state.setVerticalScaleDrag(false);
 	state.setHorizontalScaleDrag(false);
+	state.setTriggerLevelDrag(false);
+	state.setTriggerLevelActive(false);
 }
 
 void Touch::dragCursor(int x, int y)
@@ -271,6 +289,13 @@ void Touch::dragHorizontalScale(int x)
 	}
 }
 
+void Touch::dragTriggerLevel(int x, int y)
+{
+	vector<int> coordenates = state.getGridCoordenates();
+	configuration.setTriggerHoldOff(configuration.getHorizontalScaleValue() * ((double)(x - coordenates[0] - 5 * state.getPixelsPerDivision()) / state.getPixelsPerDivision() - configuration.getDelay()));
+	configuration.setTriggerLevel(configuration.getVerticalScaleValue(state.getSelectedChannel()) * (y - coordenates[2] - 4 * state.getPixelsPerDivision()) / state.getPixelsPerDivision() - configuration.getOffset(state.getSelectedChannel()));
+}
+
 void Touch::resetButtons(void)
 {
 	state.setMeasuresButtonActive(false);
@@ -281,6 +306,7 @@ void Touch::resetButtons(void)
 	state.setTriggerSlopeActive(false);
 	state.setTriggerNoiseRejectActive(false);
 	state.setTriggerHighFrequencyRejectActive(false);
+	state.setTriggerLevelActive(false);
 	state.setAverageActive(false);
 }
 
@@ -342,6 +368,7 @@ void Touch::pressMeasuresButton(void)
 	state.setTriggerSlopeActive(false);
 	state.setTriggerNoiseRejectActive(false);
 	state.setTriggerHighFrequencyRejectActive(false);
+	state.setTriggerLevelActive(false);
 	state.setAverageActive(false);
 }
 
@@ -362,6 +389,7 @@ void Touch::pressMathematicsButton(void)
 	state.setTriggerSlopeActive(false);
 	state.setTriggerNoiseRejectActive(false);
 	state.setTriggerHighFrequencyRejectActive(false);
+	state.setTriggerLevelActive(false);
 	state.setAverageActive(false);
 }
 
@@ -382,6 +410,7 @@ void Touch::pressModeButton(void)
 	state.setTriggerSlopeActive(false);
 	state.setTriggerNoiseRejectActive(false);
 	state.setTriggerHighFrequencyRejectActive(false);
+	state.setTriggerLevelActive(false);
 	state.setAverageActive(false);
 }
 
@@ -454,6 +483,7 @@ void Touch::selectTriggerHighFrequencyReject(bool reject)
 {
 	state.setTriggerHighFrequencyRejectActive(false);
 	configuration.setTriggerHighFrequencyReject(reject);
+	state.setTriggerLevelActive(true);
 }
 
 void Touch::selectAverage(Configuration::Averages average)

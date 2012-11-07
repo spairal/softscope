@@ -26,11 +26,13 @@ class Touch
 		void startDragOffset(int x, int y);
 		void startDragVerticalScale(int y);
 		void startDragHorizontalScale(int x);
+		void startDragTriggerLevel(void);
 		void resetDrag(void);
 		void dragCursor(int x, int y);
 		void dragOffset(int x, int y);
 		void dragVerticalScale(int y);
 		void dragHorizontalScale(int x);
+		void dragTriggerLevel(int x, int y);
 		void resetButtons(void);
 		void pressChannelButton(Configuration::Channels channel);
 		void pressCouplingButton(Configuration::Channels channel);

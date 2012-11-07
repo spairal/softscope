@@ -61,6 +61,7 @@ State::State(void)
 	offsetDrag = false;
 	verticalScaleDrag = false;
 	horizontalScaleDrag = false;
+	triggerLevelDrag = false;
 	initialOffset.push_back(0);
 	initialOffset.push_back(0);
 	initialVerticalScale = 0;
@@ -74,6 +75,7 @@ State::State(void)
 	triggerSlopeActive = false;
 	triggerNoiseRejectActive = false;
 	triggerHighFrequencyRejectActive = false;
+	triggerLevelActive = false;
 	averageActive = false;
 }
 
@@ -187,6 +189,11 @@ bool State::getHorizontalScaleDrag(void)
 	return horizontalScaleDrag;
 }
 
+bool State::getTriggerLevelDrag(void)
+{
+	return triggerLevelDrag;
+}
+
 void State::setCursorDrag(bool drag)
 {
 	cursorDrag = drag;
@@ -205,6 +212,11 @@ void State::setVerticalScaleDrag(bool drag)
 void State::setHorizontalScaleDrag(bool drag)
 {
 	horizontalScaleDrag = drag;
+}
+
+void State::setTriggerLevelDrag(bool drag)
+{
+	triggerLevelDrag = drag;
 }
 
 vector<int> State::getInitialOffset(void)
@@ -305,6 +317,11 @@ bool State::getTriggerHighFrequencyRejectActive(void)
 	return triggerHighFrequencyRejectActive;
 }
 
+bool State::getTriggerLevelActive(void)
+{
+	return triggerLevelActive;
+}
+
 bool State::getAverageActive(void)
 {
 	return averageActive;
@@ -348,6 +365,11 @@ void State::setTriggerNoiseRejectActive(bool active)
 void State::setTriggerHighFrequencyRejectActive(bool active)
 {
 	triggerHighFrequencyRejectActive = active;
+}
+
+void State::setTriggerLevelActive(bool active)
+{
+	triggerLevelActive = active;
 }
 
 void State::setAverageActive(bool active)

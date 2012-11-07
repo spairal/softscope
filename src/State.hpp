@@ -25,6 +25,7 @@ class State
 		bool offsetDrag;
 		bool verticalScaleDrag;
 		bool horizontalScaleDrag;
+		bool triggerLevelDrag;
 		std::vector<int> initialOffset;
 		int initialVerticalScale;
 		int initialHorizontalScale;
@@ -37,6 +38,7 @@ class State
 		bool triggerSlopeActive;
 		bool triggerNoiseRejectActive;
 		bool triggerHighFrequencyRejectActive;
+		bool triggerLevelActive;
 		bool averageActive;
 
 	public:
@@ -57,10 +59,12 @@ class State
 		bool getOffsetDrag(void);
 		bool getVerticalScaleDrag(void);
 		bool getHorizontalScaleDrag(void);
+		bool getTriggerLevelDrag(void);
 		void setCursorDrag(bool drag);
 		void setOffsetDrag(bool drag);
 		void setVerticalScaleDrag(bool drag);
 		void setHorizontalScaleDrag(bool drag);
+		void setTriggerLevelDrag(bool drag);
 		std::vector<int> getInitialOffset(void);
 		int getInitialVerticalScale(void);
 		int getInitialHorizontalScale(void);
@@ -78,6 +82,7 @@ class State
 		bool getTriggerSlopeActive(void);
 		bool getTriggerNoiseRejectActive(void);
 		bool getTriggerHighFrequencyRejectActive(void);
+		bool getTriggerLevelActive(void);
 		bool getAverageActive(void);
 		void setMeasuresButtonActive(bool active);
 		void setMathematicsButtonActive(bool active);
@@ -87,6 +92,7 @@ class State
 		void setTriggerSlopeActive(bool active);
 		void setTriggerNoiseRejectActive(bool active);
 		void setTriggerHighFrequencyRejectActive(bool active);
+		void setTriggerLevelActive(bool active);
 		void setAverageActive(bool active);
 };
 

@@ -97,6 +97,8 @@ class Configuration
 		void setTriggerSlope(TriggerSlopes slope);
 		void setTriggerNoiseReject(bool reject);
 		void setTriggerHighFrequencyReject(bool reject);
+		void setTriggerLevel(double level);
+		void setTriggerHoldOff(double holdOff);
 		std::vector<double> getCursor(void);
 		void setCursor(std::vector<double> cursors);
 		int getAverageValue(void);
