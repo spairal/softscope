@@ -18,9 +18,9 @@ class State
 		std::vector<int> mathematicsMenuCoordenates;
 		std::vector<int> modeCoordenates;
 		std::vector<int> modeMenuCoordenates;
-		std::vector<float> colorA;
-		std::vector<float> colorB;
-		std::vector<float> colorMathematics;
+		int colorA;
+		int colorB;
+		int colorMathematics;
 		bool cursorDrag;
 		bool offsetDrag;
 		bool verticalScaleDrag;
@@ -53,8 +53,8 @@ class State
 		std::vector<int> getMeasuresMenuCoordenates(void);
 		std::vector<int> getMathematicsMenuCoordenates(void);
 		std::vector<int> getModeMenuCoordenates(void);
-		std::vector<float> getColor(Configuration::Channels channel);
-		std::vector<float> getColorMathematics(void);
+		int getColor(Configuration::Channels channel);
+		int getColorMathematics(void);
 		bool getCursorDrag(void);
 		bool getOffsetDrag(void);
 		bool getVerticalScaleDrag(void);

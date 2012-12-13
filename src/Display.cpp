@@ -1,10 +1,9 @@
 #include <Display.hpp>
-#include <polo.h>
 #include <cmath>
 
 using namespace std;
 
-Display::Display(Configuration& configuration, State& state, Samples& samples, Measurer& measurer, Mathematician& mathematician) : configuration(configuration), state(state), samples(samples), measurer(measurer), mathematician(mathematician)
+Display::Display(Configuration& configuration, State& state, Samples& samples, Measurer& measurer, Mathematician& mathematician) : configuration(configuration), state(state), samples(samples), measurer(measurer), mathematician(mathematician), miniFB(miniFB)
 {
 }
 
@@ -115,14 +114,14 @@ void Display::printGrid(vector<int> coordenates)
 	}
 }
 
-void Display::printOffset(int offsetValue, string offsetString, vector<float> color, vector<int> coordenates)
+void Display::printOffset(int offsetValue, string offsetString, int color, vector<int> coordenates)
 {
 	setTextFont(POLO_HELVETICA_12);
 	setPenColor(getColorFromRGB(color[0], color[1], color[2]));
 	drawText(coordenates[0] + 5, (coordenates[2] + coordenates[3]) / 2 + offsetValue, offsetString.data());
 }
 
-void Display::printVerticalScale(string verticalScale, vector<float> color, vector<int> coordenates)
+void Display::printVerticalScale(string verticalScale, int color, vector<int> coordenates)
 {
 	setTextFont(POLO_HELVETICA_12);
 	setPenColor(getColorFromRGB(color[0], color[1], color[2]));
@@ -143,7 +142,7 @@ void Display::printHorizontalScale(string horizontalScale, vector<int> coordenat
 	drawText((coordenates[0] + coordenates[1]) / 2 + 5, coordenates[3] - getTextDrawHeight(horizontalScale.data()) - 5, horizontalScale.data());
 }
 
-void Display::printChannelButton(string channel, bool isActive, bool isSelected, vector<float> color, vector<int> coordenates)
+void Display::printChannelButton(string channel, bool isActive, bool isSelected, int color, vector<int> coordenates)
 {
 	setPenColor(getColorFromRGB(color[0], color[1], color[2]));
 	if(isSelected)
@@ -168,7 +167,7 @@ void Display::printChannelButton(string channel, bool isActive, bool isSelected,
 	drawText(coordenates[0] + (coordenates[3] - coordenates[2]), (coordenates[2] + coordenates[3] - getTextDrawHeight(channel.data())) / 2, channel.data());
 }
 
-void Display::printCouplingButton(string text, vector<float> color, vector<int> coordenates)
+void Display::printCouplingButton(string text, int color, vector<int> coordenates)
 {
 	setPenColor(getColorFromRGB(color[0], color[1], color[2]));
 	setFillColor(getColorFromRGB(color[0] / 16, color[1] / 16, color[2] / 16));
@@ -216,7 +215,7 @@ void Display::printAlert(string text, vector<int> coordenates)
 	drawText(coordenates[0] + state.getPixelsPerDivision(), coordenates[3] - state.getPixelsPerDivision(), text.data());
 }
 
-void Display::printSamples(std::vector<int> samples, int delay, int memoryDepth, double step, vector<float> color, vector<int> coordenates)
+void Display::printSamples(std::vector<int> samples, int delay, int memoryDepth, double step, int color, vector<int> coordenates)
 {
 	setPenColor(getColorFromRGB(color[0], color[1], color[2]));
 	int upStep = max(1.0, round(step));

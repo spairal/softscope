@@ -3,7 +3,7 @@
 LINKER = g++
 LINKERPARAMS =
 COMPILER = g++
-COMPILERPARAMS = -c
+COMPILERPARAMS = -c -O2
 OUTPUT = -o
 INCLUDE = -I
 TOUCH = touch
@@ -11,12 +11,11 @@ MAKEDIRECTORY = mkdir
 REMOVE = rm
 REMOVEPARAMS = -r
 SOURCE = src
-LIBPOLO = $(SOURCE)/libpolo
 TARGET = target
 OBJ = $(TARGET)/obj
 EXECUTABLE = $(TARGET)/softscope
-OBJECTS = $(addprefix $(OBJ)/, $(addsuffix .o, main Configuration State Samples Measurer Mathematician Touch FPGA Display polo))
-LIBRARIES = $(addprefix -l, fftw3 glut)
+OBJECTS = $(addprefix $(OBJ)/, $(addsuffix .o, main Configuration State Samples Measurer Mathematician Touch FPGA Display MiniFB))
+LIBRARIES = $(addprefix -l, fftw3)
 
 # LINKING
 
@@ -49,15 +48,15 @@ $(OBJ)/Touch.o : $(SOURCE)/Touch.cpp
 $(OBJ)/FPGA.o : $(SOURCE)/FPGA.cpp
 	$(COMPILER) $(COMPILERPARAMS) $(SOURCE)/FPGA.cpp $(INCLUDE) $(SOURCE) $(OUTPUT) $(OBJ)/FPGA.o
 
-$(OBJ)/Display.o : $(SOURCE)/Display.cpp
-	$(COMPILER) $(COMPILERPARAMS) $(SOURCE)/Display.cpp $(INCLUDE) $(SOURCE) $(INCLUDE) $(LIBPOLO) $(OUTPUT) $(OBJ)/Display.o
+$(OBJ)/MiniFB.o : $(SOURCE)/MiniFB.cpp
+	$(COMPILER) $(COMPILERPARAMS) $(SOURCE)/MiniFB.cpp $(INCLUDE) $(SOURCE) $(OUTPUT) $(OBJ)/MiniFB.o
 
-$(OBJ)/polo.o : $(LIBPOLO)/polo.c
-	$(COMPILER) $(COMPILERPARAMS) $(LIBPOLO)/polo.c $(INCLUDE) $(LIBPOLO) $(OUTPUT) $(OBJ)/polo.o
+$(OBJ)/Display.o : $(SOURCE)/Display.cpp
+	$(COMPILER) $(COMPILERPARAMS) $(SOURCE)/Display.cpp $(INCLUDE) $(SOURCE) $(OUTPUT) $(OBJ)/Display.o
 
 # SOURCES
 
-$(SOURCE)/main.cpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp $(SOURCE)/Measurer.hpp $(SOURCE)/Mathematician.hpp $(SOURCE)/Touch.hpp $(SOURCE)/FPGA.hpp $(SOURCE)/Display.hpp $(LIBPOLO)/polo.h
+$(SOURCE)/main.cpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp $(SOURCE)/Measurer.hpp $(SOURCE)/Mathematician.hpp $(SOURCE)/Touch.hpp $(SOURCE)/FPGA.hpp $(SOURCE)/Display.hpp $(SOURCE)/MiniFB.hpp
 	$(TOUCH) $(SOURCE)/main.cpp
 
 $(SOURCE)/Configuration.cpp : $(SOURCE)/Configuration.hpp
@@ -81,11 +80,11 @@ $(SOURCE)/Touch.cpp : $(SOURCE)/Touch.hpp
 $(SOURCE)/FPGA.cpp : $(SOURCE)/FPGA.hpp
 	$(TOUCH) $(SOURCE)/FPGA.cpp
 
-$(SOURCE)/Display.cpp : $(SOURCE)/Display.hpp $(LIBPOLO)/polo.h
+$(SOURCE)/Display.cpp : $(SOURCE)/Display.hpp
 	$(TOUCH) $(SOURCE)/Display.cpp
 
-$(LIBPOLO)/polo.c : $(LIBPOLO)/polo.h
-	$(TOUCH) $(LIBPOLO)/polo.c
+$(SOURCE)/MiniFB.cpp : $(SOURCE)/MiniFB.hpp
+	$(TOUCH) $(SOURCE)/MiniFB.cpp
 
 # HEADERS
 
@@ -110,11 +109,11 @@ $(SOURCE)/Touch.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/
 $(SOURCE)/FPGA.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp
 	$(TOUCH) $(SOURCE)/FPGA.hpp
 
-$(SOURCE)/Display.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp $(SOURCE)/Measurer.hpp
+$(SOURCE)/Display.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp $(SOURCE)/Measurer.hpp $(SOURCE)/MiniFB.hpp
 	$(TOUCH) $(SOURCE)/Display.hpp
 
-$(LIBPOLO)/polo.h :
-	$(TOUCH) $(LIBPOLO)/polo.h
+$(SOURCE)/MiniFB.hpp :
+	$(TOUCH) $(SOURCE)/MiniFB.hpp
 
 # MAKING DIRECTORIES
 

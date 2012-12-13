@@ -6,57 +6,51 @@ State::State(void)
 {
 	gridCoordenates.push_back(140);
 	gridCoordenates.push_back(640);
-	gridCoordenates.push_back(80);
-	gridCoordenates.push_back(480);
+	gridCoordenates.push_back(0);
+	gridCoordenates.push_back(400);
 	channelCoordenatesA.push_back(0);
 	channelCoordenatesA.push_back(140);
-	channelCoordenatesA.push_back(330);
-	channelCoordenatesA.push_back(380);
+	channelCoordenatesA.push_back(100);
+	channelCoordenatesA.push_back(150);
 	channelCoordenatesB.push_back(0);
 	channelCoordenatesB.push_back(140);
-	channelCoordenatesB.push_back(180);
-	channelCoordenatesB.push_back(230);
+	channelCoordenatesB.push_back(250);
+	channelCoordenatesB.push_back(300);
 	couplingCoordenatesA.push_back(20);
 	couplingCoordenatesA.push_back(120);
-	couplingCoordenatesA.push_back(290);
-	couplingCoordenatesA.push_back(330);
+	couplingCoordenatesA.push_back(150);
+	couplingCoordenatesA.push_back(190);
 	couplingCoordenatesB.push_back(20);
 	couplingCoordenatesB.push_back(120);
-	couplingCoordenatesB.push_back(140);
-	couplingCoordenatesB.push_back(180);
+	couplingCoordenatesB.push_back(300);
+	couplingCoordenatesB.push_back(340);
 	measuresCoordenates.push_back(0);
 	measuresCoordenates.push_back(213);
-	measuresCoordenates.push_back(0);
-	measuresCoordenates.push_back(80);
+	measuresCoordenates.push_back(400);
+	measuresCoordenates.push_back(480);
 	measuresMenuCoordenates.push_back(0);
 	measuresMenuCoordenates.push_back(213);
-	measuresMenuCoordenates.push_back(80);
-	measuresMenuCoordenates.push_back(110);
+	measuresMenuCoordenates.push_back(370);
+	measuresMenuCoordenates.push_back(400);
 	mathematicsCoordenates.push_back(213);
 	mathematicsCoordenates.push_back(427);
-	mathematicsCoordenates.push_back(0);
-	mathematicsCoordenates.push_back(80);
+	mathematicsCoordenates.push_back(400);
+	mathematicsCoordenates.push_back(480);
 	mathematicsMenuCoordenates.push_back(213);
 	mathematicsMenuCoordenates.push_back(427);
-	mathematicsMenuCoordenates.push_back(80);
-	mathematicsMenuCoordenates.push_back(110);
+	mathematicsMenuCoordenates.push_back(370);
+	mathematicsMenuCoordenates.push_back(400);
 	modeCoordenates.push_back(427);
 	modeCoordenates.push_back(640);
-	modeCoordenates.push_back(0);
-	modeCoordenates.push_back(80);
+	modeCoordenates.push_back(400);
+	modeCoordenates.push_back(480);
 	modeMenuCoordenates.push_back(427);
 	modeMenuCoordenates.push_back(640);
-	modeMenuCoordenates.push_back(80);
-	modeMenuCoordenates.push_back(110);
-	colorA.push_back(0.2);
-	colorA.push_back(0.2);
-	colorA.push_back(1.0);
-	colorB.push_back(1.0);
-	colorB.push_back(0.0);
-	colorB.push_back(0.0);
-	colorMathematics.push_back(1.0);
-	colorMathematics.push_back(1.0);
-	colorMathematics.push_back(0.0);
+	modeMenuCoordenates.push_back(370);
+	modeMenuCoordenates.push_back(400);
+	colorA = 0x3F3FFF;
+	colorB = 0xFF0000;
+	colorMathematics = 0xFFFF00;
 	cursorDrag = false;
 	offsetDrag = false;
 	verticalScaleDrag = false;
@@ -149,9 +143,9 @@ vector<int> State::getModeMenuCoordenates(void)
 	return modeMenuCoordenates;
 }
 
-vector<float> State::getColor(Configuration::Channels channel)
+int State::getColor(Configuration::Channels channel)
 {
-	vector<float> color;
+	int color;
 	switch(channel)
 	{
 		case Configuration::CHANNEL_A:
@@ -164,7 +158,7 @@ vector<float> State::getColor(Configuration::Channels channel)
 	return color;
 }
 
-vector<float> State::getColorMathematics(void)
+int State::getColorMathematics(void)
 {
 	return colorMathematics;
 }
