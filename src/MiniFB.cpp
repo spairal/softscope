@@ -12,7 +12,7 @@ using namespace std;
 
 MiniFB::MiniFB(string fb)
 {
-	int fd = open(fb, O_RDWR);
+	int fd = open(fb.data(), O_RDWR);
 	struct fb_var_screeninfo screeninfo;
 	ioctl(fd, FBIOGET_VSCREENINFO, &screeninfo);
 	width = screeninfo.xres;
@@ -72,15 +72,43 @@ void MiniFB::drawRectangleFill(int x1, int y1, int x2, int y2, int color)
 
 void MiniFB::drawRectangleBorder(int x1, int y1, int x2, int y2, int color)
 {
-	drawLine(x1, y1, x2, y1);
-	drawLine(x1, y2, x2, y2);
-	drawLine(x1, y1, x1, y2);
-	drawLine(x2, y1, x2, y2);
+	drawLine(x1, y1, x2, y1, color);
+	drawLine(x1, y2, x2, y2, color);
+	drawLine(x1, y1, x1, y2, color);
+	drawLine(x2, y1, x2, y2, color);
 }
 
 void MiniFB::drawRectangle(int x1, int y1, int x2, int y2, int fillColor, int borderColor)
 {
 	drawRectangleFill(x1, y1, x2, y2, fillColor);
 	drawRectangleBorder(x1, y1, x2, y2, borderColor);
+}
+
+void MiniFB::drawText(int x, int y, string text, int color, FONTS font)
+{
+}
+
+int MiniFB::getTextWidth(string text, FONTS font)
+{
+	return 0;
+}
+
+int MiniFB::getTextHeight(string text, FONTS font)
+{
+	return 0;
+}
+
+int MiniFB::thinColor(int color, int times)
+{
+	int r = color & 0xFF0000;
+	int g = color & 0x00FF00;
+	int b = color & 0x0000FF;
+	r >>= times;
+	g >>= times;
+	b >>= times;
+	r &= 0xFF0000;
+	g &= 0x00FF00;
+	b &= 0x0000FF;
+	return r | g | b;
 }
 

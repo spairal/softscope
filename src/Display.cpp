@@ -3,13 +3,12 @@
 
 using namespace std;
 
-Display::Display(Configuration& configuration, State& state, Samples& samples, Measurer& measurer, Mathematician& mathematician) : configuration(configuration), state(state), samples(samples), measurer(measurer), mathematician(mathematician), miniFB(miniFB)
+Display::Display(Configuration& configuration, State& state, Samples& samples, Measurer& measurer, Mathematician& mathematician, MiniFB& miniFB) : configuration(configuration), state(state), samples(samples), measurer(measurer), mathematician(mathematician), miniFB(miniFB)
 {
 }
 
 void Display::print(void)
 {
-	clearScreen();
 	printGrid(state.getGridCoordenates());
 	if(configuration.getChannel(state.getUnselectedChannel()))
 	{
@@ -88,7 +87,6 @@ void Display::print(void)
 	{
 		printAlert("Select the trigger level and hold off", state.getGridCoordenates());
 	}
-	updateScreen();
 }
 
 vector<int> Display::samplesToPixels(const vector<double>& samples, double offset, double verticalScale, int pixelsPerDivision)
@@ -103,121 +101,102 @@ vector<int> Display::samplesToPixels(const vector<double>& samples, double offse
 
 void Display::printGrid(vector<int> coordenates)
 {
-	setPenColor(getColorFromRGB(0.2, 0.2, 0.2));
-	for(int x = coordenates[0]; x <= coordenates[1]; x+=((coordenates[1] - coordenates[0]) / 10))
+	int color = miniFB.thinColor(state.getColorGeneral(), 1);
+	for(int x = coordenates[0]; x <= coordenates[1]; x += ((coordenates[1] - coordenates[0]) / 10))
 	{
-		drawLine(x, coordenates[2], x, coordenates[3]);
+		miniFB.drawLine(x, coordenates[2], x, coordenates[3], color);
 	}
-	for(int y = coordenates[2]; y <= coordenates[3]; y+=((coordenates[3] - coordenates[2]) / 8))
+	for(int y = coordenates[2]; y <= coordenates[3]; y += ((coordenates[3] - coordenates[2]) / 8))
 	{
-		drawLine(coordenates[0], y, coordenates[1], y);
+		miniFB.drawLine(coordenates[0], y, coordenates[1], y, color);
 	}
 }
 
 void Display::printOffset(int offsetValue, string offsetString, int color, vector<int> coordenates)
 {
-	setTextFont(POLO_HELVETICA_12);
-	setPenColor(getColorFromRGB(color[0], color[1], color[2]));
-	drawText(coordenates[0] + 5, (coordenates[2] + coordenates[3]) / 2 + offsetValue, offsetString.data());
+	miniFB.drawText(coordenates[0] + 5, (coordenates[2] + coordenates[3]) / 2 + offsetValue, offsetString, color, MiniFB::MEDIUM);
 }
 
 void Display::printVerticalScale(string verticalScale, int color, vector<int> coordenates)
 {
-	setTextFont(POLO_HELVETICA_12);
-	setPenColor(getColorFromRGB(color[0], color[1], color[2]));
-	drawText(coordenates[1] - getTextDrawWidth(verticalScale.data()) - 5, (coordenates[2] + coordenates[3]) / 2, verticalScale.data());
+	miniFB.drawText(coordenates[1] - miniFB.getTextWidth(verticalScale, MiniFB::MEDIUM) - 5, (coordenates[2] + coordenates[3]) / 2, verticalScale, color, MiniFB::MEDIUM);
 }
 
 void Display::printDelay(int delayValue, std::string delayString, vector<int> coordenates)
 {
-	setTextFont(POLO_HELVETICA_12);
-	setPenColor(getColorFromRGB(0.5, 0.5, 0.5));
-	drawText((coordenates[0] + coordenates[1]) / 2 + delayValue, coordenates[2] + 5, delayString.data());
+	miniFB.drawText((coordenates[0] + coordenates[1]) / 2 + delayValue, coordenates[2] + 5, delayString, state.getColorGeneral(), MiniFB::MEDIUM);
 }
 
 void Display::printHorizontalScale(string horizontalScale, vector<int> coordenates)
 {
-	setTextFont(POLO_HELVETICA_12);
-	setPenColor(getColorFromRGB(0.5, 0.5, 0.5));
-	drawText((coordenates[0] + coordenates[1]) / 2 + 5, coordenates[3] - getTextDrawHeight(horizontalScale.data()) - 5, horizontalScale.data());
+	miniFB.drawText((coordenates[0] + coordenates[1]) / 2 + 5, coordenates[3] - miniFB.getTextHeight(horizontalScale, MiniFB::MEDIUM) - 5, horizontalScale, state.getColorGeneral(), MiniFB::MEDIUM);
 }
 
 void Display::printChannelButton(string channel, bool isActive, bool isSelected, int color, vector<int> coordenates)
 {
-	setPenColor(getColorFromRGB(color[0], color[1], color[2]));
+	int fillColor;
 	if(isSelected)
 	{
-		setFillColor(getColorFromRGB(color[0] / 4, color[1] / 4, color[2] / 4));
+		fillColor = miniFB.thinColor(color, 2);
 	}
 	else
 	{
-		setFillColor(getColorFromRGB(color[0] / 16, color[1] / 16, color[2] / 16));
+		fillColor = miniFB.thinColor(color, 4);
 	}
-	drawRect(coordenates[0], coordenates[2], coordenates[1] - coordenates[0], coordenates[3] - coordenates[2]);
+	miniFB.drawRectangle(coordenates[0], coordenates[2], coordenates[1] - coordenates[0], coordenates[3] - coordenates[2], fillColor, color);
 	if(isActive)
 	{
-		setFillColor(getColorFromRGB(color[0], color[1], color[2]));
+		fillColor = color;
 	}
 	else
 	{
-		setFillColor(getColorFromRGB(color[0] / 16, color[1] / 16, color[2] / 16));
+		fillColor = miniFB.thinColor(color, 4);
 	}
-	drawRect(coordenates[0] + (coordenates[3] - coordenates[2]) / 4 , (3 * coordenates[2] + coordenates[3]) / 4, (coordenates[3] - coordenates[2]) / 2, (coordenates[3] - coordenates[2]) / 2);
-	setTextFont(POLO_HELVETICA_18);
-	drawText(coordenates[0] + (coordenates[3] - coordenates[2]), (coordenates[2] + coordenates[3] - getTextDrawHeight(channel.data())) / 2, channel.data());
+	miniFB.drawRectangle(coordenates[0] + (coordenates[3] - coordenates[2]) / 4 , (3 * coordenates[2] + coordenates[3]) / 4, (coordenates[3] - coordenates[2]) / 2, (coordenates[3] - coordenates[2]) / 2, fillColor, color);
+	miniFB.drawText(coordenates[0] + (coordenates[3] - coordenates[2]), (coordenates[2] + coordenates[3] - miniFB.getTextHeight(channel, MiniFB::LARGE)) / 2, channel, color, MiniFB::LARGE);
 }
 
 void Display::printCouplingButton(string text, int color, vector<int> coordenates)
 {
-	setPenColor(getColorFromRGB(color[0], color[1], color[2]));
-	setFillColor(getColorFromRGB(color[0] / 16, color[1] / 16, color[2] / 16));
-	drawRect(coordenates[0], coordenates[2], coordenates[1] - coordenates[0], coordenates[3] - coordenates[2]);
-	setTextFont(POLO_HELVETICA_12);
-	drawText((coordenates[0] + coordenates[1] - getTextDrawWidth("Coupling")) / 2, (coordenates[2] + 2 * coordenates[3]) / 3 - getTextDrawHeight("Coupling") / 2, "Coupling");
-	setTextFont(POLO_HELVETICA_10);
-	drawText((coordenates[0] + coordenates[1] - getTextDrawWidth(text.data())) / 2, (2 * coordenates[2] + coordenates[3]) / 3 - getTextDrawHeight(text.data()) / 2, text.data());
+	miniFB.drawRectangle(coordenates[0], coordenates[2], coordenates[1] - coordenates[0], coordenates[3] - coordenates[2], miniFB.thinColor(color, 4), color);
+	miniFB.drawText((coordenates[0] + coordenates[1] - miniFB.getTextWidth("Coupling", MiniFB::MEDIUM)) / 2, (coordenates[2] + 2 * coordenates[3]) / 3 - miniFB.getTextHeight("Coupling", MiniFB::MEDIUM) / 2, "Coupling", color, MiniFB::MEDIUM);
+	miniFB.drawText((coordenates[0] + coordenates[1] - miniFB.getTextWidth(text, MiniFB::SMALL)) / 2, (2 * coordenates[2] + coordenates[3]) / 3 - miniFB.getTextHeight(text, MiniFB::SMALL) / 2, text, color, MiniFB::SMALL);
 }
 
 void Display::printButton(string title, string text, bool isActive, vector<int> coordenates)
 {
-	setPenColor(getColorFromRGB(0.5, 0.5, 0.5));
+	int color = state.getColorGeneral();
+	int fillColor;
 	if(isActive)
 	{
-		setFillColor(getColorFromRGB(0.2, 0.2, 0.2));
+		fillColor = miniFB.thinColor(color, 1);
 	}
 	else
 	{
-		setFillColor(getColorFromRGB(0.1, 0.1, 0.1));
+		fillColor = miniFB.thinColor(color, 2);
 	}
-	drawRect(coordenates[0], coordenates[2], coordenates[1] - coordenates[0], coordenates[3] - coordenates[2]);
-	setTextFont(POLO_HELVETICA_18);
-	drawText((coordenates[0] + coordenates[1] - getTextDrawWidth(title.data())) / 2, (coordenates[2] + 6 * coordenates[3]) / 7 - getTextDrawHeight(title.data()) / 2, title.data());
-	setTextFont(POLO_HELVETICA_10);
-	drawText((coordenates[0] + coordenates[1] - getTextDrawWidth(text.data())) / 2, (4 * coordenates[2] + 3 * coordenates[3]) / 7 - getTextDrawHeight(text.data()) / 2, text.data());
+	miniFB.drawRectangle(coordenates[0], coordenates[2], coordenates[1] - coordenates[0], coordenates[3] - coordenates[2], fillColor, color);
+	miniFB.drawText((coordenates[0] + coordenates[1] - miniFB.getTextWidth(title, MiniFB::LARGE)) / 2, (coordenates[2] + 6 * coordenates[3]) / 7 - miniFB.getTextHeight(title, MiniFB::LARGE) / 2, title, color, MiniFB::LARGE);
+	miniFB.drawText((coordenates[0] + coordenates[1] - miniFB.getTextWidth(text, MiniFB::SMALL)) / 2, (4 * coordenates[2] + 3 * coordenates[3]) / 7 - miniFB.getTextHeight(text, MiniFB::SMALL) / 2, text, color, MiniFB::SMALL);
 }
 
 void Display::printMenu(vector<string> options, vector<int> coordenates)
 {
-	setPenColor(getColorFromRGB(0.5, 0.5, 0.5));
-	setFillColor(getColorFromRGB(0.1, 0.1, 0.1));
-	setTextFont(POLO_HELVETICA_12);
-	drawRect(coordenates[0], coordenates[2], coordenates[1] - coordenates[0], (coordenates[3] - coordenates[2]) * options.size());
+	int color = state.getColorGeneral();
+	miniFB.drawRectangle(coordenates[0], coordenates[2], coordenates[1] - coordenates[0], (coordenates[3] - coordenates[2]) * options.size(), miniFB.thinColor(color, 2), color);
 	for(int i = 0; i < options.size(); i++)
 	{
-		drawText((coordenates[0] + coordenates[1] - getTextDrawWidth(options[i].data())) / 2, coordenates[2] + (options.size() - i - 0.5) * (coordenates[3] - coordenates[2]) - getTextDrawHeight(options[i].data()) / 2, options[i].data());
+		miniFB.drawText((coordenates[0] + coordenates[1] - miniFB.getTextWidth(options[i], MiniFB::MEDIUM)) / 2, coordenates[2] + (options.size() - i - 0.5) * (coordenates[3] - coordenates[2]) - miniFB.getTextHeight(options[i], MiniFB::MEDIUM) / 2, options[i], color, MiniFB::MEDIUM);
 	}
 }
 
 void Display::printAlert(string text, vector<int> coordenates)
 {
-	setPenColor(getColorFromRGB(0.5, 0.5, 0.5));
-	setTextFont(POLO_HELVETICA_12);
-	drawText(coordenates[0] + state.getPixelsPerDivision(), coordenates[3] - state.getPixelsPerDivision(), text.data());
+	miniFB.drawText(coordenates[0] + state.getPixelsPerDivision(), coordenates[3] - state.getPixelsPerDivision(), text, state.getColorGeneral(), MiniFB::MEDIUM);
 }
 
 void Display::printSamples(std::vector<int> samples, int delay, int memoryDepth, double step, int color, vector<int> coordenates)
 {
-	setPenColor(getColorFromRGB(color[0], color[1], color[2]));
 	int upStep = max(1.0, round(step));
 	int start = (delay - memoryDepth / 2) * step + memoryDepth / 2;
 	for(int i = max(start, 0); i < min((int) (start + round((coordenates[1] - coordenates[0]) * step)), memoryDepth - upStep); i += upStep)
@@ -240,14 +219,12 @@ void Display::printSamples(std::vector<int> samples, int delay, int memoryDepth,
 		{
 			yb = coordenates[3];
 		}
-		drawLine(round(coordenates[0] + (i - start) / step), ya, round(coordenates[0] + (i - start + upStep) / step), yb);
+		miniFB.drawLine(round(coordenates[0] + (i - start) / step), ya, round(coordenates[0] + (i - start + upStep) / step), yb, color);
 	}
 }
 
 void Display::printCursor(vector<int> coordenates)
 {
-	setPenColor(getColorFromRGB(0.5, 0.5, 0.5));
-	setFillColor(getColorFromRGBA(0.0, 0.0, 0.0, 0.0));
-	drawRect(coordenates[0], coordenates[2], coordenates[1] - coordenates[0], coordenates[3] - coordenates[2]);
+	miniFB.drawRectangleBorder(coordenates[0], coordenates[2], coordenates[1] - coordenates[0], coordenates[3] - coordenates[2], state.getColorGeneral());
 }
 

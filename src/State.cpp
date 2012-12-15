@@ -48,6 +48,7 @@ State::State(void)
 	modeMenuCoordenates.push_back(640);
 	modeMenuCoordenates.push_back(370);
 	modeMenuCoordenates.push_back(400);
+	colorGeneral = 0x7F7F7F;
 	colorA = 0x3F3FFF;
 	colorB = 0xFF0000;
 	colorMathematics = 0xFFFF00;
@@ -141,6 +142,11 @@ vector<int> State::getMathematicsMenuCoordenates(void)
 vector<int> State::getModeMenuCoordenates(void)
 {
 	return modeMenuCoordenates;
+}
+
+int State::getColorGeneral(void)
+{
+	return colorGeneral;
 }
 
 int State::getColor(Configuration::Channels channel)
