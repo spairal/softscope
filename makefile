@@ -25,7 +25,7 @@ $(EXECUTABLE) : $(OBJECTS)
 # COMPILING
 
 $(OBJ)/main.o : $(SOURCE)/main.cpp
-	$(COMPILER) $(COMPILERPARAMS) $(SOURCE)/main.cpp $(INCLUDE) $(SOURCE) $(INCLUDE) $(LIBPOLO) $(OUTPUT) $(OBJ)/main.o
+	$(COMPILER) $(COMPILERPARAMS) $(SOURCE)/main.cpp $(INCLUDE) $(SOURCE) $(OUTPUT) $(OBJ)/main.o
 
 $(OBJ)/Configuration.o : $(SOURCE)/Configuration.cpp
 	$(COMPILER) $(COMPILERPARAMS) $(SOURCE)/Configuration.cpp $(INCLUDE) $(SOURCE) $(OUTPUT) $(OBJ)/Configuration.o
