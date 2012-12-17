@@ -18,18 +18,38 @@ MiniFB::MiniFB(string fb)
 	width = screeninfo.xres;
 	height = screeninfo.yres;
 	data = (unsigned int*) mmap(0, 4 * width * height, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+	buffer = new unsigned int[width * height];
 }
 
 MiniFB::~MiniFB()
 {
 	munmap(data, 4 * width * height);
+	delete[] buffer;
+}
+
+void MiniFB::clearScreen(void)
+{
+	drawRectangleFill(0, 0, width - 1, height - 1, 0x000000);
+}
+
+void MiniFB::updateScreen(void)
+{
+	for(int y = 0; y < height; y++)
+	{
+		for(int x = 0; x < width; x++)
+		{
+			data[y * width + x] = buffer[y * width + x];
+		}
+	}
 }
 
 void MiniFB::drawPixel(int x, int y, int color)
 {
+	x += 40;
+	y += 48;
 	if((x >= 0) && (x < width) && (y >= 0) && (y < height))
 	{
-		data[y * width + x] = color;
+		buffer[y * width + x] = color;
 	}
 }
 
@@ -38,7 +58,7 @@ void MiniFB::drawLine(int x1, int y1, int x2, int y2, int color)
 	if(abs(x2 - x1) > abs(y2 - y1))
 	{
 		int xStep = (x1 < x2) ? 1 : -1;
-		double y = y1;
+		double y = y1 + 0.5;
 		double yStep = (double) (y2 - y1) / (x2 - x1);
 		for(int x = x1; x != x2; x += xStep)
 		{
@@ -49,7 +69,7 @@ void MiniFB::drawLine(int x1, int y1, int x2, int y2, int color)
 	else
 	{
 		int yStep = (y1 < y2) ? 1 : -1;
-		double x = x1;
+		double x = x1 + 0.5;
 		double xStep = (double) (x2 - x1) / (y2 - y1);
 		for(int y = y1; y != y2; y += yStep)
 		{
@@ -61,9 +81,11 @@ void MiniFB::drawLine(int x1, int y1, int x2, int y2, int color)
 
 void MiniFB::drawRectangleFill(int x1, int y1, int x2, int y2, int color)
 {
-	for(int x = x1; x <= x2; x++)
+	int xStep = (x1 > x2) ? -1 : 1;
+	int yStep = (y1 > y2) ? -1 : 1;
+	for(int x = x1; x <= x2; x += xStep)
 	{
-		for(int y = y1; y <= y2; y++)
+		for(int y = y1; y <= y2; y += yStep)
 		{
 			drawPixel(x, y, color);
 		}
