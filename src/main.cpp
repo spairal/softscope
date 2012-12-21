@@ -12,15 +12,12 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-	MiniFB miniFB("/dev/fb0");
 	Configuration configuration;
 	State state;
 	Samples samples;
-	Measurer measurer(configuration, state, samples);
-	Mathematician mathematician(configuration, state, samples);
 	Touch touch(configuration, state, samples);
 	FPGA fpga(configuration, state, samples);
-	Display display(configuration, state, samples, measurer, mathematician, miniFB);
+	Display display(configuration, state, samples);
 	while(true)
 	{
 		if(false)

@@ -2,17 +2,19 @@
 #define MINIFB_HPP
 
 #include <string>
+#include <map>
 
 class MiniFB
 {
 	public:
-		enum FONTS {SMALL, MEDIUM, LARGE};
+		enum FONTS {SMALL, LARGE};
 
 	private:
 		int width;
 		int height;
 		unsigned int* data;
 		unsigned int* buffer;
+		std::map<char, bool*> characterMap;
 
 	public:
 		MiniFB(std::string fb);
@@ -28,6 +30,9 @@ class MiniFB
 		int getTextWidth(std::string text, FONTS font);
 		int getTextHeight(std::string text, FONTS font);
 		int thinColor(int color, int times);
+
+	private:
+		void addCharacter(char character);
 };
 
 #endif
