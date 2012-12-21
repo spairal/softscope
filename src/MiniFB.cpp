@@ -1,13 +1,9 @@
 #include <MiniFB.hpp>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <fcntl.h>
 #include <linux/fb.h>
-#include <unistd.h>
 #include <sys/mman.h>
 #include <sys/ioctl.h>
 #include <cstdlib>
-#include <iostream>
 #include <sstream>
 #include <fstream>
 
@@ -74,8 +70,8 @@ void MiniFB::updateScreen(void)
 
 void MiniFB::drawPixel(int x, int y, int color)
 {
-	x += 40;
-	y += 48;
+	x += 40;	//TEMPORAL
+	y += 48;	//TEMPORAL
 	if((x >= 0) && (x < width) && (y >= 0) && (y < height))
 	{
 		buffer[y * width + x] = color;
