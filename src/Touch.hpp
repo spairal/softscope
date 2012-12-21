@@ -4,6 +4,7 @@
 #include <Configuration.hpp>
 #include <State.hpp>
 #include <Samples.hpp>
+#include <MiniInput.hpp>
 #include <vector>
 
 class Touch
@@ -12,16 +13,18 @@ class Touch
 		Configuration& configuration;
 		State& state;
 		Samples& samples;
+		MiniInput miniInput;
 		bool buttonPressed;
 		bool buttonReleased;
 
 	public:
 		Touch(Configuration& configuration, State& state, Samples& samples);
+		void getInput(void);
+
+	private:
 		void setButtonPressed(bool pressed);
 		void setButtonReleased(bool released);
 		void parseScreen(int x, int y);
-
-	private:
 		void startDragCursors(int x, int y);
 		void startDragOffset(int x, int y);
 		void startDragVerticalScale(int y);

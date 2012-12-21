@@ -14,8 +14,8 @@ SOURCE = src
 TARGET = target
 OBJ = $(TARGET)/obj
 EXECUTABLE = $(TARGET)/softscope
-OBJECTS = $(addprefix $(OBJ)/, $(addsuffix .o, main Configuration State Samples Measurer Mathematician Touch FPGA Display MiniFB))
-LIBRARIES = $(addprefix -l, fftw3)
+OBJECTS = $(addprefix $(OBJ)/, $(addsuffix .o, main Configuration State Samples Measurer Mathematician Touch FPGA Display MiniFB MiniInput))
+LIBRARIES = $(addprefix -l, fftw3 pthread)
 
 # LINKING
 
@@ -48,11 +48,14 @@ $(OBJ)/Touch.o : $(SOURCE)/Touch.cpp
 $(OBJ)/FPGA.o : $(SOURCE)/FPGA.cpp
 	$(COMPILER) $(COMPILERPARAMS) $(SOURCE)/FPGA.cpp $(INCLUDE) $(SOURCE) $(OUTPUT) $(OBJ)/FPGA.o
 
+$(OBJ)/Display.o : $(SOURCE)/Display.cpp
+	$(COMPILER) $(COMPILERPARAMS) $(SOURCE)/Display.cpp $(INCLUDE) $(SOURCE) $(OUTPUT) $(OBJ)/Display.o
+
 $(OBJ)/MiniFB.o : $(SOURCE)/MiniFB.cpp
 	$(COMPILER) $(COMPILERPARAMS) $(SOURCE)/MiniFB.cpp $(INCLUDE) $(SOURCE) $(OUTPUT) $(OBJ)/MiniFB.o
 
-$(OBJ)/Display.o : $(SOURCE)/Display.cpp
-	$(COMPILER) $(COMPILERPARAMS) $(SOURCE)/Display.cpp $(INCLUDE) $(SOURCE) $(OUTPUT) $(OBJ)/Display.o
+$(OBJ)/MiniInput.o : $(SOURCE)/MiniInput.cpp
+	$(COMPILER) $(COMPILERPARAMS) $(SOURCE)/MiniInput.cpp $(INCLUDE) $(SOURCE) $(OUTPUT) $(OBJ)/MiniInput.o
 
 # SOURCES
 
@@ -86,6 +89,9 @@ $(SOURCE)/Display.cpp : $(SOURCE)/Display.hpp
 $(SOURCE)/MiniFB.cpp : $(SOURCE)/MiniFB.hpp
 	$(TOUCH) $(SOURCE)/MiniFB.cpp
 
+$(SOURCE)/MiniInput.cpp : $(SOURCE)/MiniInput.hpp
+	$(TOUCH) $(SOURCE)/MiniInput.cpp
+
 # HEADERS
 
 $(SOURCE)/Configuration.hpp :
@@ -103,7 +109,7 @@ $(SOURCE)/Measurer.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURC
 $(SOURCE)/Mathematician.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp
 	$(TOUCH) $(SOURCE)/Mathematician.hpp
 
-$(SOURCE)/Touch.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp
+$(SOURCE)/Touch.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp $(SOURCE)/MiniInput.hpp
 	$(TOUCH) $(SOURCE)/Touch.hpp
 
 $(SOURCE)/FPGA.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp
@@ -114,6 +120,9 @@ $(SOURCE)/Display.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE
 
 $(SOURCE)/MiniFB.hpp :
 	$(TOUCH) $(SOURCE)/MiniFB.hpp
+
+$(SOURCE)/MiniInput.hpp :
+	$(TOUCH) $(SOURCE)/MiniInput.hpp
 
 # MAKING DIRECTORIES
 

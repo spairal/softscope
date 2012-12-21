@@ -41,6 +41,8 @@ class State
 		bool triggerHighFrequencyRejectActive;
 		bool triggerLevelActive;
 		bool averageActive;
+		int mouseX;
+		int mouseY;
 
 	public:
 		State(void);
@@ -96,6 +98,10 @@ class State
 		void setTriggerHighFrequencyRejectActive(bool active);
 		void setTriggerLevelActive(bool active);
 		void setAverageActive(bool active);
+		int getMouseX(void);
+		int getMouseY(void);
+		void setMouseX(int x);
+		void setMouseY(int y);
 };
 
 #endif

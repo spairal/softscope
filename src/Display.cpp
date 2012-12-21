@@ -9,7 +9,7 @@ Display::Display(Configuration& configuration, State& state, Samples& samples) :
 
 void Display::print(void)
 {
-	miniFB.clearScreen();
+	clearScreen();
 	printGrid(state.getGridCoordenates());
 	if(configuration.getChannel(state.getUnselectedChannel()))
 	{
@@ -88,7 +88,8 @@ void Display::print(void)
 	{
 		printAlert("Select the trigger level and hold off", state.getGridCoordenates());
 	}
-	miniFB.updateScreen();
+	printMouse(state.getMouseX(), state.getMouseY());
+	updateScreen();
 }
 
 vector<int> Display::samplesToPixels(const vector<double>& samples, double offset, double verticalScale, int pixelsPerDivision)
@@ -99,6 +100,16 @@ vector<int> Display::samplesToPixels(const vector<double>& samples, double offse
 		pixels[i] = (int) ((samples[i] + offset) * pixelsPerDivision / verticalScale);
 	}
 	return pixels;
+}
+
+void Display::clearScreen(void)
+{
+	miniFB.clearScreen();
+}
+
+void Display::updateScreen(void)
+{
+	miniFB.updateScreen();
 }
 
 void Display::printGrid(vector<int> coordenates)
@@ -228,5 +239,10 @@ void Display::printSamples(std::vector<int> samples, int delay, int memoryDepth,
 void Display::printCursor(vector<int> coordenates)
 {
 	miniFB.drawRectangleBorder(coordenates[0], coordenates[2], coordenates[1], coordenates[3], state.getColorGeneral());
+}
+
+void Display::printMouse(int x, int y)
+{
+	miniFB.drawText(x - miniFB.getTextWidth("X", MiniFB::LARGE) / 2, y - miniFB.getTextHeight("X", MiniFB::LARGE) / 2, "X", 0x000000, MiniFB::LARGE);
 }
 

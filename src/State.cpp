@@ -72,6 +72,8 @@ State::State(void)
 	triggerHighFrequencyRejectActive = false;
 	triggerLevelActive = false;
 	averageActive = false;
+	mouseX = 0;
+	mouseY = 0;
 }
 
 vector<int> State::getGridCoordenates(void)
@@ -375,5 +377,25 @@ void State::setTriggerLevelActive(bool active)
 void State::setAverageActive(bool active)
 {
 	averageActive = active;
+}
+
+int State::getMouseX(void)
+{
+	return mouseX;
+}
+
+int State::getMouseY(void)
+{
+	return mouseY;
+}
+
+void State::setMouseX(int x)
+{
+	mouseX = x;
+}
+
+void State::setMouseY(int y)
+{
+	mouseY = y;
 }
 

@@ -26,6 +26,8 @@ class Display
 
 	private:
 		std::vector<int> samplesToPixels(const std::vector<double>& samples, double offset, double verticalScale, int pixelsPerDivision);
+		void clearScreen(void);
+		void updateScreen(void);
 		void printGrid(std::vector<int> coordenates);
 		void printOffset(int offsetValue, std::string offsetString, int color, std::vector<int> coordenates);
 		void printVerticalScale(std::string verticalScale, int color, std::vector<int> coordenates);
@@ -38,6 +40,7 @@ class Display
 		void printAlert(std::string text, std::vector<int> coordenates);
 		void printSamples(std::vector<int> samples, int delay, int memoryDepth, double step, int color, std::vector<int> coordenates);
 		void printCursor(std::vector<int> coordenates);
+		void printMouse(int x, int y);
 };
 
 #endif

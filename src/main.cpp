@@ -20,14 +20,7 @@ int main(int argc, char** argv)
 	Display display(configuration, state, samples);
 	while(true)
 	{
-		if(false)
-		{
-			touch.setButtonPressed(true);
-		}
-		if(false)
-		{
-			touch.setButtonReleased(true);
-		}
+		touch.getInput();
 		fpga.fetchSamples();
 		display.print();
 	}

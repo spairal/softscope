@@ -2,10 +2,23 @@
 
 using namespace std;
 
-Touch::Touch(Configuration& configuration, State& state, Samples& samples) : configuration(configuration), state(state), samples(samples)
+Touch::Touch(Configuration& configuration, State& state, Samples& samples) : configuration(configuration), state(state), samples(samples), miniInput("/dev/input/event0")
 {
 	buttonPressed = false;
 	buttonReleased = false;
+}
+
+void Touch::getInput(void)
+{
+	if(miniInput.getPressed())
+	{
+		setButtonPressed(true);
+	}
+	if(miniInput.getReleased())
+	{
+		setButtonReleased(true);
+	}
+	parseScreen(miniInput.getX(), miniInput.getY());
 }
 
 void Touch::setButtonPressed(bool pressed)
@@ -20,6 +33,8 @@ void Touch::setButtonReleased(bool released)
 
 void Touch::parseScreen(int x, int y)
 {
+	state.setMouseX(x);
+	state.setMouseY(y);
 	if(buttonPressed)
 	{
 		buttonPressed = false;
