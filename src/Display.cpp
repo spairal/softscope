@@ -3,7 +3,7 @@
 
 using namespace std;
 
-Display::Display(Configuration& configuration, State& state, Samples& samples, Measurer& measurer, Mathematician& mathematician, MiniFB& miniFB) : configuration(configuration), state(state), samples(samples), measurer(measurer), mathematician(mathematician), miniFB(miniFB)
+Display::Display(Configuration& configuration, State& state, Samples& samples) : configuration(configuration), state(state), samples(samples), measurer(configuration, state, samples), mathematician(configuration, state, samples), miniFB("/dev/fb0")
 {
 }
 
@@ -116,22 +116,22 @@ void Display::printGrid(vector<int> coordenates)
 
 void Display::printOffset(int offsetValue, string offsetString, int color, vector<int> coordenates)
 {
-	miniFB.drawText(coordenates[0] + 5, (coordenates[2] + coordenates[3]) / 2 + offsetValue, offsetString, color, MiniFB::MEDIUM);
+	miniFB.drawText(coordenates[0] + 5, (coordenates[2] + coordenates[3]) / 2 + offsetValue - miniFB.getTextHeight(offsetString, MiniFB::SMALL), offsetString, color, MiniFB::SMALL);
 }
 
 void Display::printVerticalScale(string verticalScale, int color, vector<int> coordenates)
 {
-	miniFB.drawText(coordenates[1] - miniFB.getTextWidth(verticalScale, MiniFB::MEDIUM) - 5, (coordenates[2] + coordenates[3]) / 2, verticalScale, color, MiniFB::MEDIUM);
+	miniFB.drawText(coordenates[1] - miniFB.getTextWidth(verticalScale, MiniFB::SMALL) - 5, (coordenates[2] + coordenates[3]) / 2 - miniFB.getTextHeight(verticalScale, MiniFB::SMALL), verticalScale, color, MiniFB::SMALL);
 }
 
 void Display::printDelay(int delayValue, std::string delayString, vector<int> coordenates)
 {
-	miniFB.drawText((coordenates[0] + coordenates[1]) / 2 + delayValue, coordenates[2] + 5, delayString, state.getColorGeneral(), MiniFB::MEDIUM);
+	miniFB.drawText((coordenates[0] + coordenates[1]) / 2 + delayValue, coordenates[3] - miniFB.getTextHeight(delayString, MiniFB::SMALL) -5, delayString, state.getColorGeneral(), MiniFB::SMALL);
 }
 
 void Display::printHorizontalScale(string horizontalScale, vector<int> coordenates)
 {
-	miniFB.drawText((coordenates[0] + coordenates[1]) / 2 + 5, coordenates[3] - miniFB.getTextHeight(horizontalScale, MiniFB::MEDIUM) - 5, horizontalScale, state.getColorGeneral(), MiniFB::MEDIUM);
+	miniFB.drawText((coordenates[0] + coordenates[1]) / 2 + 5, coordenates[2] + 5, horizontalScale, state.getColorGeneral(), MiniFB::SMALL);
 }
 
 void Display::printChannelButton(string channel, bool isActive, bool isSelected, int color, vector<int> coordenates)
@@ -161,8 +161,8 @@ void Display::printChannelButton(string channel, bool isActive, bool isSelected,
 void Display::printCouplingButton(string text, int color, vector<int> coordenates)
 {
 	miniFB.drawRectangle(coordenates[0], coordenates[2], coordenates[1], coordenates[3], miniFB.thinColor(color, 4), color);
-	miniFB.drawText((coordenates[0] + coordenates[1] - miniFB.getTextWidth("Coupling", MiniFB::MEDIUM)) / 2, (coordenates[2] + 2 * coordenates[3]) / 3 - miniFB.getTextHeight("Coupling", MiniFB::MEDIUM) / 2, "Coupling", color, MiniFB::MEDIUM);
-	miniFB.drawText((coordenates[0] + coordenates[1] - miniFB.getTextWidth(text, MiniFB::SMALL)) / 2, (2 * coordenates[2] + coordenates[3]) / 3 - miniFB.getTextHeight(text, MiniFB::SMALL) / 2, text, color, MiniFB::SMALL);
+	miniFB.drawText((coordenates[0] + coordenates[1] - miniFB.getTextWidth("Coupling", MiniFB::SMALL)) / 2, (2 * coordenates[2] + coordenates[3]) / 3 - miniFB.getTextHeight("Coupling", MiniFB::SMALL) / 2, "Coupling", color, MiniFB::SMALL);
+	miniFB.drawText((coordenates[0] + coordenates[1] - miniFB.getTextWidth(text, MiniFB::SMALL)) / 2, (coordenates[2] + 2 * coordenates[3]) / 3 - miniFB.getTextHeight(text, MiniFB::SMALL) / 2, text, color, MiniFB::SMALL);
 }
 
 void Display::printButton(string title, string text, bool isActive, vector<int> coordenates)
@@ -178,8 +178,8 @@ void Display::printButton(string title, string text, bool isActive, vector<int> 
 		fillColor = miniFB.thinColor(color, 2);
 	}
 	miniFB.drawRectangle(coordenates[0], coordenates[2], coordenates[1], coordenates[3], fillColor, color);
-	miniFB.drawText((coordenates[0] + coordenates[1] - miniFB.getTextWidth(title, MiniFB::LARGE)) / 2, (coordenates[2] + 6 * coordenates[3]) / 7 - miniFB.getTextHeight(title, MiniFB::LARGE) / 2, title, color, MiniFB::LARGE);
-	miniFB.drawText((coordenates[0] + coordenates[1] - miniFB.getTextWidth(text, MiniFB::SMALL)) / 2, (4 * coordenates[2] + 3 * coordenates[3]) / 7 - miniFB.getTextHeight(text, MiniFB::SMALL) / 2, text, color, MiniFB::SMALL);
+	miniFB.drawText((coordenates[0] + coordenates[1] - miniFB.getTextWidth(title, MiniFB::LARGE)) / 2, (6 * coordenates[2] + coordenates[3]) / 7 - miniFB.getTextHeight(title, MiniFB::LARGE) / 2, title, color, MiniFB::LARGE);
+	miniFB.drawText((coordenates[0] + coordenates[1] - miniFB.getTextWidth(text, MiniFB::SMALL)) / 2, (3 * coordenates[2] + 4 * coordenates[3]) / 7 - miniFB.getTextHeight(text, MiniFB::SMALL) / 2, text, color, MiniFB::SMALL);
 }
 
 void Display::printMenu(vector<string> options, vector<int> coordenates)
@@ -188,13 +188,13 @@ void Display::printMenu(vector<string> options, vector<int> coordenates)
 	miniFB.drawRectangle(coordenates[0], coordenates[2], coordenates[1], options.size() * coordenates[3] - (options.size() - 1) * coordenates[2], miniFB.thinColor(color, 2), color);
 	for(int i = 0; i < options.size(); i++)
 	{
-		miniFB.drawText((coordenates[0] + coordenates[1] - miniFB.getTextWidth(options[i], MiniFB::MEDIUM)) / 2, coordenates[2] + (options.size() - i - 0.5) * (coordenates[3] - coordenates[2]) - miniFB.getTextHeight(options[i], MiniFB::MEDIUM) / 2, options[i], color, MiniFB::MEDIUM);
+		miniFB.drawText((coordenates[0] + coordenates[1] - miniFB.getTextWidth(options[i], MiniFB::SMALL)) / 2, coordenates[3] - (options.size() - i - 0.5) * (coordenates[3] - coordenates[2]) - miniFB.getTextHeight(options[i], MiniFB::SMALL) / 2, options[i], color, MiniFB::SMALL);
 	}
 }
 
 void Display::printAlert(string text, vector<int> coordenates)
 {
-	miniFB.drawText(coordenates[0] + state.getPixelsPerDivision(), coordenates[3] - state.getPixelsPerDivision(), text, state.getColorGeneral(), MiniFB::MEDIUM);
+	miniFB.drawText(coordenates[0] + state.getPixelsPerDivision(), coordenates[2] - state.getPixelsPerDivision() - miniFB.getTextHeight(text, MiniFB::SMALL), text, state.getColorGeneral(), MiniFB::SMALL);
 }
 
 void Display::printSamples(std::vector<int> samples, int delay, int memoryDepth, double step, int color, vector<int> coordenates)

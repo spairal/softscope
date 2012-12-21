@@ -7,6 +7,11 @@
 #include <sys/mman.h>
 #include <sys/ioctl.h>
 #include <cstdlib>
+#include <iostream>
+#include <sstream>
+#include <fstream>
+
+#define FONT_SIZE 8
 
 using namespace std;
 
@@ -19,12 +24,36 @@ MiniFB::MiniFB(string fb)
 	height = screeninfo.yres;
 	data = (unsigned int*) mmap(0, 4 * width * height, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
 	buffer = new unsigned int[width * height];
+	for(char c = 'a'; c <= 'z'; c++)
+	{
+		addCharacter(c);
+	}
+	for(char c = 'A'; c <= 'Z'; c++)
+	{
+		addCharacter(c);
+	}
+	for(char c = '0'; c <= '9'; c++)
+	{
+		addCharacter(c);
+	}
+	addCharacter(' ');
+	addCharacter('-');
+	addCharacter('.');
+	addCharacter('/');
+	addCharacter(':');
+	addCharacter(';');
+	addCharacter('=');
+	addCharacter('%');
 }
 
 MiniFB::~MiniFB()
 {
 	munmap(data, 4 * width * height);
 	delete[] buffer;
+	for(map<char, bool*>::iterator i = characterMap.begin(); i != characterMap.end(); i++)
+	{
+		delete[] i->second;
+	}
 }
 
 void MiniFB::clearScreen(void)
@@ -108,16 +137,96 @@ void MiniFB::drawRectangle(int x1, int y1, int x2, int y2, int fillColor, int bo
 
 void MiniFB::drawText(int x, int y, string text, int color, FONTS font)
 {
+	int multiplier;
+	switch(font)
+	{
+		case SMALL:
+			multiplier = 1;
+			break;
+		case LARGE:
+			multiplier = 2;
+			break;
+	}
+	for(int i =0; i < text.size(); i++)
+	{
+		char character = text[i];
+		if(character == '\n')
+		{
+			y += multiplier * FONT_SIZE;
+		}
+		else
+		{
+			bool* pixels = characterMap[character];
+			for(int j = 0; j < FONT_SIZE; j++)
+			{
+				for(int k = 0; k < FONT_SIZE; k++)
+				{
+					if(pixels[j + k * FONT_SIZE])
+					{
+						for(int m = 0; m < multiplier; m++)
+						{
+							for(int n = 0; n < multiplier; n++)
+							{
+								drawPixel(x + multiplier * j + m, y + multiplier * k + n, color);
+							}
+						}
+					}
+				}
+			}
+			x += multiplier * FONT_SIZE;
+		}
+	}
 }
 
 int MiniFB::getTextWidth(string text, FONTS font)
 {
-	return 0;
+	int width = 0;
+	int tmpWidth = 0;
+	for(int i =0; i < text.size(); i++)
+	{
+		if(text[i] == '\n')
+		{
+			if(tmpWidth > width)
+			{
+				width = tmpWidth;
+			}
+		}
+		else
+		{
+			tmpWidth += FONT_SIZE;
+		}
+	}
+	switch(font)
+	{
+		case SMALL:
+			break;
+		case LARGE:
+			width *= 2;
+			break;
+	}
+	return width;
 }
 
 int MiniFB::getTextHeight(string text, FONTS font)
 {
-	return 0;
+	int height = 0;
+	int tmpWidth = 0;
+	for(int i =0; i < text.size(); i++)
+	{
+		if(text[i] == '\n')
+		{
+			height += FONT_SIZE;
+		}
+	}
+	switch(font)
+	{
+		case SMALL:
+			break;
+		case LARGE:
+			height *= 2;
+			break;
+	}
+	return height;
 }
 
 int MiniFB::thinColor(int color, int times)
@@ -132,5 +241,37 @@ int MiniFB::thinColor(int color, int times)
 	g &= 0x00FF00;
 	b &= 0x0000FF;
 	return r | g | b;
+}
+
+void MiniFB::addCharacter(char character)
+{
+	bool* pixels = new bool[FONT_SIZE * FONT_SIZE];
+	stringstream ss;
+	ss << "font/";
+	switch(character)
+	{
+		case '/':
+			ss << "slash";
+			break;
+		default:
+			ss << character;
+			break;
+	}
+	ss << ".txt";
+	ifstream myFile(ss.str().data());
+	string line;
+	if(myFile.is_open())
+	{
+		for(int i = 0; i < FONT_SIZE; i++)
+		{
+			getline(myFile, line);
+			for(int j = 0; j < FONT_SIZE; j++)
+			{
+				pixels[i * FONT_SIZE + j] = (line[j] == 'X');
+			}
+		}
+		myFile.close();
+	}
+	characterMap[character] = pixels;
 }
 

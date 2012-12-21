@@ -16,12 +16,12 @@ class Display
 		Configuration& configuration;
 		State& state;
 		Samples& samples;
-		Measurer& measurer;
-		Mathematician& mathematician;
-		MiniFB& miniFB;
+		Measurer measurer;
+		Mathematician mathematician;
+		MiniFB miniFB;
 
 	public:
-		Display(Configuration& configuration, State& state, Samples& samples, Measurer& measurer, Mathematician& mathematician, MiniFB& miniFB);
+		Display(Configuration& configuration, State& state, Samples& samples);
 		void print(void);
 
 	private:

@@ -1022,7 +1022,7 @@ string Configuration::degreesToString(double degrees)
 {
 	stringstream ss;
 	ss.precision(2);
-	ss << fixed << degrees << "°";
+	ss << fixed << degrees << "deg";
 	return ss.str();
 }
 
