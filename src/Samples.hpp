@@ -13,7 +13,7 @@ class Samples
 	public:
 		Samples(void);
 		std::vector<double> getSamples(Configuration::Channels channel);
-		void setSamples(Configuration::Channels channel, std::vector<double> samples);
+		void setSamples(Configuration::Channels channel, const std::vector<double>& samples);
 };
 
 #endif

@@ -23,7 +23,7 @@ vector<double> Samples::getSamples(Configuration::Channels channel)
 	return samples;
 }
 
-void Samples::setSamples(Configuration::Channels channel, vector<double> samples)
+void Samples::setSamples(Configuration::Channels channel, const vector<double>& samples)
 {
 	switch(channel)
 	{

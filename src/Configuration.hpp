@@ -108,7 +108,7 @@ class Configuration
 		void setTriggerLevel(double level);
 		void setTriggerHoldOff(double holdOff);
 		std::vector<double> getCursor(void);
-		void setCursor(std::vector<double> cursors);
+		void setCursor(const std::vector<double>& cursors);
 		int getAverageValue(void);
 		void setAverage(Averages avg);
 		std::string getAverageString(void);

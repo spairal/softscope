@@ -504,7 +504,7 @@ void Touch::selectAverage(Configuration::Averages average)
 	state.setTriggerModeActive(true);
 }
 
-bool Touch::isIn(int x, int y, vector<int> coordenates)
+bool Touch::isIn(int x, int y, const vector<int>& coordenates)
 {
 	return (x > coordenates[0]) && (x < coordenates[1]) && (y > coordenates[2]) && (y < coordenates[3]);
 }

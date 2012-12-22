@@ -31,9 +31,9 @@ class Measurer
 		std::string getDutyCycle(void);
 		std::string getPhase(void);
 		std::string getRatio(void);
-		double maximum(std::vector<double> signal);
-		double minimum(std::vector<double> signal);
-		int getMaxCorrelation(std::vector<double> signalA, std::vector<double> signalB);
+		double maximum(const std::vector<double>& signal);
+		double minimum(const std::vector<double>& signal);
+		int getMaxCorrelation(const std::vector<double>& signalA, const std::vector<double>& signalB);
 };
 
 #endif
