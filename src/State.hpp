@@ -72,7 +72,7 @@ class State
 		std::vector<int> getInitialOffset(void);
 		int getInitialVerticalScale(void);
 		int getInitialHorizontalScale(void);
-		void setInitialOffset(std::vector<int> offset);
+		void setInitialOffset(const std::vector<int>& offset);
 		void setInitialVerticalScale(int scale);
 		void setInitialHorizontalScale(int scale);
 		Configuration::Channels getSelectedChannel(void);

@@ -236,7 +236,7 @@ int State::getInitialHorizontalScale(void)
 	return initialHorizontalScale;
 }
 
-void State::setInitialOffset(vector<int> offset)
+void State::setInitialOffset(const vector<int>& offset)
 {
 	initialOffset = offset;
 }

@@ -264,7 +264,7 @@ string Measurer::getRatio(void)
 	return ratio;
 }
 
-double Measurer::maximum(vector<double> signal)
+double Measurer::maximum(const vector<double>& signal)
 {
 	double maxi = signal[0];
 	for(int i = 0; i < signal.size(); i++)
@@ -274,7 +274,7 @@ double Measurer::maximum(vector<double> signal)
 	return maxi;
 }
 
-double Measurer::minimum(vector<double> signal)
+double Measurer::minimum(const vector<double>& signal)
 {
 	double mini = signal[0];
 	for(int i = 0; i < signal.size(); i++)
@@ -284,7 +284,7 @@ double Measurer::minimum(vector<double> signal)
 	return mini;
 }
 
-int Measurer::getMaxCorrelation(vector<double> signalA, vector<double> signalB)
+int Measurer::getMaxCorrelation(const vector<double>& signalA, const vector<double>& signalB)
 {
 	int N = min(signalA.size(), signalB.size());
 	double maxCorrelation = 0;

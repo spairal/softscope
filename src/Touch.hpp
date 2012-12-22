@@ -51,7 +51,7 @@ class Touch
 		void selectTriggerNoiseReject(bool reject);
 		void selectTriggerHighFrequencyReject(bool reject);
 		void selectAverage(Configuration::Averages average);
-		bool isIn(int x, int y, std::vector<int> coordenates);
+		bool isIn(int x, int y, const std::vector<int>& coordenates);
 };
 
 #endif

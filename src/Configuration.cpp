@@ -894,7 +894,7 @@ vector<double> Configuration::getCursor(void)
 	return cursor;
 }
 
-void Configuration::setCursor(vector<double> cursors)
+void Configuration::setCursor(const vector<double>& cursors)
 {
 	cursor = cursors;
 }
