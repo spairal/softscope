@@ -131,24 +131,17 @@ void MiniFB::drawRectangle(int x1, int y1, int x2, int y2, int fillColor, int bo
 	drawRectangleBorder(x1, y1, x2, y2, borderColor);
 }
 
-void MiniFB::drawText(int x, int y, string text, int color, FONTS font)
+void MiniFB::drawText(int x, int y, string text, int color)
 {
-	int multiplier;
-	switch(font)
-	{
-		case SMALL:
-			multiplier = 1;
-			break;
-		case LARGE:
-			multiplier = 2;
-			break;
-	}
+	int xt = x;
+	int yt = y;
 	for(int i =0; i < text.size(); i++)
 	{
 		char character = text[i];
 		if(character == '\n')
 		{
-			y += multiplier * FONT_SIZE;
+			yt += 5 * FONT_SIZE / 4;
+			xt = x;
 		}
 		else
 		{
@@ -159,26 +152,20 @@ void MiniFB::drawText(int x, int y, string text, int color, FONTS font)
 				{
 					if(pixels[j + k * FONT_SIZE])
 					{
-						for(int m = 0; m < multiplier; m++)
-						{
-							for(int n = 0; n < multiplier; n++)
-							{
-								drawPixel(x + multiplier * j + m, y + multiplier * k + n, color);
-							}
-						}
+						drawPixel(xt + j, yt + k, color);
 					}
 				}
 			}
-			x += multiplier * FONT_SIZE;
+			xt += FONT_SIZE;
 		}
 	}
 }
 
-int MiniFB::getTextWidth(string text, FONTS font)
+int MiniFB::getTextWidth(string text)
 {
 	int width = 0;
 	int tmpWidth = 0;
-	for(int i =0; i < text.size(); i++)
+	for(int i = 0; i < text.size(); i++)
 	{
 		if(text[i] == '\n')
 		{
@@ -186,41 +173,29 @@ int MiniFB::getTextWidth(string text, FONTS font)
 			{
 				width = tmpWidth;
 			}
+			tmpWidth = 0;
 		}
 		else
 		{
 			tmpWidth += FONT_SIZE;
 		}
 	}
-	switch(font)
+	if(tmpWidth > width)
 	{
-		case SMALL:
-			break;
-		case LARGE:
-			width *= 2;
-			break;
+		width = tmpWidth;
 	}
 	return width;
 }
 
-int MiniFB::getTextHeight(string text, FONTS font)
+int MiniFB::getTextHeight(string text)
 {
-	int height = 0;
-	int tmpWidth = 0;
+	int height = FONT_SIZE;
 	for(int i =0; i < text.size(); i++)
 	{
 		if(text[i] == '\n')
 		{
-			height += FONT_SIZE;
+			height += 5 * FONT_SIZE / 4;
 		}
-	}
-	switch(font)
-	{
-		case SMALL:
-			break;
-		case LARGE:
-			height *= 2;
-			break;
 	}
 	return height;
 }

@@ -474,8 +474,10 @@ string Configuration::getCursorsString(Channels channel)
 {
 	stringstream ss;
 	ss << "Cursors:" << endl;
-	ss << "x1 = " << timeToString(getHorizontalScaleValue() * (cursor[0] - delay)) << " ; x2 = " << timeToString(getHorizontalScaleValue() * (cursor[1] - delay)) << endl;
-	ss << "y1 = " << voltageToString(getVerticalScaleValue(channel) * cursor[2] - getOffset(channel)) << " ; y2 = " << voltageToString(getVerticalScaleValue(channel) * cursor[3] - getOffset(channel));
+	ss << "x1 = " << timeToString(getHorizontalScaleValue() * (cursor[0] - delay)) << endl;
+	ss << "x2 = " << timeToString(getHorizontalScaleValue() * (cursor[1] - delay)) << endl;
+	ss << "y1 = " << voltageToString(getVerticalScaleValue(channel) * cursor[2] - getOffset(channel)) << endl;
+	ss << "y2 = " << voltageToString(getVerticalScaleValue(channel) * cursor[3] - getOffset(channel));
 	return ss.str();
 }
 
@@ -654,8 +656,10 @@ string Configuration::getSingleString(void)
 string Configuration::getTriggerString(void)
 {
 	stringstream ss;
-	ss << "Trigger: " << getTriggerModeString() << " " << getTriggerChannelString() << " " << getTriggerSlopeString() << endl;
-	ss << getTriggerLevelString() << " " << getTriggerHoldOffString() << " NR:" << getTriggerNoiseRejectString() << " HFR:" << getTriggerHighFrequencyRejectString();
+	ss << "Trigger: " << getTriggerModeString() << endl;
+	ss << getTriggerChannelString() << " " << getTriggerSlopeString() << endl;
+	ss << getTriggerLevelString() << " " << getTriggerHoldOffString() << endl;
+	ss << "NR:" << getTriggerNoiseRejectString() << " HFR:" << getTriggerHighFrequencyRejectString();
 	return ss.str();
 }
 
@@ -799,8 +803,8 @@ vector<string> Configuration::getAllTriggerNoiseRejects(void)
 vector<string> Configuration::getAllTriggerHighFrequencyRejects(void)
 {
 	vector<string> allHighFrequencyReject;
-	allHighFrequencyReject.push_back("Trigger high frequency reject: off");
-	allHighFrequencyReject.push_back("Trigger high frequency reject: on");
+	allHighFrequencyReject.push_back("Trigger HF reject: off");
+	allHighFrequencyReject.push_back("Trigger HF reject: on");
 	return allHighFrequencyReject;
 }
 

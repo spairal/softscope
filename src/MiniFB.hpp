@@ -6,9 +6,6 @@
 
 class MiniFB
 {
-	public:
-		enum FONTS {SMALL, LARGE};
-
 	private:
 		int width;
 		int height;
@@ -26,9 +23,9 @@ class MiniFB
 		void drawRectangleFill(int x1, int y1, int x2, int y2, int color);
 		void drawRectangleBorder(int x1, int y1, int x2, int y2, int color);
 		void drawRectangle(int x1, int y1, int x2, int y2, int fillColor, int borderColor);
-		void drawText(int x, int y, std::string text, int color, FONTS font);
-		int getTextWidth(std::string text, FONTS font);
-		int getTextHeight(std::string text, FONTS font);
+		void drawText(int x, int y, std::string text, int color);
+		int getTextWidth(std::string text);
+		int getTextHeight(std::string text);
 		int thinColor(int color, int times);
 
 	private:
