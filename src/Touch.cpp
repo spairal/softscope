@@ -60,7 +60,7 @@ void Touch::parseScreen(int x, int y)
 				vector<int> verticalScaleCoordenates = coordenates;
 				verticalScaleCoordenates[0] = verticalScaleCoordenates[1] - state.getPixelsPerDivision();
 				vector<int> horizontalScaleCoordenates = coordenates;
-				horizontalScaleCoordenates[2] = horizontalScaleCoordenates[3] - state.getPixelsPerDivision();
+				horizontalScaleCoordenates[3] = horizontalScaleCoordenates[2] + state.getPixelsPerDivision();
 				if(isIn(x, y, verticalScaleCoordenates))
 				{
 					startDragVerticalScale(y);
@@ -91,59 +91,59 @@ void Touch::parseScreen(int x, int y)
 			vector<int> triggerNoiseRejectCoordenates = modeMenuCoordenates;
 			vector<int> triggerHighFrequencyRejectCoordenates = modeMenuCoordenates;
 			vector<int> averageCoordenates = modeMenuCoordenates;
-			measuresMenuCoordenates[3] = measuresMenuCoordenates[2] + (measuresMenuCoordenates[3] - measuresMenuCoordenates[2]) * configuration.getAllMeasures().size();
-			mathematicsMenuCoordenates[3] = mathematicsMenuCoordenates[2] + (mathematicsMenuCoordenates[3] - mathematicsMenuCoordenates[2]) * configuration.getAllMathematics().size();
-			modeMenuCoordenates[3] = modeMenuCoordenates[2] + (modeMenuCoordenates[3] - modeMenuCoordenates[2]) * configuration.getAllModes().size();
-			triggerModeCoordenates[3] = triggerModeCoordenates[2] + (triggerModeCoordenates[3] - triggerModeCoordenates[2]) * configuration.getAllTriggerModes().size();
-			triggerChannelCoordenates[3] = triggerChannelCoordenates[2] + (triggerChannelCoordenates[3] - triggerChannelCoordenates[2]) * configuration.getAllChannels().size();
-			triggerSlopeCoordenates[3] = triggerSlopeCoordenates[2] + (triggerSlopeCoordenates[3] - triggerSlopeCoordenates[2]) * configuration.getAllTriggerSlopes().size();
-			triggerNoiseRejectCoordenates[3] = triggerNoiseRejectCoordenates[2] + (triggerNoiseRejectCoordenates[3] - triggerNoiseRejectCoordenates[2]) * configuration.getAllTriggerNoiseRejects().size();
-			triggerHighFrequencyRejectCoordenates[3] = triggerHighFrequencyRejectCoordenates[2] + (triggerHighFrequencyRejectCoordenates[3] - triggerHighFrequencyRejectCoordenates[2]) * configuration.getAllTriggerHighFrequencyRejects().size();
-			averageCoordenates[3] = averageCoordenates[2] + (averageCoordenates[3] - averageCoordenates[2]) * configuration.getAllAverages().size();
+			measuresMenuCoordenates[2] = measuresMenuCoordenates[3] - (measuresMenuCoordenates[3] - measuresMenuCoordenates[2]) * configuration.getAllMeasures().size();
+			mathematicsMenuCoordenates[2] = mathematicsMenuCoordenates[3] - (mathematicsMenuCoordenates[3] - mathematicsMenuCoordenates[2]) * configuration.getAllMathematics().size();
+			modeMenuCoordenates[2] = modeMenuCoordenates[3] - (modeMenuCoordenates[3] - modeMenuCoordenates[2]) * configuration.getAllModes().size();
+			triggerModeCoordenates[2] = triggerModeCoordenates[3] - (triggerModeCoordenates[3] - triggerModeCoordenates[2]) * configuration.getAllTriggerModes().size();
+			triggerChannelCoordenates[2] = triggerChannelCoordenates[3] - (triggerChannelCoordenates[3] - triggerChannelCoordenates[2]) * configuration.getAllChannels().size();
+			triggerSlopeCoordenates[2] = triggerSlopeCoordenates[3] - (triggerSlopeCoordenates[3] - triggerSlopeCoordenates[2]) * configuration.getAllTriggerSlopes().size();
+			triggerNoiseRejectCoordenates[2] = triggerNoiseRejectCoordenates[3] - (triggerNoiseRejectCoordenates[3] - triggerNoiseRejectCoordenates[2]) * configuration.getAllTriggerNoiseRejects().size();
+			triggerHighFrequencyRejectCoordenates[2] = triggerHighFrequencyRejectCoordenates[3] - (triggerHighFrequencyRejectCoordenates[3] - triggerHighFrequencyRejectCoordenates[2]) * configuration.getAllTriggerHighFrequencyRejects().size();
+			averageCoordenates[2] = averageCoordenates[3] - (averageCoordenates[3] - averageCoordenates[2]) * configuration.getAllAverages().size();
 			if(state.getMeasuresButtonActive() && isIn(x, y, measuresMenuCoordenates))
 			{
 				vector<int> coordenates = state.getMeasuresMenuCoordenates();
-				selectMeasure((Configuration::Measures)(configuration.getAllMeasures().size() - (y - coordenates[2]) / (coordenates[3] - coordenates[2]) - 1));
+				selectMeasure((Configuration::Measures)(configuration.getAllMeasures().size() - (coordenates[3]- y) / (coordenates[3] - coordenates[2]) - 1));
 			}
 			else if(state.getMathematicsButtonActive() && isIn(x, y, mathematicsMenuCoordenates))
 			{
 				vector<int> coordenates = state.getMathematicsMenuCoordenates();
-				selectMathematic((Configuration::Mathematics)(configuration.getAllMathematics().size() - (y - coordenates[2]) / (coordenates[3] - coordenates[2]) - 1));
+				selectMathematic((Configuration::Mathematics)(configuration.getAllMathematics().size() - (coordenates[3] - y) / (coordenates[3] - coordenates[2]) - 1));
 			}
 			else if(state.getModeButtonActive() && isIn(x, y, modeMenuCoordenates))
 			{
 				vector<int> coordenates = state.getModeMenuCoordenates();
-				selectMode((Configuration::Modes)(configuration.getAllModes().size() - (y - coordenates[2]) / (coordenates[3] - coordenates[2]) - 1));
+				selectMode((Configuration::Modes)(configuration.getAllModes().size() - (coordenates[3] - y) / (coordenates[3] - coordenates[2]) - 1));
 			}
 			else if(state.getTriggerModeActive() && isIn(x, y, triggerModeCoordenates))
 			{
 				vector<int> coordenates = state.getModeMenuCoordenates();
-				selectTriggerMode((Configuration::TriggerModes)(configuration.getAllTriggerModes().size() - (y - coordenates[2]) / (coordenates[3] - coordenates[2]) - 1));
+				selectTriggerMode((Configuration::TriggerModes)(configuration.getAllTriggerModes().size() - (coordenates[3] - y) / (coordenates[3] - coordenates[2]) - 1));
 			}
 			else if(state.getTriggerChannelActive() && isIn(x, y, triggerChannelCoordenates))
 			{
 				vector<int> coordenates = state.getModeMenuCoordenates();
-				selectTriggerChannel((Configuration::Channels)(configuration.getAllChannels().size() - (y - coordenates[2]) / (coordenates[3] - coordenates[2]) - 1));
+				selectTriggerChannel((Configuration::Channels)(configuration.getAllChannels().size() - (coordenates[3] - y) / (coordenates[3] - coordenates[2]) - 1));
 			}
 			else if(state.getTriggerSlopeActive() && isIn(x, y, triggerSlopeCoordenates))
 			{
 				vector<int> coordenates = state.getModeMenuCoordenates();
-				selectTriggerSlope((Configuration::TriggerSlopes)(configuration.getAllTriggerSlopes().size() - (y - coordenates[2]) / (coordenates[3] - coordenates[2]) - 1));
+				selectTriggerSlope((Configuration::TriggerSlopes)(configuration.getAllTriggerSlopes().size() - (coordenates[3] - y) / (coordenates[3] - coordenates[2]) - 1));
 			}
 			else if(state.getTriggerNoiseRejectActive() && isIn(x, y, triggerNoiseRejectCoordenates))
 			{
 				vector<int> coordenates = state.getModeMenuCoordenates();
-				selectTriggerNoiseReject(((configuration.getAllTriggerModes().size() - (y - coordenates[2]) / (coordenates[3] - coordenates[2]) - 1) < 0.5) ? false : true);
+				selectTriggerNoiseReject(((configuration.getAllTriggerModes().size() - (coordenates[3] - y) / (coordenates[3] - coordenates[2]) - 1) < 0.5) ? false : true);
 			}
 			else if(state.getTriggerHighFrequencyRejectActive() && isIn(x, y, triggerHighFrequencyRejectCoordenates))
 			{
 				vector<int> coordenates = state.getModeMenuCoordenates();
-				selectTriggerHighFrequencyReject(((configuration.getAllTriggerModes().size() - (y - coordenates[2]) / (coordenates[3] - coordenates[2]) - 1) < 0.5) ? false : true);
+				selectTriggerHighFrequencyReject(((configuration.getAllTriggerModes().size() - (coordenates[3] - y) / (coordenates[3] - coordenates[2]) - 1) < 0.5) ? false : true);
 			}
 			else if(state.getAverageActive() && isIn(x, y, averageCoordenates))
 			{
 				vector<int> coordenates = state.getModeMenuCoordenates();
-				selectAverage((Configuration::Averages)(configuration.getAllAverages().size() - (y - coordenates[2]) / (coordenates[3] - coordenates[2]) - 1));
+				selectAverage((Configuration::Averages)(configuration.getAllAverages().size() - (coordenates[3] - y) / (coordenates[3] - coordenates[2]) - 1));
 			}
 			else if(!isIn(x, y, state.getMeasuresCoordenates()) && !isIn(x, y, state.getMathematicsCoordenates()) && !isIn(x, y, state.getModeCoordenates()))
 			{
@@ -211,8 +211,8 @@ void Touch::startDragCursors(int x, int y)
 	vector<double> cursor;
 	cursor.push_back((double)(x - coordenates[0] - 5 * state.getPixelsPerDivision()) / state.getPixelsPerDivision());
 	cursor.push_back((double)(x - coordenates[0] - 5 * state.getPixelsPerDivision()) / state.getPixelsPerDivision());
-	cursor.push_back((double)(y - coordenates[2] - 4 * state.getPixelsPerDivision()) / state.getPixelsPerDivision());
-	cursor.push_back((double)(y - coordenates[2] - 4 * state.getPixelsPerDivision()) / state.getPixelsPerDivision());
+	cursor.push_back((double)(coordenates[2] + 4 * state.getPixelsPerDivision() - y) / state.getPixelsPerDivision());
+	cursor.push_back((double)(coordenates[2] + 4 * state.getPixelsPerDivision() - y) / state.getPixelsPerDivision());
 	configuration.setCursor(cursor);
 }
 
@@ -257,7 +257,7 @@ void Touch::dragCursor(int x, int y)
 	vector<int> coordenates = state.getGridCoordenates();
 	vector<double> cursor = configuration.getCursor();
 	cursor[1] = (double)(x - coordenates[0] - 5 * state.getPixelsPerDivision()) / state.getPixelsPerDivision();
-	cursor[3] = (double)(y - coordenates[2] - 4 * state.getPixelsPerDivision()) / state.getPixelsPerDivision();
+	cursor[3] = (double)(coordenates[2] + 4 * state.getPixelsPerDivision() - y) / state.getPixelsPerDivision();
 	configuration.setCursor(cursor);
 }
 
@@ -266,7 +266,7 @@ void Touch::dragOffset(int x, int y)
 	vector<int> initialOffset = state.getInitialOffset();
 	if(state.getSelectedChannel() != Configuration::NO_CHANNEL)
 	{
-		configuration.setOffset(state.getSelectedChannel(), configuration.getOffset(state.getSelectedChannel()) + configuration.getVerticalScaleValue(state.getSelectedChannel()) * (y - initialOffset[1]) / state.getPixelsPerDivision());
+		configuration.setOffset(state.getSelectedChannel(), configuration.getOffset(state.getSelectedChannel()) + configuration.getVerticalScaleValue(state.getSelectedChannel()) * (initialOffset[1] - y) / state.getPixelsPerDivision());
 		initialOffset[1] = y;
 	}
 	configuration.setDelay(configuration.getDelay() + (double)(x - initialOffset[0]) / state.getPixelsPerDivision());
@@ -276,7 +276,7 @@ void Touch::dragOffset(int x, int y)
 
 void Touch::dragVerticalScale(int y)
 {
-	int levels = (y - state.getInitialVerticalScale()) / state.getPixelsPerDivision();
+	int levels = (state.getInitialVerticalScale() - y) / state.getPixelsPerDivision();
 	if((state.getSelectedChannel() != Configuration::NO_CHANNEL) && (levels != 0))
 	{
 		configuration.setVerticalScale(state.getSelectedChannel(), (Configuration::VerticalScales)(configuration.getVerticalScale(state.getSelectedChannel()) + levels));
@@ -304,7 +304,7 @@ void Touch::dragTriggerLevel(int x, int y)
 {
 	vector<int> coordenates = state.getGridCoordenates();
 	configuration.setTriggerHoldOff(configuration.getHorizontalScaleValue() * ((double)(x - coordenates[0])) / state.getPixelsPerDivision());
-	configuration.setTriggerLevel(((double) (y - coordenates[2] - 4 * state.getPixelsPerDivision())) / state.getPixelsPerDivision() - configuration.getOffset(configuration.getTriggerChannel()) / configuration.getVerticalScaleValue(configuration.getTriggerChannel()));
+	configuration.setTriggerLevel(((double) (coordenates[2] + 4 * state.getPixelsPerDivision() - y)) / state.getPixelsPerDivision() - configuration.getOffset(configuration.getTriggerChannel()) / configuration.getVerticalScaleValue(configuration.getTriggerChannel()));
 }
 
 void Touch::resetButtons(void)
