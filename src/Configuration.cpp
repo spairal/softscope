@@ -210,24 +210,6 @@ double Configuration::getHorizontalScaleValue(void)
 	double scale;
 	switch(horizontalScale)
 	{
-		case TEN_NS:
-			scale = 0.00000001;
-			break;
-		case TWENTY_NS:
-			scale = 0.00000002;
-			break;
-		case FIFTY_NS:
-			scale = 0.00000005;
-			break;
-		case HUNDRED_NS:
-			scale = 0.0000001;
-			break;
-		case TWOHUNDRED_NS:
-			scale = 0.0000002;
-			break;
-		case FIVEHUNDRED_NS:
-			scale = 0.0000005;
-			break;
 		case ONE_US:
 			scale = 0.000001;
 			break;
@@ -294,24 +276,6 @@ string Configuration::getHorizontalScaleString(void)
 	string scale;
 	switch(horizontalScale)
 	{
-		case TEN_NS:
-			scale = "10ns/div";
-			break;
-		case TWENTY_NS:
-			scale = "20ns/div";
-			break;
-		case FIFTY_NS:
-			scale = "50ns/div";
-			break;
-		case HUNDRED_NS:
-			scale = "100ns/div";
-			break;
-		case TWOHUNDRED_NS:
-			scale = "200ns/div";
-			break;
-		case FIVEHUNDRED_NS:
-			scale = "500ns/div";
-			break;
 		case ONE_US:
 			scale = "1us/div";
 			break;
@@ -375,9 +339,9 @@ string Configuration::getHorizontalScaleString(void)
 
 void Configuration::setHorizontalScale(HorizontalScales scale)
 {
-	if(scale < TEN_NS)
+	if(scale < ONE_US)
 	{
-		scale = TEN_NS;
+		scale = ONE_US;
 	}
 	if(scale > ONE_S)
 	{
@@ -897,13 +861,9 @@ string Configuration::timeToString(double time)
 	{
 		ss << fixed << time * 1000 << "ms";
 	}
-	else if(abs(time) >= 0.000001)
-	{
-		ss << fixed << time * 1000000 << "us";
-	}
 	else
 	{
-		ss << fixed << time * 1000000000 << "ns";
+		ss << fixed << time * 1000000 << "us";
 	}
 	return ss.str();
 }
