@@ -10,7 +10,6 @@ Configuration::Configuration(void)
 	offsetB = 0;
 	verticalScaleA = ONE_V;
 	verticalScaleB = ONE_V;
-	delay = 0;
 	horizontalScale = HUNDRED_MS;
 	couplingA = DC;
 	couplingB = DC;
@@ -31,6 +30,9 @@ Configuration::Configuration(void)
 	triggerHighFrequencyReject = false;
 	triggerHoldOff = 0;
 	average = TWO_CERO;
+	memoryDepth = 1024;
+	delay = 0;
+	step = 1;
 }
 
 double Configuration::getOffset(Channels channel)
@@ -185,24 +187,9 @@ void Configuration::setVerticalScale(Channels channel, VerticalScales verticalSc
 	}
 }
 
-double Configuration::getDelay(void)
-{
-	return delay;
-}
-
-string Configuration::getDelayString(void)
-{
-	return timeToString(getHorizontalScaleValue() * delay);
-}
-
 Configuration::HorizontalScales Configuration::getHorizontalScale(void)
 {
 	return horizontalScale;
-}
-
-void Configuration::setDelay(double d)
-{
-	delay = d;
 }
 
 double Configuration::getHorizontalScaleValue(void)
@@ -927,5 +914,35 @@ string Configuration::boolToString(bool b)
 		boolean = "Off";
 	}
 	return boolean;
+}
+
+int Configuration::getMemoryDepth(void)
+{
+	return memoryDepth;
+}
+
+double Configuration::getDelay(void)
+{
+	return delay;
+}
+
+string Configuration::getDelayString(void)
+{
+	return timeToString(getHorizontalScaleValue() * delay);
+}
+
+void Configuration::setDelay(double d)
+{
+	delay = d;
+}
+
+double Configuration::getStep(void)
+{
+	return step;
+}
+
+void Configuration::setStep(double s)
+{
+	step = s;
 }
 

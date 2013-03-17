@@ -25,15 +25,15 @@ vector<double> Mathematician::getSamples(void)
 
 vector<double> Mathematician::getDifference(void)
 {
-	vector<double> signal(10 * state.getPixelsPerDivision(), 0);
+	vector<double> signal(10 * state.getPixelsPerDivision() + 1, 0);
 	if(configuration.getChannel(Configuration::CHANNEL_A) && configuration.getChannel(Configuration::CHANNEL_B))
 	{
 		vector<double> signalA = samples.getSamples(state.getSelectedChannel());
-		int delay = samples.getDelay();
+		int delay = configuration.getMemoryDepth() / 2 - round(configuration.getDelay() * state.getPixelsPerDivision()) - 5 * state.getPixelsPerDivision();
 		vector<double> signalB = samples.getSamples(state.getUnselectedChannel());
 		for(int i = 0; i < signal.size(); i++)
 		{
-			signal[i] = signalA[delay - 5 * state.getPixelsPerDivision() + i] - signalB[delay - 5 * state.getPixelsPerDivision() + i];
+			signal[i] = signalA[delay + i] - signalB[delay + i];
 		}
 	}
 	return signal;
@@ -41,11 +41,10 @@ vector<double> Mathematician::getDifference(void)
 
 vector<double> Mathematician::getFFT(void)
 {
-	vector<double> fft(10 * state.getPixelsPerDivision(), 0);
+	vector<double> fft(10 * state.getPixelsPerDivision() + 1, 0);
 	if(state.getSelectedChannel() != Configuration::NO_CHANNEL)
 	{
 		vector<double> signal = samples.getSamples(state.getSelectedChannel());
-		int delay = samples.getDelay();
 		double verticalScale = configuration.getVerticalScale(state.getSelectedChannel());
 		int pixelsPerDivision = state.getPixelsPerDivision();
 		int N = fft.size();
@@ -54,14 +53,14 @@ vector<double> Mathematician::getFFT(void)
 		fftw_complex* out = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * N);
 		fftw_plan p = fftw_plan_dft_r2c_1d(M, in, out, FFTW_ESTIMATE);
 		vector<double> w = hamming(M);
-		int start = delay - 10 * state.getPixelsPerDivision();
+		int start = configuration.getMemoryDepth() / 2 - round(configuration.getDelay() * state.getPixelsPerDivision()) - 5 * state.getPixelsPerDivision();
 		if(start < 0)
 		{
 			start = 0;
 		}
-		if((start + M) > samples.getMemoryDepth())
+		if((start + M) > configuration.getMemoryDepth())
 		{
-			start = samples.getMemoryDepth() - M;
+			start = configuration.getMemoryDepth() - M;
 		}
 		for(int i = 0; i < M; i++)
 		{

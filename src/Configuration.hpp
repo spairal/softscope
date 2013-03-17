@@ -23,7 +23,6 @@ class Configuration
 		double offsetB;
 		VerticalScales verticalScaleA;
 		VerticalScales verticalScaleB;
-		double delay;
 		HorizontalScales horizontalScale;
 		Couplings couplingA;
 		Couplings couplingB;
@@ -41,6 +40,9 @@ class Configuration
 		bool triggerHighFrequencyReject;
 		double triggerHoldOff;
 		Averages average;
+		int memoryDepth;
+		double delay;
+		double step;
 
 	public:
 		Configuration(void);
@@ -51,9 +53,6 @@ class Configuration
 		double getVerticalScaleValue(Channels channel);
 		std::string getVerticalScaleString(Channels channel);
 		void setVerticalScale(Channels channel, VerticalScales verticalScale);
-		double getDelay(void);
-		std::string getDelayString(void);
-		void setDelay(double d);
 		HorizontalScales getHorizontalScale(void);
 		double getHorizontalScaleValue(void);
 		std::string getHorizontalScaleString(void);
@@ -111,6 +110,12 @@ class Configuration
 		std::string degreesToString(double degrees);
 		std::string deciBellToString(double deciBell);
 		std::string boolToString(bool b);
+		int getMemoryDepth(void);
+		double getDelay(void);
+		std::string getDelayString(void);
+		void setDelay(double d);
+		double getStep(void);
+		void setStep(double s);
 };
 
 #endif

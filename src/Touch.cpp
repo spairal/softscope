@@ -255,10 +255,6 @@ void Touch::dragOffset(int x, int y)
 		initialOffset[1] = y;
 	}
 	configuration.setDelay(configuration.getDelay() + (double)(x - initialOffset[0]) / state.getPixelsPerDivision());
-	if(configuration.getMode() == Configuration::STOP)
-	{
-		samples.setDelay(samples.getDelay() - x + initialOffset[0]);
-	}
 	initialOffset[0] = x;
 	state.setInitialOffset(initialOffset);
 }
@@ -283,7 +279,7 @@ void Touch::dragHorizontalScale(int x)
 		double newScale = configuration.getHorizontalScaleValue();
 		if(configuration.getMode() == Configuration::STOP)
 		{
-			samples.setStep(samples.getStep() * newScale / oldScale);
+			configuration.setStep(configuration.getStep() * newScale / oldScale);
 		}
 		state.setInitialHorizontalScale(x);
 	}
@@ -434,19 +430,19 @@ void Touch::selectMode(Configuration::Modes mode)
 	{
 		case Configuration::RUN:
 			state.setAverageActive(true);
-			samples.setDelay(samples.getMemoryDepth() / 2);
-			samples.setStep(1);
+			configuration.setDelay(0);
+			configuration.setStep(1);
 			break;
 		case Configuration::STOP:
 			break;
 		case Configuration::SINGLE:
 			state.setTriggerModeActive(true);
-			samples.setDelay(samples.getMemoryDepth() / 2);
-			samples.setStep(1);
+			configuration.setDelay(0);
+			configuration.setStep(1);
 			break;
 		case Configuration::ROLL:
-			samples.setDelay(samples.getMemoryDepth() - 5 * state.getPixelsPerDivision());
-			samples.setStep(1);
+			configuration.setDelay(5 - configuration.getMemoryDepth() / (2.0 * state.getPixelsPerDivision()));
+			configuration.setStep(1);
 			break;
 	}
 }

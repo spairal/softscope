@@ -14,15 +14,15 @@ void Display::print(void)
 	printGrid(state.getGridCoordenates());
 	if(configuration.getChannel(state.getUnselectedChannel()))
 	{
-		printSamples(samplesToPixels(samples.getSamples(state.getUnselectedChannel()), configuration.getOffset(state.getUnselectedChannel()), configuration.getVerticalScaleValue(state.getUnselectedChannel()), state.getPixelsPerDivision()), samples.getDelay() - 5 * state.getPixelsPerDivision(), samples.getMemoryDepth(), samples.getStep(), state.getColor(state.getUnselectedChannel()), state.getGridCoordenates());
+		printSamples(samplesToPixels(samples.getSamples(state.getUnselectedChannel()), configuration.getOffset(state.getUnselectedChannel()), configuration.getVerticalScaleValue(state.getUnselectedChannel()), state.getPixelsPerDivision()), configuration.getMemoryDepth() / 2 - (configuration.getDelay() + 5) * state.getPixelsPerDivision(), configuration.getMemoryDepth(), configuration.getStep(), state.getColor(state.getUnselectedChannel()), state.getGridCoordenates());
 	}
 	if(configuration.getChannel(state.getSelectedChannel()))
 	{
-		printSamples(samplesToPixels(samples.getSamples(state.getSelectedChannel()), configuration.getOffset(state.getSelectedChannel()), configuration.getVerticalScaleValue(state.getSelectedChannel()), state.getPixelsPerDivision()), samples.getDelay() - 5 * state.getPixelsPerDivision(), samples.getMemoryDepth(), samples.getStep(), state.getColor(state.getSelectedChannel()), state.getGridCoordenates());
+		printSamples(samplesToPixels(samples.getSamples(state.getSelectedChannel()), configuration.getOffset(state.getSelectedChannel()), configuration.getVerticalScaleValue(state.getSelectedChannel()), state.getPixelsPerDivision()), configuration.getMemoryDepth() / 2 - (configuration.getDelay() + 5) * state.getPixelsPerDivision(), configuration.getMemoryDepth(), configuration.getStep(), state.getColor(state.getSelectedChannel()), state.getGridCoordenates());
 	}
 	if(configuration.getMathematic() != Configuration::NOMATHEMATIC)
 	{
-		printSamples(samplesToPixels(mathematician.getSamples(), 0, configuration.getVerticalScaleValue(state.getSelectedChannel()), state.getPixelsPerDivision()), 0, samples.getMemoryDepth(), samples.getStep(), state.getColorMathematics(), state.getGridCoordenates());
+		printSamples(samplesToPixels(mathematician.getSamples(), 0, configuration.getVerticalScaleValue(state.getSelectedChannel()), state.getPixelsPerDivision()), 0, configuration.getMemoryDepth(), 1, state.getColorMathematics(), state.getGridCoordenates());
 	}
 	if(state.getSelectedChannel() != Configuration::NO_CHANNEL)
 	{

@@ -23,13 +23,13 @@ void FPGA::fetchSamples(void)
 			samplesA = samples.getSamples(Configuration::CHANNEL_A);
 			samplesB = samples.getSamples(Configuration::CHANNEL_B);
 			int i;
-			for(i = 0; i < samples.getMemoryDepth() - step; i++)
+			for(i = 0; i < configuration.getMemoryDepth() - step; i++)
 			{
 				samplesA[i] = samplesA[i + step];
 				samplesB[i] = samplesB[i + step];
 			}
 			roll = roll / configuration.getHorizontalScaleValue() - i;
-			for(; i < samples.getMemoryDepth(); i++)
+			for(; i < configuration.getMemoryDepth(); i++)
 			{
 				samplesA[i] = 3.0 * sin(2.0 * 3.141592 * configuration.getHorizontalScaleValue() * (i + roll) / 30) + 0.4 * rand() / RAND_MAX - 0.2;
 				int mod = (int)(i + roll) % (int)(20 / configuration.getHorizontalScaleValue());
@@ -40,12 +40,12 @@ void FPGA::fetchSamples(void)
 		}
 		else
 		{
-			for(int i = 0; i < samples.getMemoryDepth(); i++)
+			for(int i = 0; i < configuration.getMemoryDepth(); i++)
 			{
-				samplesA.push_back(3.0 * sin(2.0 * 3.141592 * configuration.getHorizontalScaleValue() * (i - samples.getDelay() - configuration.getDelay() * 50) / 30) + 0.4 * rand() / RAND_MAX - 0.2);
-				int mod = (int)(i - samples.getDelay() - configuration.getDelay() * 50) % (int)(20 / configuration.getHorizontalScaleValue());
+				samplesA.push_back(3.0 * sin(2.0 * 3.141592 * configuration.getHorizontalScaleValue() * i / 30) + 0.4 * rand() / RAND_MAX - 0.2);
+				int mod = (int)i % (int)(20 / configuration.getHorizontalScaleValue());
 				samplesB.push_back((((mod > (10 / configuration.getHorizontalScaleValue())) || ((mod > -10 / configuration.getHorizontalScaleValue()) && (mod < 0))) ? 2.0 : -2.0) + 0.6 * rand() / RAND_MAX - 0.3);
-				//samplesB.push_back(3.0 * sin(2.0 * 3.141592 * configuration.getHorizontalScaleValue() * (i - samples.getDelay() - configuration.getDelay() * 50 - 100) / 30) + 0.4 * rand() / RAND_MAX - 0.2);
+				//samplesB.push_back(3.0 * sin(2.0 * 3.141592 * configuration.getHorizontalScaleValue() * (i - 100) / 30) + 0.4 * rand() / RAND_MAX - 0.2);
 			}
 		}
 		samples.setSamples(Configuration::CHANNEL_A, samplesA);
