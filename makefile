@@ -14,7 +14,7 @@ SOURCE = src
 LIBPOLO = $(SOURCE)/libpolo
 TARGET = target
 OBJ = $(TARGET)/obj
-EXECUTABLE = $(TARGET)/oscilloscope
+EXECUTABLE = $(TARGET)/softscope
 OBJECTS = $(addprefix $(OBJ)/, $(addsuffix .o, main Configuration State Samples Measurer Mathematician Touch FPGA Display polo))
 LIBRARIES = $(addprefix -l, fftw3 glut)
 

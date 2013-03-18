@@ -40,12 +40,15 @@ void FPGA::fetchSamples(void)
 		}
 		else
 		{
+			vector<double> oldSamplesA = samples.getSamples(Configuration::CHANNEL_A);
+			vector<double> oldSamplesB = samples.getSamples(Configuration::CHANNEL_B);
+			double averageCoefficient = 1.0 / configuration.getAverageValue();
 			for(int i = 0; i < configuration.getMemoryDepth(); i++)
 			{
-				samplesA.push_back(3.0 * sin(2.0 * 3.141592 * configuration.getHorizontalScaleValue() * i / 30) + 0.4 * rand() / RAND_MAX - 0.2);
+				samplesA.push_back(averageCoefficient * (3.0 * sin(2.0 * 3.141592 * configuration.getHorizontalScaleValue() * i / 30) + 0.4 * rand() / RAND_MAX - 0.2) + (1 - averageCoefficient) * oldSamplesA[i]);
 				int mod = (int)i % (int)(20 / configuration.getHorizontalScaleValue());
-				samplesB.push_back((((mod > (10 / configuration.getHorizontalScaleValue())) || ((mod > -10 / configuration.getHorizontalScaleValue()) && (mod < 0))) ? 2.0 : -2.0) + 0.6 * rand() / RAND_MAX - 0.3);
-				//samplesB.push_back(3.0 * sin(2.0 * 3.141592 * configuration.getHorizontalScaleValue() * (i - 100) / 30) + 0.4 * rand() / RAND_MAX - 0.2);
+				samplesB.push_back(averageCoefficient * ((((mod > (10 / configuration.getHorizontalScaleValue())) || ((mod > -10 / configuration.getHorizontalScaleValue()) && (mod < 0))) ? 2.0 : -2.0) + 0.6 * rand() / RAND_MAX - 0.3) + (1 - averageCoefficient) * oldSamplesB[i]);
+				//samplesB.push_back(averageCoefficient * (3.0 * sin(2.0 * 3.141592 * configuration.getHorizontalScaleValue() * (i - 100) / 30) + 0.4 * rand() / RAND_MAX - 0.2) + (1 - averageCoefficient) * oldSamplesB[i]);
 			}
 		}
 		samples.setSamples(Configuration::CHANNEL_A, samplesA);
