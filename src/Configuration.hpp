@@ -38,7 +38,7 @@ class Configuration
 		double triggerLevel;
 		bool triggerNoiseReject;
 		bool triggerHighFrequencyReject;
-		double triggerHoldOff;
+		HorizontalScales triggerHoldOff;
 		Averages average;
 		int memoryDepth;
 		double delay;
@@ -68,6 +68,15 @@ class Configuration
 		Mathematics getMathematic(void);
 		std::string getMathematicString(void);
 		Modes getMode(void);
+		TriggerModes getTriggerMode(void);
+		Channels getTriggerChannel(void);
+		TriggerSlopes getTriggerSlope(void);
+		double getTriggerLevel(void);
+		bool getTriggerNoiseReject(void);
+		bool getTriggerHighFrequencyReject(void);
+		HorizontalScales getTriggerHoldOff(void);
+		double getTriggerHoldOffValue(void);
+		double getTriggerHoldOffValue(HorizontalScales THO);
 		std::string getModeString(void);
 		std::string getRunString(void);
 		std::string getSingleString(void);

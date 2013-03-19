@@ -55,8 +55,57 @@ void FPGA::fetchSamples(void)
 		samples.setSamples(Configuration::CHANNEL_B, samplesB);
 		if(configuration.getMode() == Configuration::SINGLE)
 		{
-			configuration.setMode(Configuration::STOP);
+			configuration.setMode(Configuration::RUN);
 		}
 	}
+}
+
+int FPGA::getMask(int bits)
+{
+	int mask = 0;
+	for(int i = 0; i < bits; i++)
+	{
+		mask = (mask << 1) | 1;
+	}
+	return mask;
+}
+
+int FPGA::quantize(bool value, int shift)
+{
+	return ((value ? 1 : 0) << shift);
+}
+
+int FPGA::quantize(double value, double minimum, int bits, int shift)
+{
+	return ((((int) round(value / minimum)) & getMask(bits)) << shift);
+}
+
+int FPGA::getFirstMessage(void)
+{
+	int message = 0;
+	message |= quantize(configuration.getChannel(Configuration::CHANNEL_A), 0);
+	message |= quantize(configuration.getChannel(Configuration::CHANNEL_B), 1);
+	message |= quantize(configuration.getHorizontalScale(), 1, 5, 2);
+	message |= quantize(configuration.getMode() == Configuration::ROLL, 7);
+	message |= quantize(configuration.getTriggerMode() == Configuration::AUTOMATIC, 8);
+	message |= quantize(configuration.getTriggerLevel(), 0.03125, 8, 9);
+	message |= quantize(configuration.getTriggerHoldOff(), 1, 5, 17);
+	message |= quantize(configuration.getTriggerSlope() == Configuration::POSITIVE, 22);
+	message |= quantize(configuration.getTriggerChannel() == Configuration::CHANNEL_B, 23);
+	message |= quantize(configuration.getVerticalScale(Configuration::CHANNEL_A), 1, 4, 24);
+	message |= quantize(configuration.getVerticalScale(Configuration::CHANNEL_B), 1, 4, 28);
+	message |= quantize(configuration.getCoupling(Configuration::CHANNEL_A) == Configuration::AC, 32);
+	message |= quantize(configuration.getCoupling(Configuration::CHANNEL_B) == Configuration::AC, 33);
+	message |= quantize(configuration.getTriggerNoiseReject(), 34);
+	message |= quantize(configuration.getTriggerHighFrequencyReject(), 35);
+	return message;
+}
+
+int FPGA::getSecondMessage(void)
+{
+	int message = 0;
+	message |= quantize(configuration.getOffset(Configuration::CHANNEL_A), 0.0003125, 18, 0);
+	message |= quantize(configuration.getOffset(Configuration::CHANNEL_B), 0.0003125, 18, 18);
+	return message;
 }
 

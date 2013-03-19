@@ -28,7 +28,7 @@ Configuration::Configuration(void)
 	triggerLevel = 0;
 	triggerNoiseReject = false;
 	triggerHighFrequencyReject = false;
-	triggerHoldOff = 0;
+	triggerHoldOff = ONE_US;
 	average = TWO_CERO;
 	memoryDepth = 1024;
 	delay = 0;
@@ -60,6 +60,14 @@ string Configuration::getOffsetString(Channels channel)
 
 void Configuration::setOffset(Channels channel, double offset)
 {
+	if(offset < -40)
+	{
+		offset = -40;
+	}
+	else if(offset > 40)
+	{
+		offset = 40;
+	}
 	switch(channel)
 	{
 		case CHANNEL_A:
@@ -499,6 +507,112 @@ Configuration::Modes Configuration::getMode(void)
 	return mode;
 }
 
+Configuration::TriggerModes Configuration::getTriggerMode(void)
+{
+	return triggerMode;
+}
+
+Configuration::Channels Configuration::getTriggerChannel(void)
+{
+	return triggerChannel;
+}
+
+Configuration::TriggerSlopes Configuration::getTriggerSlope(void)
+{
+	return triggerSlope;
+}
+
+double Configuration::getTriggerLevel(void)
+{
+	return triggerLevel;
+}
+
+bool Configuration::getTriggerNoiseReject(void)
+{
+	return triggerNoiseReject;
+}
+
+bool Configuration::getTriggerHighFrequencyReject(void)
+{
+	return triggerHighFrequencyReject;
+}
+
+Configuration::HorizontalScales Configuration::getTriggerHoldOff(void)
+{
+	return triggerHoldOff;
+}
+
+double Configuration::getTriggerHoldOffValue(void)
+{
+	return getTriggerHoldOffValue(triggerHoldOff);
+}
+
+double Configuration::getTriggerHoldOffValue(HorizontalScales THO)
+{
+	double holdOff;
+	switch(THO)
+	{
+		case ONE_US:
+			holdOff = 0.00001;
+			break;
+		case TWO_US:
+			holdOff = 0.00002;
+			break;
+		case FIVE_US:
+			holdOff = 0.00005;
+			break;
+		case TEN_US:
+			holdOff = 0.0001;
+			break;
+		case TWENTY_US:
+			holdOff = 0.0002;
+			break;
+		case FIFTY_US:
+			holdOff = 0.0005;
+			break;
+		case HUNDRED_US:
+			holdOff = 0.001;
+			break;
+		case TWOHUNDRED_US:
+			holdOff = 0.002;
+			break;
+		case FIVEHUNDRED_US:
+			holdOff = 0.005;
+			break;
+		case ONE_MS:
+			holdOff = 0.01;
+			break;
+		case TWO_MS:
+			holdOff = 0.02;
+			break;
+		case FIVE_MS:
+			holdOff = 0.05;
+			break;
+		case TEN_MS:
+			holdOff = 0.1;
+			break;
+		case TWENTY_MS:
+			holdOff = 0.2;
+			break;
+		case FIFTY_MS:
+			holdOff = 0.5;
+			break;
+		case HUNDRED_MS:
+			holdOff = 1.0;
+			break;
+		case TWOHUNDRED_MS:
+			holdOff = 2.0;
+			break;
+		case FIVEHUNDRED_MS:
+			holdOff = 5.0;
+			break;
+		case ONE_S:
+			holdOff = 10.0;
+			break;
+	}
+	return holdOff;
+}
+
 string Configuration::getModeString(void)
 {
 	string modeString;
@@ -595,7 +709,7 @@ string Configuration::getTriggerSlopeString(void)
 
 string Configuration::getTriggerLevelString(void)
 {
-	return voltageToString(triggerLevel);
+	return voltageToString(getVerticalScaleValue(triggerChannel) * triggerLevel);
 }
 
 string Configuration::getTriggerNoiseRejectString(void)
@@ -610,7 +724,7 @@ string Configuration::getTriggerHighFrequencyRejectString(void)
 
 string Configuration::getTriggerHoldOffString(void)
 {
-	return timeToString(triggerHoldOff);
+	return timeToString(getTriggerHoldOffValue());
 }
 
 vector<string> Configuration::getAllMeasures(void)
@@ -749,12 +863,30 @@ void Configuration::setTriggerHighFrequencyReject(bool reject)
 
 void Configuration::setTriggerLevel(double level)
 {
+	if(level < -4)
+	{
+		level = -4;
+	}
+	else if(level > 4)
+	{
+		level = 4;
+	}
 	triggerLevel = level;
 }
 
 void Configuration::setTriggerHoldOff(double holdOff)
 {
-	triggerHoldOff = holdOff;
+	HorizontalScales THO = ONE_US;
+	double error = abs(holdOff - getTriggerHoldOffValue(ONE_US));
+	for(int i = TWO_US; i < ONE_S; i++)
+	{
+		if(abs(holdOff - getTriggerHoldOffValue((HorizontalScales) i)) < error)
+		{
+			THO = (HorizontalScales) i;
+			error = abs(holdOff - getTriggerHoldOffValue((HorizontalScales) i));
+		}
+	}
+	triggerHoldOff = THO;
 }
 
 vector<double> Configuration::getCursor(void)
