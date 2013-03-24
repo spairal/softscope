@@ -8,9 +8,9 @@ Mathematician::Mathematician(Configuration& configuration, State& state, Samples
 {
 }
 
-vector<double> Mathematician::getSamples(void)
+vector<float> Mathematician::getSamples(void)
 {
-	vector<double> signal(10 * state.getPixelsPerDivision(), 0);
+	vector<float> signal(10 * state.getPixelsPerDivision(), 0);
 	switch(configuration.getMathematic())
 	{
 		case Configuration::DIFFERENCE:
@@ -23,14 +23,14 @@ vector<double> Mathematician::getSamples(void)
 	return signal;
 }
 
-vector<double> Mathematician::getDifference(void)
+vector<float> Mathematician::getDifference(void)
 {
-	vector<double> signal(10 * state.getPixelsPerDivision() + 1, 0);
+	vector<float> signal(10 * state.getPixelsPerDivision() + 1, 0);
 	if(configuration.getChannel(Configuration::CHANNEL_A) && configuration.getChannel(Configuration::CHANNEL_B))
 	{
-		vector<double> signalA = samples.getSamples(state.getSelectedChannel());
+		vector<float> signalA = samples.getSamples(state.getSelectedChannel());
 		int delay = configuration.getMemoryDepth() / 2 - round(configuration.getDelay() * state.getPixelsPerDivision()) - 5 * state.getPixelsPerDivision();
-		vector<double> signalB = samples.getSamples(state.getUnselectedChannel());
+		vector<float> signalB = samples.getSamples(state.getUnselectedChannel());
 		for(int i = 0; i < signal.size(); i++)
 		{
 			signal[i] = signalA[delay + i] - signalB[delay + i];
@@ -39,20 +39,20 @@ vector<double> Mathematician::getDifference(void)
 	return signal;
 }
 
-vector<double> Mathematician::getFFT(void)
+vector<float> Mathematician::getFFT(void)
 {
-	vector<double> fft(10 * state.getPixelsPerDivision() + 1, 0);
+	vector<float> fft(10 * state.getPixelsPerDivision() + 1, 0);
 	if(state.getSelectedChannel() != Configuration::NO_CHANNEL)
 	{
-		vector<double> signal = samples.getSamples(state.getSelectedChannel());
-		double verticalScale = configuration.getVerticalScale(state.getSelectedChannel());
+		vector<float> signal = samples.getSamples(state.getSelectedChannel());
+		float verticalScale = configuration.getVerticalScale(state.getSelectedChannel());
 		int pixelsPerDivision = state.getPixelsPerDivision();
 		int N = fft.size();
 		int M = 2 * (N - 1);
 		double* in = (double*) fftw_malloc(sizeof(double) * M);
 		fftw_complex* out = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * N);
 		fftw_plan p = fftw_plan_dft_r2c_1d(M, in, out, FFTW_ESTIMATE);
-		vector<double> w = hamming(M);
+		vector<float> w = hamming(M);
 		int start = configuration.getMemoryDepth() / 2 - round(configuration.getDelay() * state.getPixelsPerDivision()) - 5 * state.getPixelsPerDivision();
 		if(start < 0)
 		{
@@ -78,9 +78,9 @@ vector<double> Mathematician::getFFT(void)
 	return fft;
 }
 
-vector<double> Mathematician::hamming(int N)
+vector<float> Mathematician::hamming(int N)
 {
-	vector<double> w;
+	vector<float> w;
 	for(int i = 0; i < N; i++)
 	{
 		w.push_back(0.54 - 0.46 * cos(2 * 3.1415926 * i / (N - 1)));

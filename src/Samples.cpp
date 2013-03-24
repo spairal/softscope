@@ -8,9 +8,9 @@ Samples::Samples(void)
 	samplesB.assign(1024, 0.0);
 }
 
-vector<double> Samples::getSamples(Configuration::Channels channel)
+vector<float> Samples::getSamples(Configuration::Channels channel)
 {
-	vector<double> samples;
+	vector<float> samples;
 	switch(channel)
 	{
 		case Configuration::CHANNEL_A:
@@ -23,7 +23,7 @@ vector<double> Samples::getSamples(Configuration::Channels channel)
 	return samples;
 }
 
-void Samples::setSamples(Configuration::Channels channel, const vector<double>& samples)
+void Samples::setSamples(Configuration::Channels channel, const vector<float>& samples)
 {
 	switch(channel)
 	{

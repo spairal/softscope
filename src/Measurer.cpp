@@ -65,8 +65,8 @@ string Measurer::getMeasure(void)
 
 string Measurer::getMean(void)
 {
-	vector<double> signal = samples.getSamples(state.getSelectedChannel());
-	double mean = 0;
+	vector<float> signal = samples.getSamples(state.getSelectedChannel());
+	float mean = 0;
 	for(int i = 0; i < signal.size(); i++)
 	{
 		mean += signal[i];
@@ -77,14 +77,14 @@ string Measurer::getMean(void)
 
 string Measurer::getPeak(void)
 {
-	vector<double> signal = samples.getSamples(state.getSelectedChannel());
+	vector<float> signal = samples.getSamples(state.getSelectedChannel());
 	return configuration.voltageToString((maximum(signal) - minimum(signal)) / 2);
 }
 
 string Measurer::getRMS(void)
 {
-	vector<double> signal = samples.getSamples(state.getSelectedChannel());
-	double rms = 0;
+	vector<float> signal = samples.getSamples(state.getSelectedChannel());
+	float rms = 0;
 	for(int i = 0; i < signal.size(); i++)
 	{
 		rms += pow(signal[i], 2);
@@ -95,23 +95,23 @@ string Measurer::getRMS(void)
 
 string Measurer::getFrequency(void)
 {
-	vector<double> signal = samples.getSamples(state.getSelectedChannel());
+	vector<float> signal = samples.getSamples(state.getSelectedChannel());
 	return configuration.frequencyToString(state.getPixelsPerDivision() / (configuration.getHorizontalScaleValue() * getMaxCorrelation(signal, signal)));
 }
 
 string Measurer::getPeriod(void)
 {
-	vector<double> signal = samples.getSamples(state.getSelectedChannel());
+	vector<float> signal = samples.getSamples(state.getSelectedChannel());
 	return configuration.timeToString(configuration.getHorizontalScaleValue() * getMaxCorrelation(signal, signal) / state.getPixelsPerDivision());
 }
 
 string Measurer::getRiseTime(void)
 {
-	vector<double> signal = samples.getSamples(state.getSelectedChannel());
-	double maxi = maximum(signal);
-	double mini = minimum(signal);
-	double low = 0.9 * mini + 0.1 * maxi;
-	double high = 0.9 * maxi + 0.1 * mini;
+	vector<float> signal = samples.getSamples(state.getSelectedChannel());
+	float maxi = maximum(signal);
+	float mini = minimum(signal);
+	float low = 0.9 * mini + 0.1 * maxi;
+	float high = 0.9 * maxi + 0.1 * mini;
 	bool count = false;
 	int pixels = 0;
 	int edges = 0;
@@ -153,11 +153,11 @@ string Measurer::getRiseTime(void)
 
 string Measurer::getFallTime(void)
 {
-	vector<double> signal = samples.getSamples(state.getSelectedChannel());
-	double maxi = maximum(signal);
-	double mini = minimum(signal);
-	double low = 0.9 * mini + 0.1 * maxi;
-	double high = 0.9 * maxi + 0.1 * mini;
+	vector<float> signal = samples.getSamples(state.getSelectedChannel());
+	float maxi = maximum(signal);
+	float mini = minimum(signal);
+	float low = 0.9 * mini + 0.1 * maxi;
+	float high = 0.9 * maxi + 0.1 * mini;
 	bool count = false;
 	int pixels = 0;
 	int edges = 0;
@@ -199,9 +199,9 @@ string Measurer::getFallTime(void)
 
 string Measurer::getDutyCycle(void)
 {
-	vector<double> signal = samples.getSamples(state.getSelectedChannel());
-	double maxi = maximum(signal);
-	double mini = minimum(signal);
+	vector<float> signal = samples.getSamples(state.getSelectedChannel());
+	float maxi = maximum(signal);
+	float mini = minimum(signal);
 	int pixels = 0;
 	int N = signal.size();
 	for(int i = 0; i < N; i++)
@@ -211,7 +211,7 @@ string Measurer::getDutyCycle(void)
 			pixels++;
 		}
 	}
-	return configuration.percentageToString((double)pixels / N);
+	return configuration.percentageToString((float)pixels / N);
 }
 
 string Measurer::getPhase(void)
@@ -219,12 +219,12 @@ string Measurer::getPhase(void)
 	string phase;
 	if(configuration.getChannel(Configuration::CHANNEL_A) && configuration.getChannel(Configuration::CHANNEL_B))
 	{
-		vector<double> signalA = samples.getSamples(state.getSelectedChannel());
-		vector<double> signalB = samples.getSamples(state.getUnselectedChannel());
+		vector<float> signalA = samples.getSamples(state.getSelectedChannel());
+		vector<float> signalB = samples.getSamples(state.getUnselectedChannel());
 		int periodA = getMaxCorrelation(signalA, signalA);
 		int periodB = getMaxCorrelation(signalB, signalB);
 		int correlation = getMaxCorrelation(signalA, signalB);
-		double p = 2.0 * 360 * correlation / (periodA + periodB);
+		float p = 2.0 * 360 * correlation / (periodA + periodB);
 		bool wrap = true;
 		while(wrap)
 		{
@@ -249,12 +249,12 @@ string Measurer::getRatio(void)
 	string ratio;
 	if(configuration.getChannel(Configuration::CHANNEL_A) && configuration.getChannel(Configuration::CHANNEL_B))
 	{
-		vector<double> signalA = samples.getSamples(state.getSelectedChannel());
-		vector<double> signalB = samples.getSamples(state.getUnselectedChannel());
-		double maxA = maximum(signalA);
-		double minA = minimum(signalA);
-		double maxB = maximum(signalB);
-		double minB = minimum(signalB);
+		vector<float> signalA = samples.getSamples(state.getSelectedChannel());
+		vector<float> signalB = samples.getSamples(state.getUnselectedChannel());
+		float maxA = maximum(signalA);
+		float minA = minimum(signalA);
+		float maxB = maximum(signalB);
+		float minB = minimum(signalB);
 		ratio = configuration.deciBellToString(20 * log10((maxA - minA) / (maxB - minB)));
 	}
 	else
@@ -264,9 +264,9 @@ string Measurer::getRatio(void)
 	return ratio;
 }
 
-double Measurer::maximum(const vector<double>& signal)
+float Measurer::maximum(const vector<float>& signal)
 {
-	double maxi = signal[0];
+	float maxi = signal[0];
 	for(int i = 0; i < signal.size(); i++)
 	{
 		maxi = max(maxi, signal[i]);
@@ -274,9 +274,9 @@ double Measurer::maximum(const vector<double>& signal)
 	return maxi;
 }
 
-double Measurer::minimum(const vector<double>& signal)
+float Measurer::minimum(const vector<float>& signal)
 {
-	double mini = signal[0];
+	float mini = signal[0];
 	for(int i = 0; i < signal.size(); i++)
 	{
 		mini = min(mini, signal[i]);
@@ -284,14 +284,14 @@ double Measurer::minimum(const vector<double>& signal)
 	return mini;
 }
 
-int Measurer::getMaxCorrelation(const vector<double>& signalA, const vector<double>& signalB)
+int Measurer::getMaxCorrelation(const vector<float>& signalA, const vector<float>& signalB)
 {
 	int N = min(signalA.size(), signalB.size());
-	double maxCorrelation = 0;
+	float maxCorrelation = 0;
 	int maxI = 0;
 	for(int i = state.getPixelsPerDivision(); i < N / 2; i++)
 	{
-		double correlation = 0;
+		float correlation = 0;
 		for(int j = 0; j < (N - i); j++)
 		{
 			correlation += (signalA[j] * signalB[j + i]);

@@ -14,12 +14,12 @@ class Mathematician
 
 	public:
 		Mathematician(Configuration& configuration, State& state, Samples& samples);
-		std::vector<double> getSamples(void);
+		std::vector<float> getSamples(void);
 
 	private:
-		std::vector<double> getDifference(void);
-		std::vector<double> getFFT(void);
-		std::vector<double> hamming(int N);
+		std::vector<float> getDifference(void);
+		std::vector<float> getFFT(void);
+		std::vector<float> hamming(int N);
 };
 
 #endif

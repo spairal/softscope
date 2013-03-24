@@ -35,9 +35,9 @@ Configuration::Configuration(void)
 	step = 1;
 }
 
-double Configuration::getOffset(Channels channel)
+float Configuration::getOffset(Channels channel)
 {
-	double offset;
+	float offset;
 	switch(channel)
 	{
 		case CHANNEL_A:
@@ -58,7 +58,7 @@ string Configuration::getOffsetString(Channels channel)
 	return voltageToString(getOffset(channel));
 }
 
-void Configuration::setOffset(Channels channel, double offset)
+void Configuration::setOffset(Channels channel, float offset)
 {
 	if(offset < -40)
 	{
@@ -94,9 +94,9 @@ Configuration::VerticalScales Configuration::getVerticalScale(Channels channel)
 	return verticalScale;
 }
 
-double Configuration::getVerticalScaleValue(Channels channel)
+float Configuration::getVerticalScaleValue(Channels channel)
 {
-	double scale;
+	float scale;
 	VerticalScales verticalScale = getVerticalScale(channel);
 	switch(verticalScale)
 	{
@@ -200,9 +200,9 @@ Configuration::HorizontalScales Configuration::getHorizontalScale(void)
 	return horizontalScale;
 }
 
-double Configuration::getHorizontalScaleValue(void)
+float Configuration::getHorizontalScaleValue(void)
 {
-	double scale;
+	float scale;
 	switch(horizontalScale)
 	{
 		case ONE_US:
@@ -524,7 +524,7 @@ Configuration::TriggerSlopes Configuration::getTriggerSlope(void)
 	return triggerSlope;
 }
 
-double Configuration::getTriggerLevel(void)
+float Configuration::getTriggerLevel(void)
 {
 	return triggerLevel;
 }
@@ -544,14 +544,14 @@ Configuration::HorizontalScales Configuration::getTriggerHoldOff(void)
 	return triggerHoldOff;
 }
 
-double Configuration::getTriggerHoldOffValue(void)
+float Configuration::getTriggerHoldOffValue(void)
 {
 	return getTriggerHoldOffValue(triggerHoldOff);
 }
 
-double Configuration::getTriggerHoldOffValue(HorizontalScales THO)
+float Configuration::getTriggerHoldOffValue(HorizontalScales THO)
 {
-	double holdOff;
+	float holdOff;
 	switch(THO)
 	{
 		case ONE_US:
@@ -865,7 +865,7 @@ void Configuration::setTriggerHighFrequencyReject(bool reject)
 	triggerHighFrequencyReject = reject;
 }
 
-void Configuration::setTriggerLevel(double level)
+void Configuration::setTriggerLevel(float level)
 {
 	if(level < -4)
 	{
@@ -878,10 +878,10 @@ void Configuration::setTriggerLevel(double level)
 	triggerLevel = level;
 }
 
-void Configuration::setTriggerHoldOff(double holdOff)
+void Configuration::setTriggerHoldOff(float holdOff)
 {
 	HorizontalScales THO = ONE_US;
-	double error = abs(holdOff - getTriggerHoldOffValue(ONE_US));
+	float error = abs(holdOff - getTriggerHoldOffValue(ONE_US));
 	for(int i = TWO_US; i < ONE_S; i++)
 	{
 		if(abs(holdOff - getTriggerHoldOffValue((HorizontalScales) i)) < error)
@@ -893,12 +893,12 @@ void Configuration::setTriggerHoldOff(double holdOff)
 	triggerHoldOff = THO;
 }
 
-vector<double> Configuration::getCursor(void)
+vector<float> Configuration::getCursor(void)
 {
 	return cursor;
 }
 
-void Configuration::setCursor(const vector<double>& cursors)
+void Configuration::setCursor(const vector<float>& cursors)
 {
 	cursor = cursors;
 }
@@ -957,7 +957,7 @@ string Configuration::getAverageString(void)
 	return ss.str();
 }
 
-string Configuration::voltageToString(double voltage)
+string Configuration::voltageToString(float voltage)
 {
 	stringstream ss;
 	ss.precision(2);
@@ -972,7 +972,7 @@ string Configuration::voltageToString(double voltage)
 	return ss.str();
 }
 
-string Configuration::timeToString(double time)
+string Configuration::timeToString(float time)
 {
 	stringstream ss;
 	ss.precision(2);
@@ -991,7 +991,7 @@ string Configuration::timeToString(double time)
 	return ss.str();
 }
 
-string Configuration::frequencyToString(double frequency)
+string Configuration::frequencyToString(float frequency)
 {
 	stringstream ss;
 	ss.precision(2);
@@ -1014,7 +1014,7 @@ string Configuration::frequencyToString(double frequency)
 	return ss.str();
 }
 
-string Configuration::percentageToString(double percentage)
+string Configuration::percentageToString(float percentage)
 {
 	stringstream ss;
 	ss.precision(2);
@@ -1022,7 +1022,7 @@ string Configuration::percentageToString(double percentage)
 	return ss.str();
 }
 
-string Configuration::degreesToString(double degrees)
+string Configuration::degreesToString(float degrees)
 {
 	stringstream ss;
 	ss.precision(2);
@@ -1030,7 +1030,7 @@ string Configuration::degreesToString(double degrees)
 	return ss.str();
 }
 
-string Configuration::deciBellToString(double deciBell)
+string Configuration::deciBellToString(float deciBell)
 {
 	stringstream ss;
 	ss.precision(2);
@@ -1057,7 +1057,7 @@ int Configuration::getMemoryDepth(void)
 	return memoryDepth;
 }
 
-double Configuration::getDelay(void)
+float Configuration::getDelay(void)
 {
 	return delay;
 }
@@ -1067,17 +1067,17 @@ string Configuration::getDelayString(void)
 	return timeToString(getHorizontalScaleValue() * delay);
 }
 
-void Configuration::setDelay(double d)
+void Configuration::setDelay(float d)
 {
 	delay = d;
 }
 
-double Configuration::getStep(void)
+float Configuration::getStep(void)
 {
 	return step;
 }
 
-void Configuration::setStep(double s)
+void Configuration::setStep(float s)
 {
 	step = s;
 }
