@@ -12,11 +12,11 @@ FPGA::FPGA(Configuration& configuration, State& state, Samples& samples) : confi
 
 void FPGA::fetchSamples(void)
 {
-	static double roll = 0;
+	static float roll = 0;
 	if(configuration.getMode() != Configuration::STOP)
 	{
-		vector<double> samplesA;
-		vector<double> samplesB;
+		vector<float> samplesA;
+		vector<float> samplesB;
 		if(configuration.getMode() == Configuration::ROLL)
 		{
 			int step = state.getPixelsPerDivision() / configuration.getHorizontalScaleValue() / 30;
@@ -40,9 +40,9 @@ void FPGA::fetchSamples(void)
 		}
 		else
 		{
-			vector<double> oldSamplesA = samples.getSamples(Configuration::CHANNEL_A);
-			vector<double> oldSamplesB = samples.getSamples(Configuration::CHANNEL_B);
-			double averageCoefficient = 1.0 / configuration.getAverageValue();
+			vector<float> oldSamplesA = samples.getSamples(Configuration::CHANNEL_A);
+			vector<float> oldSamplesB = samples.getSamples(Configuration::CHANNEL_B);
+			float averageCoefficient = 1.0 / configuration.getAverageValue();
 			for(int i = 0; i < configuration.getMemoryDepth(); i++)
 			{
 				samplesA.push_back(averageCoefficient * (3.0 * sin(2.0 * 3.141592 * configuration.getHorizontalScaleValue() * i / 30) + 0.4 * rand() / RAND_MAX - 0.2) + (1 - averageCoefficient) * oldSamplesA[i]);
@@ -75,7 +75,7 @@ int FPGA::quantize(bool value, int shift)
 	return ((value ? 1 : 0) << shift);
 }
 
-int FPGA::quantize(double value, double minimum, int bits, int shift)
+int FPGA::quantize(float value, float minimum, int bits, int shift)
 {
 	return ((((int) round(value / minimum)) & getMask(bits)) << shift);
 }

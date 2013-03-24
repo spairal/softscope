@@ -19,7 +19,7 @@ class FPGA
 	private:
 		int getMask(int bits);
 		int quantize(bool value, int shift);
-		int quantize(double value, double minimum, int bits, int shift);
+		int quantize(float value, float minimum, int bits, int shift);
 		int getFirstMessage(void);
 		int getSecondMessage(void);
 };

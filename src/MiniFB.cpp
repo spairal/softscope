@@ -83,8 +83,8 @@ void MiniFB::drawLine(int x1, int y1, int x2, int y2, int color)
 	if(abs(x2 - x1) > abs(y2 - y1))
 	{
 		int xStep = (x1 < x2) ? 1 : -1;
-		double y = y1 + 0.5;
-		double yStep = (double) (y2 - y1) / (x2 - x1);
+		float y = y1 + 0.5;
+		float yStep = (float) (y2 - y1) / (x2 - x1);
 		for(int x = x1; x != x2; x += xStep)
 		{
 			drawPixel(x, y, color);
@@ -94,8 +94,8 @@ void MiniFB::drawLine(int x1, int y1, int x2, int y2, int color)
 	else
 	{
 		int yStep = (y1 < y2) ? 1 : -1;
-		double x = x1 + 0.5;
-		double xStep = (double) (x2 - x1) / (y2 - y1);
+		float x = x1 + 0.5;
+		float xStep = (float) (x2 - x1) / (y2 - y1);
 		for(int y = y1; y != y2; y += yStep)
 		{
 			drawPixel(x, y, color);
