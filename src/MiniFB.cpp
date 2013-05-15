@@ -7,6 +7,8 @@
 #include <sstream>
 #include <fstream>
 
+#include <iostream>
+
 #define FONT_SIZE 8
 
 using namespace std;
@@ -18,8 +20,9 @@ MiniFB::MiniFB(string fb)
 	ioctl(fd, FBIOGET_VSCREENINFO, &screeninfo);
 	width = screeninfo.xres;
 	height = screeninfo.yres;
-	data = (unsigned int*) mmap(0, 4 * width * height, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-	buffer = new unsigned int[width * height];
+	
+	data = (unsigned char*) mmap(0, width * height, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+	buffer = new unsigned char[width * height];
 	for(char c = 'a'; c <= 'z'; c++)
 	{
 		addCharacter(c);
@@ -44,7 +47,7 @@ MiniFB::MiniFB(string fb)
 
 MiniFB::~MiniFB()
 {
-	munmap(data, 4 * width * height);
+	munmap(data, width * height);
 	delete[] buffer;
 	for(map<char, bool*>::iterator i = characterMap.begin(); i != characterMap.end(); i++)
 	{
@@ -54,7 +57,7 @@ MiniFB::~MiniFB()
 
 void MiniFB::clearScreen(void)
 {
-	drawRectangleFill(0, 0, width - 1, height - 1, 0x000000);
+	drawRectangleFill(0, 0, width - 1, height - 1, 0x00);
 }
 
 void MiniFB::updateScreen(void)
@@ -68,17 +71,15 @@ void MiniFB::updateScreen(void)
 	}
 }
 
-void MiniFB::drawPixel(int x, int y, int color)
+void MiniFB::drawPixel(int x, int y, unsigned char color)
 {
-	x += 40;	//TEMPORAL
-	y += 48;	//TEMPORAL
 	if((x >= 0) && (x < width) && (y >= 0) && (y < height))
 	{
 		buffer[y * width + x] = color;
 	}
 }
 
-void MiniFB::drawLine(int x1, int y1, int x2, int y2, int color)
+void MiniFB::drawLine(int x1, int y1, int x2, int y2, unsigned char color)
 {
 	if(abs(x2 - x1) > abs(y2 - y1))
 	{
@@ -104,7 +105,7 @@ void MiniFB::drawLine(int x1, int y1, int x2, int y2, int color)
 	}
 }
 
-void MiniFB::drawRectangleFill(int x1, int y1, int x2, int y2, int color)
+void MiniFB::drawRectangleFill(int x1, int y1, int x2, int y2, unsigned char color)
 {
 	int xStep = (x1 > x2) ? -1 : 1;
 	int yStep = (y1 > y2) ? -1 : 1;
@@ -117,7 +118,7 @@ void MiniFB::drawRectangleFill(int x1, int y1, int x2, int y2, int color)
 	}
 }
 
-void MiniFB::drawRectangleBorder(int x1, int y1, int x2, int y2, int color)
+void MiniFB::drawRectangleBorder(int x1, int y1, int x2, int y2, unsigned char color)
 {
 	drawLine(x1, y1, x2, y1, color);
 	drawLine(x1, y2, x2, y2, color);
@@ -125,13 +126,13 @@ void MiniFB::drawRectangleBorder(int x1, int y1, int x2, int y2, int color)
 	drawLine(x2, y1, x2, y2, color);
 }
 
-void MiniFB::drawRectangle(int x1, int y1, int x2, int y2, int fillColor, int borderColor)
+void MiniFB::drawRectangle(int x1, int y1, int x2, int y2, unsigned char fillColor, unsigned char borderColor)
 {
 	drawRectangleFill(x1, y1, x2, y2, fillColor);
 	drawRectangleBorder(x1, y1, x2, y2, borderColor);
 }
 
-void MiniFB::drawText(int x, int y, string text, int color)
+void MiniFB::drawText(int x, int y, string text, unsigned char color)
 {
 	int xt = x;
 	int yt = y;
@@ -200,17 +201,17 @@ int MiniFB::getTextHeight(string text)
 	return height;
 }
 
-int MiniFB::thinColor(int color, int times)
+unsigned char MiniFB::thinColor(unsigned char color, int times)
 {
-	int r = color & 0xFF0000;
-	int g = color & 0x00FF00;
-	int b = color & 0x0000FF;
+	unsigned char r = color & 0xE0;
+	unsigned char g = color & 0x18;
+	unsigned char b = color & 0x07;
 	r >>= times;
 	g >>= times;
 	b >>= times;
-	r &= 0xFF0000;
-	g &= 0x00FF00;
-	b &= 0x0000FF;
+	r &= 0xE0;
+	g &= 0x18;
+	b &= 0x07;
 	return r | g | b;
 }
 

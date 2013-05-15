@@ -78,10 +78,10 @@ void* updateInput(void* arg)
 				switch(miniInput->ie.code)
 				{
 					case ABS_X:
-						miniInput->x = miniInput->ie.value;
+						miniInput->x = -(miniInput->ie.value-4000)/4;
 						break;
 					case ABS_Y:
-						miniInput->y = miniInput->ie.value;
+						miniInput->y = (miniInput->ie.value-200)/7;
 						break;
 				}
 				break;
