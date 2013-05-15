@@ -19,6 +19,10 @@ class MiniInput
 		int y;
 		bool pressed;
 		bool released;
+		float ax;
+		float bx;
+		float ay;
+		float by;
 
 	public:
 		MiniInput(std::string input);

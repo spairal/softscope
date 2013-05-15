@@ -13,7 +13,7 @@ Configuration::Configuration(void)
 	horizontalScale = HUNDRED_MS;
 	couplingA = DC;
 	couplingB = DC;
-	channelA = true;
+	channelA = false;
 	channelB = false;
 	measure = NOMEASURE;
 	cursor.push_back(0);

@@ -7,8 +7,6 @@
 #include <sstream>
 #include <fstream>
 
-#include <iostream>
-
 #define FONT_SIZE 8
 
 using namespace std;

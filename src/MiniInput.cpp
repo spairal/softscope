@@ -1,6 +1,7 @@
 #include <MiniInput.hpp>
 #include <fcntl.h>
 #include <unistd.h>
+#include <fstream>
 
 using namespace std;
 
@@ -11,6 +12,11 @@ MiniInput::MiniInput(string input)
 	y = 0;
 	pressed = false;
 	released = false;
+	ifstream myFile("calibrate.txt");
+	if(myFile.is_open())
+	{
+		myFile >> ax >> bx >> ay >> by;
+	}
 	pthread_create(&inputThread, NULL, updateInput, (void*) this);
 }
 
@@ -78,10 +84,10 @@ void* updateInput(void* arg)
 				switch(miniInput->ie.code)
 				{
 					case ABS_X:
-						miniInput->x = -(miniInput->ie.value-4000)/4;
+						miniInput->x = (miniInput->ie.value - miniInput->bx) / miniInput->ax;
 						break;
 					case ABS_Y:
-						miniInput->y = (miniInput->ie.value-200)/7;
+						miniInput->y = (miniInput->ie.value - miniInput->by) / miniInput->ay;
 						break;
 				}
 				break;

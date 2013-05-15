@@ -48,8 +48,8 @@ State::State(void)
 	modeMenuCoordenates.push_back(640);
 	modeMenuCoordenates.push_back(370);
 	modeMenuCoordenates.push_back(400);
-	colorGeneral = 0x94;
-	colorA = 0x4F;
+	colorGeneral = 0xFF;
+	colorA = 0x07;
 	colorB = 0xE0;
 	colorMathematics = 0xF8;
 	cursorDrag = false;
@@ -61,7 +61,7 @@ State::State(void)
 	initialOffset.push_back(0);
 	initialVerticalScale = 0;
 	initialHorizontalScale = 0;
-	selectedChannel = Configuration::CHANNEL_A;
+	selectedChannel = Configuration::NO_CHANNEL;
 	measuresButtonActive = false;
 	mathematicsButtonActive = false;
 	modeButtonActive = false;
