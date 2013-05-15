@@ -14,13 +14,20 @@ SOURCE = src
 TARGET = target
 OBJ = $(TARGET)/obj
 EXECUTABLE = $(TARGET)/softscope
+CALIBRATE = calibrate
+EXECUTABLECALIBRATE = $(TARGET)/$(CALIBRATE)
 OBJECTS = $(addprefix $(OBJ)/, $(addsuffix .o, main Configuration State Samples Measurer Mathematician Touch FPGA Display MiniFB MiniInput))
+OBJECTSCALIBRATE = $(addprefix $(OBJ)/, $(addsuffix .o, calibrate MiniFB MiniInput))
 LIBRARIES = $(addprefix -l, fftw3 pthread)
+LIBRARIESCALIBRATE = $(addprefix -l, pthread)
 
 # LINKING
 
 $(EXECUTABLE) : $(OBJECTS)
 	$(LINKER) $(LINKERPARAMS) $(OBJECTS) $(LIBRARIES) $(OUTPUT) $(EXECUTABLE) 
+
+$(CALIBRATE) : $(OBJECTSCALIBRATE)
+	$(LINKER) $(LINKERPARAMS) $(OBJECTSCALIBRATE) $(LIBRARIESCALIBRATE) $(OUTPUT) $(EXECUTABLECALIBRATE) 
 
 # COMPILING
 
@@ -57,6 +64,9 @@ $(OBJ)/MiniFB.o : $(SOURCE)/MiniFB.cpp
 $(OBJ)/MiniInput.o : $(SOURCE)/MiniInput.cpp
 	$(COMPILER) $(COMPILERPARAMS) $(SOURCE)/MiniInput.cpp $(INCLUDE) $(SOURCE) $(OUTPUT) $(OBJ)/MiniInput.o
 
+$(OBJ)/calibrate.o : $(SOURCE)/calibrate.cpp
+	$(COMPILER) $(COMPILERPARAMS) $(SOURCE)/calibrate.cpp $(INCLUDE) $(SOURCE) $(OUTPUT) $(OBJ)/calibrate.o
+
 # SOURCES
 
 $(SOURCE)/main.cpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp $(SOURCE)/Measurer.hpp $(SOURCE)/Mathematician.hpp $(SOURCE)/Touch.hpp $(SOURCE)/FPGA.hpp $(SOURCE)/Display.hpp $(SOURCE)/MiniFB.hpp
@@ -91,6 +101,9 @@ $(SOURCE)/MiniFB.cpp : $(SOURCE)/MiniFB.hpp
 
 $(SOURCE)/MiniInput.cpp : $(SOURCE)/MiniInput.hpp
 	$(TOUCH) $(SOURCE)/MiniInput.cpp
+
+$(SOURCE)/calibrate.cpp : $(SOURCE)/MiniFB.hpp $(SOURCE)/MiniInput.hpp
+	$(TOUCH) $(SOURCE)/calibrate.cpp
 
 # HEADERS
 
