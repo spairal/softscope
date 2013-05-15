@@ -114,7 +114,7 @@ void Display::updateScreen(void)
 
 void Display::printGrid(const vector<int>& coordenates)
 {
-	int color = miniFB.thinColor(state.getColorGeneral(), 1);
+	unsigned char color = miniFB.thinColor(state.getColorGeneral(), 1);
 	for(int x = coordenates[0]; x <= coordenates[1]; x += ((coordenates[1] - coordenates[0]) / 10))
 	{
 		miniFB.drawLine(x, coordenates[2], x, coordenates[3], color);
@@ -125,12 +125,12 @@ void Display::printGrid(const vector<int>& coordenates)
 	}
 }
 
-void Display::printOffset(int offsetValue, string offsetString, int color, const vector<int>& coordenates)
+void Display::printOffset(int offsetValue, string offsetString, unsigned char color, const vector<int>& coordenates)
 {
 	miniFB.drawText(coordenates[0] + 5, (coordenates[2] + coordenates[3]) / 2 - offsetValue - miniFB.getTextHeight(offsetString), offsetString, color);
 }
 
-void Display::printVerticalScale(string verticalScale, int color, const vector<int>& coordenates)
+void Display::printVerticalScale(string verticalScale, unsigned char color, const vector<int>& coordenates)
 {
 	miniFB.drawText(coordenates[1] - miniFB.getTextWidth(verticalScale) - 5, (coordenates[2] + coordenates[3]) / 2 - miniFB.getTextHeight(verticalScale), verticalScale, color);
 }
@@ -145,9 +145,9 @@ void Display::printHorizontalScale(string horizontalScale, const vector<int>& co
 	miniFB.drawText((coordenates[0] + coordenates[1]) / 2 + 5, coordenates[2] + 5, horizontalScale, state.getColorGeneral());
 }
 
-void Display::printChannelButton(string channel, bool isActive, bool isSelected, int color, const vector<int>& coordenates)
+void Display::printChannelButton(string channel, bool isActive, bool isSelected, unsigned char color, const vector<int>& coordenates)
 {
-	int fillColor;
+	unsigned char fillColor;
 	if(isSelected)
 	{
 		fillColor = miniFB.thinColor(color, 2);
@@ -169,7 +169,7 @@ void Display::printChannelButton(string channel, bool isActive, bool isSelected,
 	miniFB.drawText(coordenates[0] + (coordenates[3] - coordenates[2]), (coordenates[2] + coordenates[3] - miniFB.getTextHeight(channel)) / 2, channel, color);
 }
 
-void Display::printCouplingButton(string text, int color, const vector<int>& coordenates)
+void Display::printCouplingButton(string text, unsigned char color, const vector<int>& coordenates)
 {
 	miniFB.drawRectangle(coordenates[0], coordenates[2], coordenates[1], coordenates[3], miniFB.thinColor(color, 4), color);
 	miniFB.drawText((coordenates[0] + coordenates[1] - miniFB.getTextWidth("Coupling")) / 2, (2 * coordenates[2] + coordenates[3]) / 3 - miniFB.getTextHeight("Coupling") / 2, "Coupling", color);
@@ -178,8 +178,8 @@ void Display::printCouplingButton(string text, int color, const vector<int>& coo
 
 void Display::printButton(string title, string text, bool isActive, const vector<int>& coordenates)
 {
-	int color = state.getColorGeneral();
-	int fillColor;
+	unsigned char color = state.getColorGeneral();
+	unsigned char fillColor;
 	if(isActive)
 	{
 		fillColor = miniFB.thinColor(color, 1);
@@ -195,7 +195,7 @@ void Display::printButton(string title, string text, bool isActive, const vector
 
 void Display::printMenu(const vector<string>& options, const vector<int>& coordenates)
 {
-	int color = state.getColorGeneral();
+	unsigned char color = state.getColorGeneral();
 	miniFB.drawRectangle(coordenates[0], coordenates[3] - options.size() * (coordenates[3] - coordenates[2]), coordenates[1], coordenates[3], miniFB.thinColor(color, 2), color);
 	for(int i = 0; i < options.size(); i++)
 	{
@@ -208,7 +208,7 @@ void Display::printAlert(string text, const vector<int>& coordenates)
 	miniFB.drawText(coordenates[0] + state.getPixelsPerDivision(), coordenates[2] - state.getPixelsPerDivision() - miniFB.getTextHeight(text), text, state.getColorGeneral());
 }
 
-void Display::printSamples(const std::vector<int>& samples, int delay, int memoryDepth, float step, int color, const vector<int>& coordenates)
+void Display::printSamples(const std::vector<int>& samples, int delay, int memoryDepth, float step, unsigned char color, const vector<int>& coordenates)
 {
 	int upStep = max(1.0, round(step));
 	int start = (delay - memoryDepth / 2) * step + memoryDepth / 2;
@@ -243,6 +243,6 @@ void Display::printCursor(const vector<int>& coordenates)
 
 void Display::printMouse(int x, int y)
 {
-	miniFB.drawText(x - miniFB.getTextWidth("X") / 2, y - miniFB.getTextHeight("X") / 2, "X", 0xFF0077);
+	//miniFB.drawText(x - miniFB.getTextWidth("X") / 2, y - miniFB.getTextHeight("X") / 2, "X", 0xE);
 }
 

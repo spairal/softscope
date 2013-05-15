@@ -18,10 +18,10 @@ class State
 		std::vector<int> mathematicsMenuCoordenates;
 		std::vector<int> modeCoordenates;
 		std::vector<int> modeMenuCoordenates;
-		int colorGeneral;
-		int colorA;
-		int colorB;
-		int colorMathematics;
+		unsigned char colorGeneral;
+		unsigned char colorA;
+		unsigned char colorB;
+		unsigned char colorMathematics;
 		bool cursorDrag;
 		bool offsetDrag;
 		bool verticalScaleDrag;
