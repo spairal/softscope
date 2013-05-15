@@ -1,4 +1,4 @@
 softscope
 =========
 
-A oscilloscope software
+An oscilloscope software.
