@@ -12,11 +12,13 @@ MiniInput::MiniInput(string input)
 	y = 0;
 	pressed = false;
 	released = false;
+	drag = false;
 	ifstream myFile("calibrate.txt");
 	if(myFile.is_open())
 	{
 		myFile >> ax >> bx >> ay >> by;
 	}
+	alfa = 0.5;
 	pthread_create(&inputThread, NULL, updateInput, (void*) this);
 }
 
@@ -63,9 +65,11 @@ void* updateInput(void* arg)
 				{
 					case 0:
 						miniInput->released = true;
+						miniInput->drag = false;
 						break;
 					case 1:
 						miniInput->pressed = true;
+						miniInput->drag = true;
 						break;
 				}
 				break;
@@ -84,10 +88,24 @@ void* updateInput(void* arg)
 				switch(miniInput->ie.code)
 				{
 					case ABS_X:
-						miniInput->x = (miniInput->ie.value - miniInput->bx) / miniInput->ax;
+					   if(miniInput->drag)
+					   {
+					      miniInput->x = (1 - miniInput->alfa) * miniInput->x + miniInput->alfa * (miniInput->ie.value - miniInput->bx) / miniInput->ax;
+					   }
+					   else
+					   {
+						   miniInput->x = (miniInput->ie.value - miniInput->bx) / miniInput->ax;
+						}
 						break;
 					case ABS_Y:
-						miniInput->y = (miniInput->ie.value - miniInput->by) / miniInput->ay;
+					   if(miniInput->drag)
+					   {
+					      miniInput->y = (1 - miniInput->alfa) * miniInput->y + miniInput->alfa * (miniInput->ie.value - miniInput->by) / miniInput->ay;
+					   }
+					   else
+					   {
+						   miniInput->y = (miniInput->ie.value - miniInput->by) / miniInput->ay;
+						}
 						break;
 				}
 				break;
