@@ -11,6 +11,15 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
+	ofstream tmpFile("calibrate.txt");
+	if(tmpFile.is_open())
+	{
+		tmpFile << 1 << endl;
+		tmpFile << 0 << endl;
+		tmpFile << 1 << endl;
+		tmpFile << 0 << endl;
+		tmpFile.close();
+	}
 	MiniFB miniFB("/dev/fb0");
 	MiniInput miniInput("/dev/input/event0");
 	int xi1 = 100;
@@ -65,11 +74,11 @@ int main(int argc, char** argv)
 	}
 	float ax = (float)(xo2 - xo1) / (float)(xi2 - xi1);
 	float bx = (float)(xi2 * xo1 - xi1 * xo2) / (float)(xi2 - xi1);
-	float ay = (float)(yo2 - yo1) /(float) (yi2 - yi1);
+	float ay = (float)(yo2 - yo1) / (float)(yi2 - yi1);
 	float by = (float)(yi2 * yo1 - yi1 * yo2) / (float)(yi2 - yi1);
 	cout << "ax = " << ax << "; bx = " << bx << endl;
 	cout << "ay = " << ay << "; by = " << by << endl;
-	ofstream myFile ("calibrate.txt");
+	ofstream myFile("calibrate.txt");
 	if(myFile.is_open())
 	{
 		myFile << ax << endl;
