@@ -11,6 +11,7 @@ void Display::print(void)
 {
 	clearScreen();
 	printGrid(state.getGridCoordenates());
+	printSliders(state.getGridCoordenates());
 	if(configuration.getChannel(state.getUnselectedChannel()))
 	{
 		printSamples(samplesToPixels(samples.getSamples(state.getUnselectedChannel()), configuration.getOffset(state.getUnselectedChannel()), configuration.getVerticalScaleValue(state.getUnselectedChannel()), state.getPixelsPerDivision()), configuration.getMemoryDepth() / 2 - (configuration.getDelay() + 5) * state.getPixelsPerDivision(), configuration.getMemoryDepth(), configuration.getStep(), state.getColor(state.getUnselectedChannel()), state.getGridCoordenates());
@@ -123,6 +124,17 @@ void Display::printGrid(const vector<int>& coordenates)
 	{
 		miniFB.drawLine(coordenates[0], y, coordenates[1], y, color);
 	}
+}
+
+void Display::printSliders(const vector<int>& coordenates)
+{
+	unsigned char color = miniFB.thinColor(state.getColorGeneral(), 1);
+	miniFB.drawRectangleBorder(coordenates[0] + 1, coordenates[2] + 1, coordenates[1] - state.getPixelsPerDivision() - 1, coordenates[2] + state.getPixelsPerDivision() - 1, color);
+	miniFB.drawRectangleBorder(coordenates[1] - state.getPixelsPerDivision() + 1, coordenates[2] + state.getPixelsPerDivision() + 1, coordenates[1] - 1, coordenates[3] - 1, color);
+	miniFB.drawText(coordenates[0] + state.getPixelsPerDivision() / 2 - miniFB.getTextWidth("-") / 2, coordenates[2] + state.getPixelsPerDivision() / 2 - miniFB.getTextWidth("-") / 2, "-", color);
+	miniFB.drawText(coordenates[1] - 3 * state.getPixelsPerDivision() / 2 - miniFB.getTextWidth("+") / 2, coordenates[2] + state.getPixelsPerDivision() / 2 - miniFB.getTextWidth("+") / 2, "+", color);
+	miniFB.drawText(coordenates[1] - state.getPixelsPerDivision() / 2 - miniFB.getTextWidth("-") / 2, coordenates[3] - state.getPixelsPerDivision() / 2 - miniFB.getTextWidth("-") / 2, "-", color);
+	miniFB.drawText(coordenates[1] - state.getPixelsPerDivision() / 2 - miniFB.getTextWidth("+") / 2, coordenates[2] + 3 * state.getPixelsPerDivision() / 2 - miniFB.getTextWidth("+") / 2, "+", color);
 }
 
 void Display::printOffset(int offsetValue, string offsetString, unsigned char color, const vector<int>& coordenates)

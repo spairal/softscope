@@ -29,6 +29,7 @@ class Display
 		void clearScreen(void);
 		void updateScreen(void);
 		void printGrid(const std::vector<int>& coordenates);
+		void printSliders(const std::vector<int>& coordenates);
 		void printOffset(int offsetValue, std::string offsetString, unsigned char color, const std::vector<int>& coordenates);
 		void printVerticalScale(std::string verticalScale, unsigned char color, const std::vector<int>& coordenates);
 		void printDelay(int delayValue, std::string delayString, const std::vector<int>& coordenates);
