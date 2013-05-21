@@ -1,5 +1,6 @@
 #include <MiniFB.hpp>
 #include <fcntl.h>
+#include <unistd.h>
 #include <linux/fb.h>
 #include <sys/mman.h>
 #include <sys/ioctl.h>
