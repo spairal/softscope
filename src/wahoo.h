@@ -5,6 +5,10 @@
 extern "C" {
 #endif
 
+
+#define CHANNEL_MEMORY_DEPTH 1024
+
+
 struct chan {
 	char id;
 	char on;

@@ -25,6 +25,7 @@ MiniInput::MiniInput(string input)
 MiniInput::~MiniInput(void)
 {
 	pthread_cancel(inputThread);
+	close(fd);
 }
 
 int MiniInput::getX(void)
