@@ -21,6 +21,7 @@ MiniFB::MiniFB(string fb)
 	
 	data = (unsigned char*) mmap(0, width * height, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
 	buffer = new unsigned char[width * height];
+	close(fd);
 	for(char c = 'a'; c <= 'z'; c++)
 	{
 		addCharacter(c);
@@ -51,6 +52,7 @@ MiniFB::~MiniFB()
 	{
 		delete[] i->second;
 	}
+
 }
 
 void MiniFB::clearScreen(void)
