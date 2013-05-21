@@ -7,30 +7,27 @@ using namespace std;
 
 MiniWahoo::MiniWahoo(string dir)
 {
-	stringstream ss;
-	stringstream fn;
-	ss << dir << "/";
-	fn = ss;
-	fn << "channelAstate";
-	channelAFile = open(fn.data(), O_RDWR);
-	fn = ss;
-	fn << "channelBstate";
-	channelBFile = open(fn.data(), O_RDWR);
-	fn = ss;
-	fn << "channelAdata";
-	channelADataFile = open(fn.data(), O_RDONLY);
-	fn = ss;
-	fn << "channelBdata";
-	channelBDataFile = open(fn.data(), O_RDONLY);
-	fn = ss;
-	fn << "trigger";
-	triggerFile = open(fn.data(), O_RDWR);
-	fn = ss;
-	fn << "sampleRate";
-	sampleRateFile = open(fn.data(), O_RDWR);
-	fn = ss;
-	fn << "reset";
-	resetFile = open(fn.data(), O_WRONLY);
+	stringstream ssa;
+	ssa << dir << "/" << "channelAstate";
+	channelAFile = open(ssa.str().data(), O_RDWR);
+	stringstream ssb;
+	ssb << dir << "/" << "channelBstate";
+	channelBFile = open(ssb.str().data(), O_RDWR);
+	stringstream ssc;
+	ssc << dir << "/" << "channelAdata";
+	channelADataFile = open(ssc.str().data(), O_RDONLY);
+	stringstream ssd;
+	ssd << dir << "/" << "channelBdata";
+	channelBDataFile = open(ssd.str().data(), O_RDONLY);
+	stringstream sse;
+	sse << dir << "/" << "trigger";
+	triggerFile = open(sse.str().data(), O_RDWR);
+	stringstream ssf;
+	ssf << dir << "/" << "sampleRate";
+	sampleRateFile = open(ssf.str().data(), O_RDWR);
+	stringstream ssg;
+	ssg << dir << "/" << "reset";
+	resetFile = open(ssg.str().data(), O_WRONLY);
 	channelAData = new char[CHANNEL_MEMORY_DEPTH];
 	channelBData = new char[CHANNEL_MEMORY_DEPTH];
 }
@@ -103,7 +100,7 @@ bool MiniWahoo::setTriggerConf(Configuration::Channels chann, char slope, char a
 
 bool MiniWahoo::setSampleRate(char sampleRate)
 {
-	bool ret = true
+	bool ret = true;
 	if(write(sampleRateFile, &sampleRate, 1) < 0)
 	{
 		ret = false;
@@ -114,7 +111,7 @@ bool MiniWahoo::setSampleRate(char sampleRate)
 bool MiniWahoo::reset(void)
 {
 	bool ret = true;
-	if(write(resetFile, 1, 1) < 0)
+	if(write(resetFile, (const void*)1, 1) < 0)
 	{
 		ret = false;
 	}
