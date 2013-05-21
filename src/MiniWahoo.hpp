@@ -1,14 +1,13 @@
 #ifndef MINIWAHOO_HPP
 #define MINIWAHOO_HPP
 
-#include "wahoo.h"
 #include <Configuration.hpp>
+#include <wahoo.h>
 #include <string>
 
 class MiniWahoo
 {
 	private:
-	
 		int channelAFile;
 		int channelBFile;
 		int channelADataFile;
@@ -16,7 +15,6 @@ class MiniWahoo
 		int triggerFile;
 		int sampleRateFile;
 		int resetFile;
-		
 		char *channelAData;
 		char *channelBData;
 		
@@ -32,3 +30,4 @@ class MiniWahoo
 };
 
 #endif // MINIWAHOO_HPP
+

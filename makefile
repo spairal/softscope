@@ -16,7 +16,7 @@ OBJ = $(TARGET)/obj
 EXECUTABLE = $(TARGET)/softscope
 CALIBRATE = calibrate
 EXECUTABLECALIBRATE = $(TARGET)/$(CALIBRATE)
-OBJECTS = $(addprefix $(OBJ)/, $(addsuffix .o, main Configuration State Samples Measurer Mathematician Touch FPGA Display MiniFB MiniInput))
+OBJECTS = $(addprefix $(OBJ)/, $(addsuffix .o, main Configuration State Samples Measurer Mathematician Touch FPGA Display MiniFB MiniInput MiniWahoo))
 OBJECTSCALIBRATE = $(addprefix $(OBJ)/, $(addsuffix .o, calibrate MiniFB MiniInput))
 LIBRARIES = $(addprefix -l, fftw3 pthread)
 LIBRARIESCALIBRATE = $(addprefix -l, pthread)
@@ -64,6 +64,9 @@ $(OBJ)/MiniFB.o : $(SOURCE)/MiniFB.cpp
 $(OBJ)/MiniInput.o : $(SOURCE)/MiniInput.cpp
 	$(COMPILER) $(COMPILERPARAMS) $(SOURCE)/MiniInput.cpp $(INCLUDE) $(SOURCE) $(OUTPUT) $(OBJ)/MiniInput.o
 
+$(OBJ)/MiniWahoo.o : $(SOURCE)/MiniWahoo.cpp
+	$(COMPILER) $(COMPILERPARAMS) $(SOURCE)/MiniWahoo.cpp $(INCLUDE) $(SOURCE) $(OUTPUT) $(OBJ)/MiniWahoo.o
+
 $(OBJ)/calibrate.o : $(SOURCE)/calibrate.cpp
 	$(COMPILER) $(COMPILERPARAMS) $(SOURCE)/calibrate.cpp $(INCLUDE) $(SOURCE) $(OUTPUT) $(OBJ)/calibrate.o
 
@@ -102,6 +105,9 @@ $(SOURCE)/MiniFB.cpp : $(SOURCE)/MiniFB.hpp
 $(SOURCE)/MiniInput.cpp : $(SOURCE)/MiniInput.hpp
 	$(TOUCH) $(SOURCE)/MiniInput.cpp
 
+$(SOURCE)/MiniWahoo.cpp : $(SOURCE)/MiniWahoo.hpp
+	$(TOUCH) $(SOURCE)/MiniWahoo.cpp
+
 $(SOURCE)/calibrate.cpp : $(SOURCE)/MiniFB.hpp $(SOURCE)/MiniInput.hpp
 	$(TOUCH) $(SOURCE)/calibrate.cpp
 
@@ -125,7 +131,7 @@ $(SOURCE)/Mathematician.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(
 $(SOURCE)/Touch.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp $(SOURCE)/MiniInput.hpp
 	$(TOUCH) $(SOURCE)/Touch.hpp
 
-$(SOURCE)/FPGA.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp
+$(SOURCE)/FPGA.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp $(SOURCE)/MiniWahoo.hpp
 	$(TOUCH) $(SOURCE)/FPGA.hpp
 
 $(SOURCE)/Display.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp $(SOURCE)/Measurer.hpp $(SOURCE)/MiniFB.hpp
@@ -136,6 +142,9 @@ $(SOURCE)/MiniFB.hpp :
 
 $(SOURCE)/MiniInput.hpp :
 	$(TOUCH) $(SOURCE)/MiniInput.hpp
+
+$(SOURCE)/MiniWahoo.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/wahoo.h
+	$(TOUCH) $(SOURCE)/MiniWahoo.hpp
 
 # MAKING DIRECTORIES
 
