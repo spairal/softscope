@@ -1,18 +1,50 @@
 #include <FPGA.hpp>
-#include <cmath>
-#include <cstdlib>
-#include <ctime>
 
 using namespace std;
 
-FPGA::FPGA(Configuration& configuration, State& state, Samples& samples) : configuration(configuration), state(state), samples(samples)
+FPGA::FPGA(Configuration& configuration, State& state, Samples& samples) : configuration(configuration), state(state), samples(samples), miniWahoo("/sys/class/spi_master/spi1/device/spi1.0")
 {
-	srand(time(NULL));
+	channelABuffer = miniWahoo.getChannelDataBuffer(Configuration::CHANNEL_A);
+	channelBBuffer = miniWahoo.getChannelDataBuffer(Configuration::CHANNEL_B);
 }
 
 void FPGA::fetchSamples(void)
 {
-	static float roll = 0;
+	setTriggerConf(quantize(configuration.getTriggerChannel() == Configuration::CHANNEL_B), quantize(configuration.getTriggerSlope() == Configuration::POSITIVE), quantize(configuration.getTriggerMode() == Configuration::AUTOMATIC), quantize(configuration.getMode() == Configuration::ROLL), quantize(configuration.getTriggerNoiseReject()), quantize(configuration.getTriggerHighFrequencyReject()), quantize(configuration.getTriggerHoldOff(), 1, 5), quantize(configuration.getTriggerLevel(), 0.03125, 8));
+	setSampleRate(quantize(configuration.getHorizontalScale(), 1, 5));
+	setChannelConf(Configuration::CHANNEL_A, quantize(configuration.getChannel(Configuration::CHANNEL_A)), quantize(configuration.getVerticalScale(Configuration::CHANNEL_A), 1, 4), quantize(configuration.getCoupling(Configuration::CHANNEL_A) == Configuration::AC), quantize(configuration.getOffset(Configuration::CHANNEL_A), 0.0003125, 18));
+	setChannelConf(Configuration::CHANNEL_B, quantize(configuration.getChannel(Configuration::CHANNEL_B)), quantize(configuration.getVerticalScale(Configuration::CHANNEL_B), 1, 4), quantize(configuration.getCoupling(Configuration::CHANNEL_B) == Configuration::AC), quantize(configuration.getOffset(Configuration::CHANNEL_B), 0.0003125, 18));
+	if(configuration.getMode() != Configuration::STOP)
+	{
+		if(configuration.getMode() == Configuration::ROLL)
+		{
+		
+		}
+		else
+		{
+			if(configuration.getChannel(Configuration::CHANNEL_A))
+			{
+				int N = fetchChannelSamples(Configuration::CHANNEL_A);
+				if(N > 0)
+				{
+					vector<float> oldSamplesA = samples.getSamples(Configuration::CHANNEL_A);
+					vector<float> samplesA;
+					float averageCoefficient = 1.0 / configuration.getAverageValue();
+					for(int i = 0; i < N; i++)
+					{
+						samplesA.push_back(averageCoefficient * getVerticalScaleValue(Channels channel) * (channelABuffer[i] - 128) / 256 + (1 - averageCoefficient) * oldSamplesA[i]);
+					}
+					samples.setSamples(Configuration::CHANNEL_A, samplesA);
+				}
+			}
+			
+			/*if(configuration.getMode() == Configuration::SINGLE)
+			{
+				configuration.setMode(Configuration::RUN);
+			}*/
+		}
+	}
+	/*static float roll = 0;
 	if(configuration.getMode() != Configuration::STOP)
 	{
 		vector<float> samplesA;
@@ -57,7 +89,7 @@ void FPGA::fetchSamples(void)
 		{
 			configuration.setMode(Configuration::RUN);
 		}
-	}
+	}*/
 }
 
 int FPGA::getMask(int bits)
@@ -70,42 +102,13 @@ int FPGA::getMask(int bits)
 	return mask;
 }
 
-int FPGA::quantize(bool value, int shift)
+int FPGA::quantize(bool value)
 {
-	return ((value ? 1 : 0) << shift);
+	return (value ? 1 : 0);
 }
 
-int FPGA::quantize(float value, float minimum, int bits, int shift)
+int FPGA::quantize(float value, float minimum, int bits)
 {
-	return ((((int) round(value / minimum)) & getMask(bits)) << shift);
-}
-
-int FPGA::getFirstMessage(void)
-{
-	int message = 0;
-	message |= quantize(configuration.getChannel(Configuration::CHANNEL_A), 0);
-	message |= quantize(configuration.getChannel(Configuration::CHANNEL_B), 1);
-	message |= quantize(configuration.getHorizontalScale(), 1, 5, 2);
-	message |= quantize(configuration.getMode() == Configuration::ROLL, 7);
-	message |= quantize(configuration.getTriggerMode() == Configuration::AUTOMATIC, 8);
-	message |= quantize(configuration.getTriggerLevel(), 0.03125, 8, 9);
-	message |= quantize(configuration.getTriggerHoldOff(), 1, 5, 17);
-	message |= quantize(configuration.getTriggerSlope() == Configuration::POSITIVE, 22);
-	message |= quantize(configuration.getTriggerChannel() == Configuration::CHANNEL_B, 23);
-	message |= quantize(configuration.getVerticalScale(Configuration::CHANNEL_A), 1, 4, 24);
-	message |= quantize(configuration.getVerticalScale(Configuration::CHANNEL_B), 1, 4, 28);
-	message |= quantize(configuration.getCoupling(Configuration::CHANNEL_A) == Configuration::AC, 32);
-	message |= quantize(configuration.getCoupling(Configuration::CHANNEL_B) == Configuration::AC, 33);
-	message |= quantize(configuration.getTriggerNoiseReject(), 34);
-	message |= quantize(configuration.getTriggerHighFrequencyReject(), 35);
-	return message;
-}
-
-int FPGA::getSecondMessage(void)
-{
-	int message = 0;
-	message |= quantize(configuration.getOffset(Configuration::CHANNEL_A), 0.0003125, 18, 0);
-	message |= quantize(configuration.getOffset(Configuration::CHANNEL_B), 0.0003125, 18, 18);
-	return message;
+	return (((int) round(value / minimum)) & getMask(bits));
 }
 
