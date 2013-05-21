@@ -279,7 +279,7 @@ void Touch::dragVerticalScale(int y)
 	int levels = (state.getInitialVerticalScale() - y) / state.getPixelsPerDivision();
 	if((state.getSelectedChannel() != Configuration::NO_CHANNEL) && (levels != 0))
 	{
-		configuration.setVerticalScale(state.getSelectedChannel(), (Configuration::VerticalScales)(configuration.getVerticalScale(state.getSelectedChannel()) + levels));
+		configuration.setVerticalScale(state.getSelectedChannel(), (Configuration::VerticalScales)(configuration.getVerticalScale(state.getSelectedChannel()) - levels));
 		state.setInitialVerticalScale(y);
 	}
 }
@@ -290,7 +290,7 @@ void Touch::dragHorizontalScale(int x)
 	if(levels != 0)
 	{
 		float oldScale = configuration.getHorizontalScaleValue();
-		configuration.setHorizontalScale((Configuration::HorizontalScales)(configuration.getHorizontalScale() + levels));
+		configuration.setHorizontalScale((Configuration::HorizontalScales)(configuration.getHorizontalScale() - levels));
 		float newScale = configuration.getHorizontalScaleValue();
 		if(configuration.getMode() == Configuration::STOP)
 		{

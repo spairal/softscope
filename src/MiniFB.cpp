@@ -37,6 +37,7 @@ MiniFB::MiniFB(string fb)
 	}
 	addCharacter(' ');
 	addCharacter('-');
+	addCharacter('+');
 	addCharacter('.');
 	addCharacter('/');
 	addCharacter(':');
