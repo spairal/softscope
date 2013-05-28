@@ -16,9 +16,18 @@ MiniInput::MiniInput(string input)
 	ifstream myFile("calibrate.txt");
 	if(myFile.is_open())
 	{
-		myFile >> ax >> bx >> ay >> by;
+	   float axt;
+	   float bxt;
+	   float ayt;
+	   float byt;
+		myFile >> axt >> bxt >> ayt >> byt;
+		ax = axt;
+		bx = bxt;
+		ay = ayt;
+		by = byt;
+		myFile.close();
 	}
-	alfa = 0.5;
+	alfa = 0.5f;
 	pthread_create(&inputThread, NULL, updateInput, (void*) this);
 }
 

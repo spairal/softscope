@@ -4,6 +4,7 @@
 #include <Configuration.hpp>
 #include <State.hpp>
 #include <Samples.hpp>
+#include <fix.hpp>
 
 class Mathematician
 {
@@ -14,12 +15,12 @@ class Mathematician
 
 	public:
 		Mathematician(Configuration& configuration, State& state, Samples& samples);
-		std::vector<float> getSamples(void);
+		std::vector<fix> getSamples(void);
 
 	private:
-		std::vector<float> getDifference(void);
-		std::vector<float> getFFT(void);
-		std::vector<float> hamming(int N);
+		std::vector<fix> getDifference(void);
+		std::vector<fix> getFFT(void);
+		std::vector<fix> hamming(int N);
 };
 
 #endif

@@ -35,9 +35,9 @@ Configuration::Configuration(void)
 	step = 1;
 }
 
-float Configuration::getOffset(Channels channel)
+fix Configuration::getOffset(Channels channel)
 {
-	float offset;
+	fix offset;
 	switch(channel)
 	{
 		case CHANNEL_A:
@@ -58,7 +58,7 @@ string Configuration::getOffsetString(Channels channel)
 	return voltageToString(getOffset(channel));
 }
 
-void Configuration::setOffset(Channels channel, float offset)
+void Configuration::setOffset(Channels channel, fix offset)
 {
 	if(offset < -40)
 	{
@@ -94,41 +94,41 @@ Configuration::VerticalScales Configuration::getVerticalScale(Channels channel)
 	return verticalScale;
 }
 
-float Configuration::getVerticalScaleValue(Channels channel)
+fix Configuration::getVerticalScaleValue(Channels channel)
 {
-	float scale;
+	fix scale;
 	VerticalScales verticalScale = getVerticalScale(channel);
 	switch(verticalScale)
 	{
 		case TEN_MV:
-			scale = 0.01;
+			scale = 0.01f;
 			break;
 		case TWENTY_MV:
-			scale = 0.02;
+			scale = 0.02f;
 			break;
 		case FIFTY_MV:
-			scale = 0.05;
+			scale = 0.05f;
 			break;
 		case HUNDRED_MV:
-			scale = 0.1;
+			scale = 0.1f;
 			break;
 		case TWOHUNDRED_MV:
-			scale = 0.2;
+			scale = 0.2f;
 			break;
 		case FIVEHUNDRED_MV:
-			scale = 0.5;
+			scale = 0.5f;
 			break;
 		case ONE_V:
-			scale = 1.0;
+			scale = 1.0f;
 			break;
 		case TWO_V:
-			scale = 2.0;
+			scale = 2.0f;
 			break;
 		case FIVE_V:
-			scale = 5.0;
+			scale = 5.0f;
 			break;
 		case TEN_V:
-			scale = 10.0;
+			scale = 10.0f;
 			break;
 	}
 	return scale;
@@ -200,67 +200,67 @@ Configuration::HorizontalScales Configuration::getHorizontalScale(void)
 	return horizontalScale;
 }
 
-float Configuration::getHorizontalScaleValue(void)
+fix Configuration::getHorizontalScaleValue(void)
 {
-	float scale;
+	fix scale;
 	switch(horizontalScale)
 	{
 		case ONE_US:
-			scale = 0.000001;
+			scale = 0.000001f;
 			break;
 		case TWO_US:
-			scale = 0.000002;
+			scale = 0.000002f;
 			break;
 		case FIVE_US:
-			scale = 0.000005;
+			scale = 0.000005f;
 			break;
 		case TEN_US:
-			scale = 0.00001;
+			scale = 0.00001f;
 			break;
 		case TWENTY_US:
-			scale = 0.00002;
+			scale = 0.00002f;
 			break;
 		case FIFTY_US:
-			scale = 0.00005;
+			scale = 0.00005f;
 			break;
 		case HUNDRED_US:
-			scale = 0.0001;
+			scale = 0.0001f;
 			break;
 		case TWOHUNDRED_US:
-			scale = 0.0002;
+			scale = 0.0002f;
 			break;
 		case FIVEHUNDRED_US:
-			scale = 0.0005;
+			scale = 0.0005f;
 			break;
 		case ONE_MS:
-			scale = 0.001;
+			scale = 0.001f;
 			break;
 		case TWO_MS:
-			scale = 0.002;
+			scale = 0.002f;
 			break;
 		case FIVE_MS:
-			scale = 0.005;
+			scale = 0.005f;
 			break;
 		case TEN_MS:
-			scale = 0.01;
+			scale = 0.01f;
 			break;
 		case TWENTY_MS:
-			scale = 0.02;
+			scale = 0.02f;
 			break;
 		case FIFTY_MS:
-			scale = 0.05;
+			scale = 0.05f;
 			break;
 		case HUNDRED_MS:
-			scale = 0.1;
+			scale = 0.1f;
 			break;
 		case TWOHUNDRED_MS:
-			scale = 0.2;
+			scale = 0.2f;
 			break;
 		case FIVEHUNDRED_MS:
-			scale = 0.5;
+			scale = 0.5f;
 			break;
 		case ONE_S:
-			scale = 1.0;
+			scale = 1;
 			break;
 	}
 	return scale;
@@ -524,7 +524,7 @@ Configuration::TriggerSlopes Configuration::getTriggerSlope(void)
 	return triggerSlope;
 }
 
-float Configuration::getTriggerLevel(void)
+fix Configuration::getTriggerLevel(void)
 {
 	return triggerLevel;
 }
@@ -544,72 +544,72 @@ Configuration::HorizontalScales Configuration::getTriggerHoldOff(void)
 	return triggerHoldOff;
 }
 
-float Configuration::getTriggerHoldOffValue(void)
+fix Configuration::getTriggerHoldOffValue(void)
 {
 	return getTriggerHoldOffValue(triggerHoldOff);
 }
 
-float Configuration::getTriggerHoldOffValue(HorizontalScales THO)
+fix Configuration::getTriggerHoldOffValue(HorizontalScales THO)
 {
-	float holdOff;
+	fix holdOff;
 	switch(THO)
 	{
 		case ONE_US:
-			holdOff = 0.00001;
+			holdOff = 0.00001f;
 			break;
 		case TWO_US:
-			holdOff = 0.00002;
+			holdOff = 0.00002f;
 			break;
 		case FIVE_US:
-			holdOff = 0.00005;
+			holdOff = 0.00005f;
 			break;
 		case TEN_US:
-			holdOff = 0.0001;
+			holdOff = 0.0001f;
 			break;
 		case TWENTY_US:
-			holdOff = 0.0002;
+			holdOff = 0.0002f;
 			break;
 		case FIFTY_US:
-			holdOff = 0.0005;
+			holdOff = 0.0005f;
 			break;
 		case HUNDRED_US:
-			holdOff = 0.001;
+			holdOff = 0.001f;
 			break;
 		case TWOHUNDRED_US:
-			holdOff = 0.002;
+			holdOff = 0.002f;
 			break;
 		case FIVEHUNDRED_US:
-			holdOff = 0.005;
+			holdOff = 0.005f;
 			break;
 		case ONE_MS:
-			holdOff = 0.01;
+			holdOff = 0.01f;
 			break;
 		case TWO_MS:
-			holdOff = 0.02;
+			holdOff = 0.02f;
 			break;
 		case FIVE_MS:
-			holdOff = 0.05;
+			holdOff = 0.05f;
 			break;
 		case TEN_MS:
-			holdOff = 0.1;
+			holdOff = 0.1f;
 			break;
 		case TWENTY_MS:
-			holdOff = 0.2;
+			holdOff = 0.2f;
 			break;
 		case FIFTY_MS:
-			holdOff = 0.5;
+			holdOff = 0.5f;
 			break;
 		case HUNDRED_MS:
-			holdOff = 1.0;
+			holdOff = 1;
 			break;
 		case TWOHUNDRED_MS:
-			holdOff = 2.0;
+			holdOff = 2;
 			break;
 		case FIVEHUNDRED_MS:
-			holdOff = 5.0;
+			holdOff = 5;
 			break;
 		case ONE_S:
-			holdOff = 10.0;
+			holdOff = 10;
 			break;
 	}
 	return holdOff;
@@ -865,7 +865,7 @@ void Configuration::setTriggerHighFrequencyReject(bool reject)
 	triggerHighFrequencyReject = reject;
 }
 
-void Configuration::setTriggerLevel(float level)
+void Configuration::setTriggerLevel(fix level)
 {
 	if(level < -4)
 	{
@@ -878,27 +878,27 @@ void Configuration::setTriggerLevel(float level)
 	triggerLevel = level;
 }
 
-void Configuration::setTriggerHoldOff(float holdOff)
+void Configuration::setTriggerHoldOff(fix holdOff)
 {
 	HorizontalScales THO = ONE_US;
-	float error = abs(holdOff - getTriggerHoldOffValue(ONE_US));
+	fix error = (holdOff - getTriggerHoldOffValue(ONE_US)).abs();
 	for(int i = TWO_US; i < ONE_S; i++)
 	{
-		if(abs(holdOff - getTriggerHoldOffValue((HorizontalScales) i)) < error)
+		if((holdOff - getTriggerHoldOffValue((HorizontalScales) i)).abs() < error)
 		{
 			THO = (HorizontalScales) i;
-			error = abs(holdOff - getTriggerHoldOffValue((HorizontalScales) i));
+			error = (holdOff - getTriggerHoldOffValue((HorizontalScales) i)).abs();
 		}
 	}
 	triggerHoldOff = THO;
 }
 
-vector<float> Configuration::getCursor(void)
+vector<fix> Configuration::getCursor(void)
 {
 	return cursor;
 }
 
-void Configuration::setCursor(const vector<float>& cursors)
+void Configuration::setCursor(const vector<fix>& cursors)
 {
 	cursor = cursors;
 }
@@ -957,84 +957,84 @@ string Configuration::getAverageString(void)
 	return ss.str();
 }
 
-string Configuration::voltageToString(float voltage)
+string Configuration::voltageToString(fix voltage)
 {
 	stringstream ss;
 	ss.precision(2);
-	if(abs(voltage) >= 1)
+	if(voltage.abs() >= 1)
 	{
-		ss << fixed << voltage << "V";
+		ss << fixed << (float)voltage << "V";
 	}
 	else
 	{
-		ss << fixed << voltage * 1000 << "mV";
+		ss << fixed << (float)voltage * 1000 << "mV";
 	}
 	return ss.str();
 }
 
-string Configuration::timeToString(float time)
+string Configuration::timeToString(fix time)
 {
 	stringstream ss;
 	ss.precision(2);
-	if(abs(time) >= 1)
+	if(time.abs() >= 1)
 	{
-		ss << fixed << time << "s";
+		ss << fixed << (float)time << "s";
 	}
-	else if(abs(time) >= 0.001)
+	else if(time.abs() >= 0.001f)
 	{
-		ss << fixed << time * 1000 << "ms";
+		ss << fixed << (float)(time * 1000) << "ms";
 	}
 	else
 	{
-		ss << fixed << time * 1000000 << "us";
+		ss << fixed << (float)(time * 1000000) << "us";
 	}
 	return ss.str();
 }
 
-string Configuration::frequencyToString(float frequency)
+string Configuration::frequencyToString(fix frequency)
 {
 	stringstream ss;
 	ss.precision(2);
-	if(abs(frequency) >= 1000000)
+	if(frequency.abs() >= 1000000)
 	{
-		ss << fixed << frequency / 1000000 << "MHz";
+		ss << fixed << (float)(frequency / 1000000) << "MHz";
 	}
-	else if(abs(frequency) >= 1000)
+	else if(frequency.abs() >= 1000)
 	{
-		ss << fixed << frequency / 1000 << "kHz";
+		ss << fixed << (float)(frequency / 1000) << "kHz";
 	}
-	else if(abs(frequency) >= 1)
+	else if(frequency.abs() >= 1)
 	{
-		ss << fixed << frequency << "Hz";
+		ss << fixed << (float)frequency << "Hz";
 	}
 	else
 	{
-		ss << fixed << frequency * 1000 << "mHz";
+		ss << fixed << (float)(frequency * 1000) << "mHz";
 	}
 	return ss.str();
 }
 
-string Configuration::percentageToString(float percentage)
+string Configuration::percentageToString(fix percentage)
 {
 	stringstream ss;
 	ss.precision(2);
-	ss << fixed << percentage * 100 << "%";
+	ss << fixed << (float)percentage * 100 << "%";
 	return ss.str();
 }
 
-string Configuration::degreesToString(float degrees)
+string Configuration::degreesToString(fix degrees)
 {
 	stringstream ss;
 	ss.precision(2);
-	ss << fixed << degrees << "deg";
+	ss << fixed << (float)degrees << "deg";
 	return ss.str();
 }
 
-string Configuration::deciBellToString(float deciBell)
+string Configuration::deciBellToString(fix deciBell)
 {
 	stringstream ss;
 	ss.precision(2);
-	ss << fixed << deciBell << " dB";
+	ss << fixed << (float)deciBell << " dB";
 	return ss.str();
 }
 
@@ -1057,7 +1057,7 @@ int Configuration::getMemoryDepth(void)
 	return memoryDepth;
 }
 
-float Configuration::getDelay(void)
+fix Configuration::getDelay(void)
 {
 	return delay;
 }
@@ -1067,17 +1067,17 @@ string Configuration::getDelayString(void)
 	return timeToString(getHorizontalScaleValue() * delay);
 }
 
-void Configuration::setDelay(float d)
+void Configuration::setDelay(fix d)
 {
 	delay = d;
 }
 
-float Configuration::getStep(void)
+fix Configuration::getStep(void)
 {
 	return step;
 }
 
-void Configuration::setStep(float s)
+void Configuration::setStep(fix s)
 {
 	step = s;
 }

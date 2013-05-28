@@ -1,6 +1,7 @@
 #ifndef CONFIGURATION_HPP
 #define CONFIGURATION_HPP
 
+#include <fix.hpp>
 #include <string>
 #include <vector>
 
@@ -19,8 +20,8 @@ class Configuration
 		enum Averages {TWO_CERO, TWO_ONE, TWO_TWO, TWO_THREE, TWO_FOUR, TWO_FIVE, TWO_SIX, TWO_SEVEN, TWO_EIGHT, TWO_NINE, TWO_TEN};
 
 	private:
-		float offsetA;
-		float offsetB;
+		fix offsetA;
+		fix offsetB;
 		VerticalScales verticalScaleA;
 		VerticalScales verticalScaleB;
 		HorizontalScales horizontalScale;
@@ -29,32 +30,32 @@ class Configuration
 		bool channelA;
 		bool channelB;
 		Measures measure;
-		std::vector<float> cursor;
+		std::vector<fix> cursor;
 		Mathematics mathematic;
 		Modes mode;
 		TriggerModes triggerMode;
 		Channels triggerChannel;
 		TriggerSlopes triggerSlope;
-		float triggerLevel;
+		fix triggerLevel;
 		bool triggerNoiseReject;
 		bool triggerHighFrequencyReject;
 		HorizontalScales triggerHoldOff;
 		Averages average;
 		int memoryDepth;
-		float delay;
-		float step;
+		fix delay;
+		fix step;
 
 	public:
 		Configuration(void);
-		float getOffset(Channels channel);
+		fix getOffset(Channels channel);
 		std::string getOffsetString(Channels channel);
-		void setOffset(Channels channel, float offset);
+		void setOffset(Channels channel, fix offset);
 		VerticalScales getVerticalScale(Channels channel);
-		float getVerticalScaleValue(Channels channel);
+		fix getVerticalScaleValue(Channels channel);
 		std::string getVerticalScaleString(Channels channel);
 		void setVerticalScale(Channels channel, VerticalScales verticalScale);
 		HorizontalScales getHorizontalScale(void);
-		float getHorizontalScaleValue(void);
+		fix getHorizontalScaleValue(void);
 		std::string getHorizontalScaleString(void);
 		void setHorizontalScale(HorizontalScales scale);
 		Couplings getCoupling(Channels channel);
@@ -71,12 +72,12 @@ class Configuration
 		TriggerModes getTriggerMode(void);
 		Channels getTriggerChannel(void);
 		TriggerSlopes getTriggerSlope(void);
-		float getTriggerLevel(void);
+		fix getTriggerLevel(void);
 		bool getTriggerNoiseReject(void);
 		bool getTriggerHighFrequencyReject(void);
 		HorizontalScales getTriggerHoldOff(void);
-		float getTriggerHoldOffValue(void);
-		float getTriggerHoldOffValue(HorizontalScales THO);
+		fix getTriggerHoldOffValue(void);
+		fix getTriggerHoldOffValue(HorizontalScales THO);
 		std::string getModeString(void);
 		std::string getRunString(void);
 		std::string getSingleString(void);
@@ -105,26 +106,26 @@ class Configuration
 		void setTriggerSlope(TriggerSlopes slope);
 		void setTriggerNoiseReject(bool reject);
 		void setTriggerHighFrequencyReject(bool reject);
-		void setTriggerLevel(float level);
-		void setTriggerHoldOff(float holdOff);
-		std::vector<float> getCursor(void);
-		void setCursor(const std::vector<float>& cursors);
+		void setTriggerLevel(fix level);
+		void setTriggerHoldOff(fix holdOff);
+		std::vector<fix> getCursor(void);
+		void setCursor(const std::vector<fix>& cursors);
 		int getAverageValue(void);
 		void setAverage(Averages avg);
 		std::string getAverageString(void);
-		std::string voltageToString(float voltage);
-		std::string timeToString(float time);
-		std::string frequencyToString(float frequency);
-		std::string percentageToString(float percentage);
-		std::string degreesToString(float degrees);
-		std::string deciBellToString(float deciBell);
+		std::string voltageToString(fix voltage);
+		std::string timeToString(fix time);
+		std::string frequencyToString(fix frequency);
+		std::string percentageToString(fix percentage);
+		std::string degreesToString(fix degrees);
+		std::string deciBellToString(fix deciBell);
 		std::string boolToString(bool b);
 		int getMemoryDepth(void);
-		float getDelay(void);
+		fix getDelay(void);
 		std::string getDelayString(void);
-		void setDelay(float d);
-		float getStep(void);
-		void setStep(float s);
+		void setDelay(fix d);
+		fix getStep(void);
+		void setStep(fix s);
 };
 
 #endif

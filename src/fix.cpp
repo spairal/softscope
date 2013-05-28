@@ -355,6 +355,66 @@ fix::operator float(void) const
    return ((float)value / (1 << FRACTION));
 }
 
+fix fix::abs(void) const
+{
+   fix result = *this;
+   if(result.value < 0)
+   {
+      result.value = -result.value;
+   }
+   return result;
+}
+
+fix fix::pow(int exponent) const
+{
+   fix result = 1;
+   for(int i = 0; i < exponent; i++)
+   {
+      result *= *this;
+   }
+   return result;
+}
+
+fix fix::min(int v) const
+{
+   return this->min(fix(v));
+}
+
+fix fix::min(float v) const
+{
+   return this->min(fix(v));
+}
+
+fix fix::min(const fix& other) const
+{
+   fix result = *this;
+   if(other < result)
+   {
+      result = other;
+   }
+   return result;
+}
+
+fix fix::max(int v) const
+{
+   return this->max(fix(v));
+}
+
+fix fix::max(float v) const
+{
+   return this->max(fix(v));
+}
+
+fix fix::max(const fix& other) const
+{
+   fix result = *this;
+   if(other > result)
+   {
+      result = other;
+   }
+   return result;
+}
+
 fix operator+(int v, const fix& other)
 {
    return other + v;

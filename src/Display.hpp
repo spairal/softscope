@@ -7,6 +7,7 @@
 #include <Measurer.hpp>
 #include <Mathematician.hpp>
 #include <MiniFB.hpp>
+#include <fix.hpp>
 #include <string>
 #include <vector>
 
@@ -25,7 +26,7 @@ class Display
 		void print(void);
 
 	private:
-		std::vector<int> samplesToPixels(const std::vector<float>& samples, float offset, float verticalScale, int pixelsPerDivision);
+		std::vector<int> samplesToPixels(const std::vector<fix>& samples, fix offset, fix verticalScale, int pixelsPerDivision);
 		void clearScreen(void);
 		void updateScreen(void);
 		void printGrid(const std::vector<int>& coordenates);
@@ -39,7 +40,7 @@ class Display
 		void printButton(std::string title, std::string text, bool isActive, const std::vector<int>& coordenates);
 		void printMenu(const std::vector<std::string>& options, const std::vector<int>& coordenates);
 		void printAlert(std::string text, const std::vector<int>& coordenates);
-		void printSamples(const std::vector<int>& samples, int delay, int memoryDepth, float step, unsigned char color, const std::vector<int>& coordenates);
+		void printSamples(const std::vector<int>& samples, int delay, int memoryDepth, fix step, unsigned char color, const std::vector<int>& coordenates);
 		void printCursor(const std::vector<int>& coordenates);
 		void printMouse(int x, int y);
 };

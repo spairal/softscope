@@ -2,18 +2,19 @@
 #define SAMPLES_HPP
 
 #include <Configuration.hpp>
+#include <fix.hpp>
 #include <vector>
 
 class Samples
 {
 	private:
-		std::vector<float> samplesA;
-		std::vector<float> samplesB;
+		std::vector<fix> samplesA;
+		std::vector<fix> samplesB;
 
 	public:
 		Samples(void);
-		std::vector<float> getSamples(Configuration::Channels channel);
-		void setSamples(Configuration::Channels channel, const std::vector<float>& samples);
+		std::vector<fix> getSamples(Configuration::Channels channel);
+		void setSamples(Configuration::Channels channel, const std::vector<fix>& samples);
 };
 
 #endif

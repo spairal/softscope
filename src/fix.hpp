@@ -66,6 +66,14 @@ class fix
       fix operator--(int unused);
       operator int(void) const;
       operator float(void) const;
+      fix abs(void) const;
+      fix pow(int exponent) const;
+      fix min(int v) const;
+      fix min(float v) const;
+      fix min(const fix& other) const;
+      fix max(int v) const;
+      fix max(float v) const;
+      fix max(const fix& other) const;
 };
 
 fix operator+(int v, const fix& other);

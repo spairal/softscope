@@ -12,11 +12,11 @@ FPGA::FPGA(Configuration& configuration, State& state, Samples& samples) : confi
 
 void FPGA::fetchSamples(void)
 {
-	static float roll = 0;
+	static fix roll = 0;
 	if(configuration.getMode() != Configuration::STOP)
 	{
-		vector<float> samplesA;
-		vector<float> samplesB;
+		vector<fix> samplesA;
+		vector<fix> samplesB;
 		if(configuration.getMode() == Configuration::ROLL)
 		{
 			int step = state.getPixelsPerDivision() / configuration.getHorizontalScaleValue() / 30;
@@ -31,24 +31,24 @@ void FPGA::fetchSamples(void)
 			roll = roll / configuration.getHorizontalScaleValue() - i;
 			for(; i < configuration.getMemoryDepth(); i++)
 			{
-				samplesA[i] = 3.0 * sin(2.0 * 3.141592 * configuration.getHorizontalScaleValue() * (i + roll) / 30) + 0.4 * rand() / RAND_MAX - 0.2;
+				samplesA[i] = 3.0f * sin((float)(2.0f * 3.141592f * configuration.getHorizontalScaleValue() * (i + roll) / 30)) + 0.4f * rand() / RAND_MAX - 0.2f;
 				int mod = (int)(i + roll) % (int)(20 / configuration.getHorizontalScaleValue());
-				samplesB[i] = (((mod > (10 / configuration.getHorizontalScaleValue())) || ((mod > -10 / configuration.getHorizontalScaleValue()) && (mod < 0))) ? 2.0 : -2.0) + 0.6 * rand() / RAND_MAX - 0.3;
-				//samplesB[i] = 3.0 * sin(2.0 * 3.141592 * configuration.getHorizontalScaleValue() * (i + roll) / 30 - 0.02) + 0.4 * rand() / RAND_MAX - 0.2;
+				samplesB[i] = (((mod > (10 / configuration.getHorizontalScaleValue())) || ((mod > -10 / configuration.getHorizontalScaleValue()) && (mod < 0))) ? 2.0f : -2.0f) + 0.6f * rand() / RAND_MAX - 0.3f;
+				//samplesB[i] = 3.0 * sin((float)(2.0 * 3.141592 * configuration.getHorizontalScaleValue() * (i + roll) / 30 - 0.02)) + 0.4 * rand() / RAND_MAX - 0.2;
 			}
 			roll = configuration.getHorizontalScaleValue() * (i + roll);
 		}
 		else
 		{
-			vector<float> oldSamplesA = samples.getSamples(Configuration::CHANNEL_A);
-			vector<float> oldSamplesB = samples.getSamples(Configuration::CHANNEL_B);
-			float averageCoefficient = 1.0 / configuration.getAverageValue();
+			vector<fix> oldSamplesA = samples.getSamples(Configuration::CHANNEL_A);
+			vector<fix> oldSamplesB = samples.getSamples(Configuration::CHANNEL_B);
+			fix averageCoefficient = 1.0f / configuration.getAverageValue();
 			for(int i = 0; i < configuration.getMemoryDepth(); i++)
 			{
-				samplesA.push_back(averageCoefficient * (3.0 * sin(2.0 * 3.141592 * configuration.getHorizontalScaleValue() * i / 30) + 0.4 * rand() / RAND_MAX - 0.2) + (1 - averageCoefficient) * oldSamplesA[i]);
+				samplesA.push_back(averageCoefficient * (3.0f * sin((float)(2.0f * 3.141592f * configuration.getHorizontalScaleValue() * i / 30)) + 0.4f * rand() / RAND_MAX - 0.2f) + (1 - averageCoefficient) * oldSamplesA[i]);
 				int mod = (int)i % (int)(20 / configuration.getHorizontalScaleValue());
-				samplesB.push_back(averageCoefficient * ((((mod > (10 / configuration.getHorizontalScaleValue())) || ((mod > -10 / configuration.getHorizontalScaleValue()) && (mod < 0))) ? 2.0 : -2.0) + 0.6 * rand() / RAND_MAX - 0.3) + (1 - averageCoefficient) * oldSamplesB[i]);
-				//samplesB.push_back(averageCoefficient * (3.0 * sin(2.0 * 3.141592 * configuration.getHorizontalScaleValue() * (i - 100) / 30) + 0.4 * rand() / RAND_MAX - 0.2) + (1 - averageCoefficient) * oldSamplesB[i]);
+				samplesB.push_back(averageCoefficient * ((((mod > (10 / configuration.getHorizontalScaleValue())) || ((mod > -10 / configuration.getHorizontalScaleValue()) && (mod < 0))) ? 2.0f : -2.0f) + 0.6f * rand() / RAND_MAX - 0.3f) + (1 - averageCoefficient) * oldSamplesB[i]);
+				//samplesB.push_back(averageCoefficient * (3.0f * sin((float)(2.0f * 3.141592f * configuration.getHorizontalScaleValue() * (i - 100) / 30)) + 0.4f * rand() / RAND_MAX - 0.2f) + (1 - averageCoefficient) * oldSamplesB[i]);
 			}
 		}
 		samples.setSamples(Configuration::CHANNEL_A, samplesA);
@@ -75,7 +75,7 @@ int FPGA::quantize(bool value, int shift)
 	return ((value ? 1 : 0) << shift);
 }
 
-int FPGA::quantize(float value, float minimum, int bits, int shift)
+int FPGA::quantize(fix value, fix minimum, int bits, int shift)
 {
 	return ((((int) round(value / minimum)) & getMask(bits)) << shift);
 }
@@ -88,7 +88,7 @@ int FPGA::getFirstMessage(void)
 	message |= quantize(configuration.getHorizontalScale(), 1, 5, 2);
 	message |= quantize(configuration.getMode() == Configuration::ROLL, 7);
 	message |= quantize(configuration.getTriggerMode() == Configuration::AUTOMATIC, 8);
-	message |= quantize(configuration.getTriggerLevel(), 0.03125, 8, 9);
+	message |= quantize(configuration.getTriggerLevel(), 0.03125f, 8, 9);
 	message |= quantize(configuration.getTriggerHoldOff(), 1, 5, 17);
 	message |= quantize(configuration.getTriggerSlope() == Configuration::POSITIVE, 22);
 	message |= quantize(configuration.getTriggerChannel() == Configuration::CHANNEL_B, 23);
@@ -104,8 +104,8 @@ int FPGA::getFirstMessage(void)
 int FPGA::getSecondMessage(void)
 {
 	int message = 0;
-	message |= quantize(configuration.getOffset(Configuration::CHANNEL_A), 0.0003125, 18, 0);
-	message |= quantize(configuration.getOffset(Configuration::CHANNEL_B), 0.0003125, 18, 18);
+	message |= quantize(configuration.getOffset(Configuration::CHANNEL_A), 0.0003125f, 18, 0);
+	message |= quantize(configuration.getOffset(Configuration::CHANNEL_B), 0.0003125f, 18, 18);
 	return message;
 }
 

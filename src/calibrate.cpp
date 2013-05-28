@@ -1,5 +1,6 @@
 #include <MiniFB.hpp>
 #include <MiniInput.hpp>
+#include <fix.hpp>
 #include <iostream>
 #include <unistd.h>
 #include <fstream>
@@ -72,19 +73,19 @@ int main(int argc, char** argv)
 			cout << "xo2 = " << xo2 << "; yo2 = " << yo2 << endl;
 		}
 	}
-	float ax = (float)(xo2 - xo1) / (float)(xi2 - xi1);
-	float bx = (float)(xi2 * xo1 - xi1 * xo2) / (float)(xi2 - xi1);
-	float ay = (float)(yo2 - yo1) / (float)(yi2 - yi1);
-	float by = (float)(yi2 * yo1 - yi1 * yo2) / (float)(yi2 - yi1);
-	cout << "ax = " << ax << "; bx = " << bx << endl;
-	cout << "ay = " << ay << "; by = " << by << endl;
+	fix ax = fix(xo2 - xo1) / fix(xi2 - xi1);
+	fix bx = fix(xi2 * xo1 - xi1 * xo2) / fix(xi2 - xi1);
+	fix ay = fix(yo2 - yo1) / fix(yi2 - yi1);
+	fix by = fix(yi2 * yo1 - yi1 * yo2) / fix(yi2 - yi1);
+	cout << "ax = " << (float)ax << "; bx = " << (float)bx << endl;
+	cout << "ay = " << (float)ay << "; by = " << (float)by << endl;
 	ofstream myFile("calibrate.txt");
 	if(myFile.is_open())
 	{
-		myFile << ax << endl;
-		myFile << bx << endl;
-		myFile << ay << endl;
-		myFile << by << endl;
+		myFile << (float)ax << endl;
+		myFile << (float)bx << endl;
+		myFile << (float)ay << endl;
+		myFile << (float)by << endl;
 		myFile.close();
 	}
 	return 0;

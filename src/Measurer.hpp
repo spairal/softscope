@@ -4,6 +4,7 @@
 #include <Configuration.hpp>
 #include <State.hpp>
 #include <Samples.hpp>
+#include <fix.hpp>
 
 class Measurer
 {
@@ -31,9 +32,9 @@ class Measurer
 		std::string getDutyCycle(void);
 		std::string getPhase(void);
 		std::string getRatio(void);
-		float maximum(const std::vector<float>& signal);
-		float minimum(const std::vector<float>& signal);
-		int getMaxCorrelation(const std::vector<float>& signalA, const std::vector<float>& signalB);
+		fix maximum(const std::vector<fix>& signal);
+		fix minimum(const std::vector<fix>& signal);
+		int getMaxCorrelation(const std::vector<fix>& signalA, const std::vector<fix>& signalB);
 };
 
 #endif

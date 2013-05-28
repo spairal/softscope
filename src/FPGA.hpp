@@ -4,6 +4,7 @@
 #include <Configuration.hpp>
 #include <State.hpp>
 #include <Samples.hpp>
+#include <fix.hpp>
 
 class FPGA
 {
@@ -19,7 +20,7 @@ class FPGA
 	private:
 		int getMask(int bits);
 		int quantize(bool value, int shift);
-		int quantize(float value, float minimum, int bits, int shift);
+		int quantize(fix value, fix minimum, int bits, int shift);
 		int getFirstMessage(void);
 		int getSecondMessage(void);
 };

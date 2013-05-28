@@ -16,8 +16,8 @@ OBJ = $(TARGET)/obj
 EXECUTABLE = $(TARGET)/softscope
 CALIBRATE = calibrate
 EXECUTABLECALIBRATE = $(TARGET)/$(CALIBRATE)
-OBJECTS = $(addprefix $(OBJ)/, $(addsuffix .o, main Configuration State Samples Measurer Mathematician Touch FPGA Display MiniFB MiniInput))
-OBJECTSCALIBRATE = $(addprefix $(OBJ)/, $(addsuffix .o, calibrate MiniFB MiniInput))
+OBJECTS = $(addprefix $(OBJ)/, $(addsuffix .o, main Configuration State Samples Measurer Mathematician Touch FPGA Display MiniFB MiniInput fix))
+OBJECTSCALIBRATE = $(addprefix $(OBJ)/, $(addsuffix .o, calibrate MiniFB MiniInput fix))
 LIBRARIES = $(addprefix -l, fftw3 pthread)
 LIBRARIESCALIBRATE = $(addprefix -l, pthread)
 
@@ -64,6 +64,9 @@ $(OBJ)/MiniFB.o : $(SOURCE)/MiniFB.cpp
 $(OBJ)/MiniInput.o : $(SOURCE)/MiniInput.cpp
 	$(COMPILER) $(COMPILERPARAMS) $(SOURCE)/MiniInput.cpp $(INCLUDE) $(SOURCE) $(OUTPUT) $(OBJ)/MiniInput.o
 
+$(OBJ)/fix.o : $(SOURCE)/fix.cpp
+	$(COMPILER) $(COMPILERPARAMS) $(SOURCE)/fix.cpp $(INCLUDE) $(SOURCE) $(OUTPUT) $(OBJ)/fix.o
+
 $(OBJ)/calibrate.o : $(SOURCE)/calibrate.cpp
 	$(COMPILER) $(COMPILERPARAMS) $(SOURCE)/calibrate.cpp $(INCLUDE) $(SOURCE) $(OUTPUT) $(OBJ)/calibrate.o
 
@@ -87,7 +90,7 @@ $(SOURCE)/Measurer.cpp : $(SOURCE)/Measurer.hpp
 $(SOURCE)/Mathematician.cpp : $(SOURCE)/Mathematician.hpp
 	$(TOUCH) $(SOURCE)/Mathematician.cpp
 
-$(SOURCE)/Touch.cpp : $(SOURCE)/Touch.hpp
+$(SOURCE)/Touch.cpp : $(SOURCE)/Touch.hpp $(SOURCE)/fix.hpp
 	$(TOUCH) $(SOURCE)/Touch.cpp
 
 $(SOURCE)/FPGA.cpp : $(SOURCE)/FPGA.hpp
@@ -96,46 +99,52 @@ $(SOURCE)/FPGA.cpp : $(SOURCE)/FPGA.hpp
 $(SOURCE)/Display.cpp : $(SOURCE)/Display.hpp
 	$(TOUCH) $(SOURCE)/Display.cpp
 
-$(SOURCE)/MiniFB.cpp : $(SOURCE)/MiniFB.hpp
+$(SOURCE)/MiniFB.cpp : $(SOURCE)/MiniFB.hpp $(SOURCE)/fix.hpp
 	$(TOUCH) $(SOURCE)/MiniFB.cpp
 
 $(SOURCE)/MiniInput.cpp : $(SOURCE)/MiniInput.hpp
 	$(TOUCH) $(SOURCE)/MiniInput.cpp
 
-$(SOURCE)/calibrate.cpp : $(SOURCE)/MiniFB.hpp $(SOURCE)/MiniInput.hpp
+$(SOURCE)/fix.cpp : $(SOURCE)/fix.hpp
+	$(TOUCH) $(SOURCE)/fix.cpp
+
+$(SOURCE)/calibrate.cpp : $(SOURCE)/MiniFB.hpp $(SOURCE)/MiniInput.hpp $(SOURCE)/fix.hpp
 	$(TOUCH) $(SOURCE)/calibrate.cpp
 
 # HEADERS
 
-$(SOURCE)/Configuration.hpp :
+$(SOURCE)/Configuration.hpp : $(SOURCE)/fix.hpp
 	$(TOUCH) $(SOURCE)/Configuration.hpp
 
 $(SOURCE)/State.hpp : $(SOURCE)/Configuration.hpp
 	$(TOUCH) $(SOURCE)/State.hpp
 
-$(SOURCE)/Samples.hpp : $(SOURCE)/Configuration.hpp
+$(SOURCE)/Samples.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/fix.hpp
 	$(TOUCH) $(SOURCE)/Samples.hpp
 
-$(SOURCE)/Measurer.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp
+$(SOURCE)/Measurer.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp $(SOURCE)/fix.hpp
 	$(TOUCH) $(SOURCE)/Measurer.hpp
 
-$(SOURCE)/Mathematician.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp
+$(SOURCE)/Mathematician.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp $(SOURCE)/fix.hpp
 	$(TOUCH) $(SOURCE)/Mathematician.hpp
 
 $(SOURCE)/Touch.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp $(SOURCE)/MiniInput.hpp
 	$(TOUCH) $(SOURCE)/Touch.hpp
 
-$(SOURCE)/FPGA.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp
+$(SOURCE)/FPGA.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp $(SOURCE)/fix.hpp
 	$(TOUCH) $(SOURCE)/FPGA.hpp
 
-$(SOURCE)/Display.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp $(SOURCE)/Measurer.hpp $(SOURCE)/MiniFB.hpp
+$(SOURCE)/Display.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp $(SOURCE)/Measurer.hpp $(SOURCE)/MiniFB.hpp $(SOURCE)/fix.hpp
 	$(TOUCH) $(SOURCE)/Display.hpp
 
 $(SOURCE)/MiniFB.hpp :
 	$(TOUCH) $(SOURCE)/MiniFB.hpp
 
-$(SOURCE)/MiniInput.hpp :
+$(SOURCE)/MiniInput.hpp : $(SOURCE)/fix.hpp
 	$(TOUCH) $(SOURCE)/MiniInput.hpp
+
+$(SOURCE)/fix.hpp :
+	$(TOUCH) $(SOURCE)/fix.hpp
 
 # MAKING DIRECTORIES
 

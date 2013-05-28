@@ -26,11 +26,11 @@ void Display::print(void)
 	}
 	if(state.getSelectedChannel() != Configuration::NO_CHANNEL)
 	{
-		printOffset(max(min(configuration.getOffset(state.getSelectedChannel()) / configuration.getVerticalScaleValue(state.getSelectedChannel()) * state.getPixelsPerDivision(), 3.5f * state.getPixelsPerDivision()), - 4.0f * state.getPixelsPerDivision()), configuration.getOffsetString(state.getSelectedChannel()), state.getColor(state.getSelectedChannel()), state.getGridCoordenates());
+		printOffset((configuration.getOffset(state.getSelectedChannel()) / configuration.getVerticalScaleValue(state.getSelectedChannel()) * state.getPixelsPerDivision()).min(3.5f * state.getPixelsPerDivision()).max(-4.0f * state.getPixelsPerDivision()), configuration.getOffsetString(state.getSelectedChannel()), state.getColor(state.getSelectedChannel()), state.getGridCoordenates());
 		printVerticalScale(configuration.getVerticalScaleString(state.getSelectedChannel()), state.getColor(state.getSelectedChannel()), state.getGridCoordenates());
 	}
 	printHorizontalScale(configuration.getHorizontalScaleString(), state.getGridCoordenates());
-	printDelay(max(min(configuration.getDelay() * state.getPixelsPerDivision(), 3.5f * state.getPixelsPerDivision()), -5.0f * state.getPixelsPerDivision()), configuration.getDelayString(), state.getGridCoordenates());
+	printDelay((configuration.getDelay() * state.getPixelsPerDivision()).min(3.5f * state.getPixelsPerDivision()).max(-5.0f * state.getPixelsPerDivision()), configuration.getDelayString(), state.getGridCoordenates());
 	printChannelButton("Channel A", configuration.getChannel(Configuration::CHANNEL_A), state.getSelectedChannel() == Configuration::CHANNEL_A, state.getColor(Configuration::CHANNEL_A), state.getChannelCoordenates(Configuration::CHANNEL_A));
 	printChannelButton("Channel B", configuration.getChannel(Configuration::CHANNEL_B), state.getSelectedChannel() == Configuration::CHANNEL_B, state.getColor(Configuration::CHANNEL_B), state.getChannelCoordenates(Configuration::CHANNEL_B));
 	printCouplingButton(configuration.getCouplingString(Configuration::CHANNEL_A), state.getColor(Configuration::CHANNEL_A), state.getCouplingCoordenates(Configuration::CHANNEL_A));
@@ -40,7 +40,7 @@ void Display::print(void)
 	printButton("Mode", configuration.getModeString(), state.getModeButtonActive(), state.getModeCoordenates());
 	if(configuration.getMeasure() == Configuration::CURSORS)
 	{
-		vector<float> cursor = configuration.getCursor();
+		vector<fix> cursor = configuration.getCursor();
 		vector<int> gridCoordenates = state.getGridCoordenates();
 		vector<int> cursorCoordenates;
 		cursorCoordenates.push_back(min(cursor[0], cursor[1]) * state.getPixelsPerDivision() + gridCoordenates[0] + 5 * state.getPixelsPerDivision());
@@ -93,7 +93,7 @@ void Display::print(void)
 	updateScreen();
 }
 
-vector<int> Display::samplesToPixels(const vector<float>& samples, float offset, float verticalScale, int pixelsPerDivision)
+vector<int> Display::samplesToPixels(const vector<fix>& samples, fix offset, fix verticalScale, int pixelsPerDivision)
 {
 	vector<int> pixels(samples.size(), 0);
 	for(int i = 0; i < samples.size(); i++)
@@ -220,7 +220,7 @@ void Display::printAlert(string text, const vector<int>& coordenates)
 	miniFB.drawText(coordenates[0] + state.getPixelsPerDivision(), coordenates[2] - state.getPixelsPerDivision() - miniFB.getTextHeight(text), text, state.getColorGeneral());
 }
 
-void Display::printSamples(const std::vector<int>& samples, int delay, int memoryDepth, float step, unsigned char color, const vector<int>& coordenates)
+void Display::printSamples(const std::vector<int>& samples, int delay, int memoryDepth, fix step, unsigned char color, const vector<int>& coordenates)
 {
 	int upStep = max(1.0, round(step));
 	int start = (delay - memoryDepth / 2) * step + memoryDepth / 2;

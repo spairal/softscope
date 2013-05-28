@@ -4,13 +4,13 @@ using namespace std;
 
 Samples::Samples(void)
 {
-	samplesA.assign(1024, 0.0);
-	samplesB.assign(1024, 0.0);
+	samplesA.assign(1024, 0.0f);
+	samplesB.assign(1024, 0.0f);
 }
 
-vector<float> Samples::getSamples(Configuration::Channels channel)
+vector<fix> Samples::getSamples(Configuration::Channels channel)
 {
-	vector<float> samples;
+	vector<fix> samples;
 	switch(channel)
 	{
 		case Configuration::CHANNEL_A:
@@ -23,7 +23,7 @@ vector<float> Samples::getSamples(Configuration::Channels channel)
 	return samples;
 }
 
-void Samples::setSamples(Configuration::Channels channel, const vector<float>& samples)
+void Samples::setSamples(Configuration::Channels channel, const vector<fix>& samples)
 {
 	switch(channel)
 	{

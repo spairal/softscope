@@ -1,6 +1,7 @@
 #ifndef MINIINPUT_HPP
 #define MINIINPUT_HPP
 
+#include <fix.hpp>
 #include <linux/input.h>
 #include <pthread.h>
 #include <string>
@@ -20,11 +21,11 @@ class MiniInput
 		bool pressed;
 		bool released;
 		bool drag;
-		float ax;
-		float bx;
-		float ay;
-		float by;
-		float alfa;
+		fix ax;
+		fix bx;
+		fix ay;
+		fix by;
+		fix alfa;
 
 	public:
 		MiniInput(std::string input);

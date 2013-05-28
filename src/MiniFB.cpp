@@ -1,4 +1,5 @@
 #include <MiniFB.hpp>
+#include <fix.hpp>
 #include <fcntl.h>
 #include <unistd.h>
 #include <linux/fb.h>
@@ -86,8 +87,8 @@ void MiniFB::drawLine(int x1, int y1, int x2, int y2, unsigned char color)
 	if(abs(x2 - x1) > abs(y2 - y1))
 	{
 		int xStep = (x1 < x2) ? 1 : -1;
-		float y = y1 + 0.5;
-		float yStep = (float) (y2 - y1) / (x2 - x1);
+		fix y = y1 + 0.5f;
+		fix yStep = fix(y2 - y1) / (x2 - x1);
 		for(int x = x1; x != x2; x += xStep)
 		{
 			drawPixel(x, y, color);
@@ -97,8 +98,8 @@ void MiniFB::drawLine(int x1, int y1, int x2, int y2, unsigned char color)
 	else
 	{
 		int yStep = (y1 < y2) ? 1 : -1;
-		float x = x1 + 0.5;
-		float xStep = (float) (x2 - x1) / (y2 - y1);
+		fix x = x1 + 0.5f;
+		fix xStep = fix(x2 - x1) / (y2 - y1);
 		for(int y = y1; y != y2; y += yStep)
 		{
 			drawPixel(x, y, color);

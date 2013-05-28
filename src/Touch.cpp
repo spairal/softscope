@@ -1,4 +1,5 @@
 #include <Touch.hpp>
+#include <fix.hpp>
 
 using namespace std;
 
@@ -208,11 +209,11 @@ void Touch::startDragCursors(int x, int y)
 {
 	state.setCursorDrag(true);
 	vector<int> coordenates = state.getGridCoordenates();
-	vector<float> cursor;
-	cursor.push_back((float)(x - coordenates[0] - 5 * state.getPixelsPerDivision()) / state.getPixelsPerDivision());
-	cursor.push_back((float)(x - coordenates[0] - 5 * state.getPixelsPerDivision()) / state.getPixelsPerDivision());
-	cursor.push_back((float)(coordenates[2] + 4 * state.getPixelsPerDivision() - y) / state.getPixelsPerDivision());
-	cursor.push_back((float)(coordenates[2] + 4 * state.getPixelsPerDivision() - y) / state.getPixelsPerDivision());
+	vector<fix> cursor;
+	cursor.push_back(fix(x - coordenates[0] - 5 * state.getPixelsPerDivision()) / state.getPixelsPerDivision());
+	cursor.push_back(fix(x - coordenates[0] - 5 * state.getPixelsPerDivision()) / state.getPixelsPerDivision());
+	cursor.push_back(fix(coordenates[2] + 4 * state.getPixelsPerDivision() - y) / state.getPixelsPerDivision());
+	cursor.push_back(fix(coordenates[2] + 4 * state.getPixelsPerDivision() - y) / state.getPixelsPerDivision());
 	configuration.setCursor(cursor);
 }
 
@@ -255,9 +256,9 @@ void Touch::resetDrag(void)
 void Touch::dragCursor(int x, int y)
 {
 	vector<int> coordenates = state.getGridCoordenates();
-	vector<float> cursor = configuration.getCursor();
-	cursor[1] = (float)(x - coordenates[0] - 5 * state.getPixelsPerDivision()) / state.getPixelsPerDivision();
-	cursor[3] = (float)(coordenates[2] + 4 * state.getPixelsPerDivision() - y) / state.getPixelsPerDivision();
+	vector<fix> cursor = configuration.getCursor();
+	cursor[1] = fix(x - coordenates[0] - 5 * state.getPixelsPerDivision()) / state.getPixelsPerDivision();
+	cursor[3] = fix(coordenates[2] + 4 * state.getPixelsPerDivision() - y) / state.getPixelsPerDivision();
 	configuration.setCursor(cursor);
 }
 
@@ -269,7 +270,7 @@ void Touch::dragOffset(int x, int y)
 		configuration.setOffset(state.getSelectedChannel(), configuration.getOffset(state.getSelectedChannel()) + configuration.getVerticalScaleValue(state.getSelectedChannel()) * (initialOffset[1] - y) / state.getPixelsPerDivision());
 		initialOffset[1] = y;
 	}
-	configuration.setDelay(configuration.getDelay() + (float)(x - initialOffset[0]) / state.getPixelsPerDivision());
+	configuration.setDelay(configuration.getDelay() + fix(x - initialOffset[0]) / state.getPixelsPerDivision());
 	initialOffset[0] = x;
 	state.setInitialOffset(initialOffset);
 }
@@ -289,9 +290,9 @@ void Touch::dragHorizontalScale(int x)
 	int levels = (x - state.getInitialHorizontalScale()) / state.getPixelsPerDivision();
 	if(levels != 0)
 	{
-		float oldScale = configuration.getHorizontalScaleValue();
+		fix oldScale = configuration.getHorizontalScaleValue();
 		configuration.setHorizontalScale((Configuration::HorizontalScales)(configuration.getHorizontalScale() - levels));
-		float newScale = configuration.getHorizontalScaleValue();
+		fix newScale = configuration.getHorizontalScaleValue();
 		if(configuration.getMode() == Configuration::STOP)
 		{
 			configuration.setStep(configuration.getStep() * newScale / oldScale);
@@ -303,8 +304,8 @@ void Touch::dragHorizontalScale(int x)
 void Touch::dragTriggerLevel(int x, int y)
 {
 	vector<int> coordenates = state.getGridCoordenates();
-	configuration.setTriggerHoldOff(configuration.getHorizontalScaleValue() * ((float)(x - coordenates[0])) / state.getPixelsPerDivision());
-	configuration.setTriggerLevel(((float) (coordenates[2] + 4 * state.getPixelsPerDivision() - y)) / state.getPixelsPerDivision() - configuration.getOffset(configuration.getTriggerChannel()) / configuration.getVerticalScaleValue(configuration.getTriggerChannel()));
+	configuration.setTriggerHoldOff(configuration.getHorizontalScaleValue() * fix(x - coordenates[0]) / state.getPixelsPerDivision());
+	configuration.setTriggerLevel(fix(coordenates[2] + 4 * state.getPixelsPerDivision() - y) / state.getPixelsPerDivision() - configuration.getOffset(configuration.getTriggerChannel()) / configuration.getVerticalScaleValue(configuration.getTriggerChannel()));
 }
 
 void Touch::resetButtons(void)
@@ -456,7 +457,7 @@ void Touch::selectMode(Configuration::Modes mode)
 			configuration.setStep(1);
 			break;
 		case Configuration::ROLL:
-			configuration.setDelay(5 - configuration.getMemoryDepth() / (2.0 * state.getPixelsPerDivision()));
+			configuration.setDelay(5 - configuration.getMemoryDepth() / (2.0f * state.getPixelsPerDivision()));
 			configuration.setStep(1);
 			break;
 	}
