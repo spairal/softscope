@@ -4,6 +4,7 @@
 #include <Configuration.hpp>
 #include <State.hpp>
 #include <Samples.hpp>
+#include <MiniWahoo.hpp>
 #include <fix.hpp>
 
 class FPGA
@@ -12,6 +13,9 @@ class FPGA
 		Configuration& configuration;
 		State& state;
 		Samples& samples;
+		MiniWahoo miniWahoo;
+		char* channelABuffer;
+		char* channelBBuffer;
 
 	public:
 		FPGA(Configuration& configuration, State& state, Samples& samples);
@@ -19,10 +23,8 @@ class FPGA
 	
 	private:
 		int getMask(int bits);
-		int quantize(bool value, int shift);
-		int quantize(fix value, fix minimum, int bits, int shift);
-		int getFirstMessage(void);
-		int getSecondMessage(void);
+		int quantize(bool value);
+		int quantize(fix value, fix minimum, int bits);
 };
 
 #endif
