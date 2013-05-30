@@ -1,12 +1,12 @@
 #ifndef FIX_HPP
 #define FIX_HPP
 
-#define FRACTION 16
+#define FRACTION 32
 
 class fix
 {
    private:
-      int value;
+      long long value;
 
    public:
       fix(void);

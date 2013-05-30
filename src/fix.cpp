@@ -119,13 +119,13 @@ fix fix::operator/(const fix& other) const
 
 fix& fix::operator=(int v)
 {
-   value = (v << FRACTION);
+   value = ((long long)v << FRACTION);
    return *this;
 }
 
 fix& fix::operator=(float v)
 {
-   value = (int)(v * (1 << FRACTION));
+   value = (long long)(v * ((long long)1 << FRACTION));
    return *this;
 }
 
@@ -138,13 +138,13 @@ fix& fix::operator=(const fix& other)
 bool fix::operator==(int v) const
 {
    fix other = v;
-   return (*this == other);
+   return *this == other;
 }
 
 bool fix::operator==(float v) const
 {
    fix other = v;
-   return (*this == other);
+   return *this == other;
 }
 
 bool fix::operator==(const fix& other) const
@@ -155,13 +155,13 @@ bool fix::operator==(const fix& other) const
 bool fix::operator!=(int v) const
 {
    fix other = v;
-   return (*this != other);
+   return *this != other;
 }
 
 bool fix::operator!=(float v) const
 {
    fix other = v;
-   return (*this != other);
+   return *this != other;
 }
 
 bool fix::operator!=(const fix& other) const
@@ -172,13 +172,13 @@ bool fix::operator!=(const fix& other) const
 bool fix::operator>(int v) const
 {
    fix other = v;
-   return (*this > other);
+   return *this > other;
 }
 
 bool fix::operator>(float v) const
 {
    fix other = v;
-   return (*this > other);
+   return *this > other;
 }
 
 bool fix::operator>(const fix& other) const
@@ -189,13 +189,13 @@ bool fix::operator>(const fix& other) const
 bool fix::operator<(int v) const
 {
    fix other = v;
-   return (*this < other);
+   return *this < other;
 }
 
 bool fix::operator<(float v) const
 {
    fix other = v;
-   return (*this < other);
+   return *this < other;
 }
 
 bool fix::operator<(const fix& other) const
@@ -206,13 +206,13 @@ bool fix::operator<(const fix& other) const
 bool fix::operator>=(int v) const
 {
    fix other = v;
-   return (*this >= other);
+   return *this >= other;
 }
 
 bool fix::operator>=(float v) const
 {
    fix other = v;
-   return (*this >= other);
+   return *this >= other;
 }
 
 bool fix::operator>=(const fix& other) const
@@ -223,13 +223,13 @@ bool fix::operator>=(const fix& other) const
 bool fix::operator<=(int v) const
 {
    fix other = v;
-   return (*this <= other);
+   return *this <= other;
 }
 
 bool fix::operator<=(float v) const
 {
    fix other = v;
-   return (*this <= other);
+   return *this <= other;
 }
 
 bool fix::operator<=(const fix& other) const
@@ -347,12 +347,12 @@ fix fix::operator--(int unused)
 
 fix::operator int(void) const
 {
-   return (value >> FRACTION);
+   return value >> FRACTION;
 }
 
 fix::operator float(void) const
 {
-   return ((float)value / (1 << FRACTION));
+   return ((float)value / ((long long)1 << FRACTION));
 }
 
 fix fix::abs(void) const
