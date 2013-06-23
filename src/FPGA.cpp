@@ -13,7 +13,7 @@ void FPGA::fetchSamples(void)
 {
 	if(configuration.getModifiedTrigger())
 	{
-	   miniWahoo.setTriggerConf(configuration.getTriggerChannel(), quantize(configuration.getTriggerSlope() == Configuration::POSITIVE), quantize(configuration.getTriggerMode() == Configuration::AUTOMATIC), quantize(configuration.getMode() == Configuration::ROLL), quantize(configuration.getTriggerNoiseReject()), quantize(configuration.getTriggerHighFrequencyReject()), quantize(configuration.getTriggerHoldOff(), 1, 5), quantize(configuration.getTriggerLevel(), 0.03125f, 8));
+	   miniWahoo.setTriggerConf(configuration.getTriggerChannel(), quantize(configuration.getTriggerSlope() == Configuration::POSITIVE), quantize(configuration.getTriggerMode() == Configuration::AUTOMATIC), quantize(configuration.getMode() == Configuration::ROLL), quantize(configuration.getTriggerNoiseReject()), quantize(configuration.getTriggerHighFrequencyReject()), quantize(configuration.getTriggerHoldOff(), 1, 5), quantize(configuration.getTriggerLevel() + 4, 0.03125f, 8));
 	}
 	if(configuration.getModifiedSampleRate())
 	{
@@ -21,11 +21,11 @@ void FPGA::fetchSamples(void)
    }
    if(configuration.getModifiedChannel(Configuration::CHANNEL_A))
    {
-	   miniWahoo.setChannelConf(Configuration::CHANNEL_A, quantize(configuration.getChannel(Configuration::CHANNEL_A)), quantize(configuration.getVerticalScale(Configuration::CHANNEL_A), 1, 4), quantize(configuration.getCoupling(Configuration::CHANNEL_A) == Configuration::AC), quantize(configuration.getOffset(Configuration::CHANNEL_A), 0.0003125f, 18));
+	   miniWahoo.setChannelConf(Configuration::CHANNEL_A, quantize(configuration.getChannel(Configuration::CHANNEL_A)), quantize(configuration.getVerticalScale(Configuration::CHANNEL_A), 1, 4), quantize(configuration.getCoupling(Configuration::CHANNEL_A) == Configuration::AC), quantize(configuration.getOffset(Configuration::CHANNEL_A) + 40, 0.0003125f, 18));
 	}
 	if(configuration.getModifiedChannel(Configuration::CHANNEL_A))
    {
-	   miniWahoo.setChannelConf(Configuration::CHANNEL_B, quantize(configuration.getChannel(Configuration::CHANNEL_B)), quantize(configuration.getVerticalScale(Configuration::CHANNEL_B), 1, 4), quantize(configuration.getCoupling(Configuration::CHANNEL_B) == Configuration::AC), quantize(configuration.getOffset(Configuration::CHANNEL_B), 0.0003125f, 18));
+	   miniWahoo.setChannelConf(Configuration::CHANNEL_B, quantize(configuration.getChannel(Configuration::CHANNEL_B)), quantize(configuration.getVerticalScale(Configuration::CHANNEL_B), 1, 4), quantize(configuration.getCoupling(Configuration::CHANNEL_B) == Configuration::AC), quantize(configuration.getOffset(Configuration::CHANNEL_B) + 40, 0.0003125f, 18));
 	}
 	if(configuration.getMode() != Configuration::STOP)
 	{
