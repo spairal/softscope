@@ -111,7 +111,8 @@ bool MiniWahoo::setSampleRate(char sampleRate)
 bool MiniWahoo::reset(void)
 {
 	bool ret = true;
-	if(write(resetFile, (const void*)1, 1) < 0)
+	char a = 1;
+	if(write(resetFile, &a, 1) < 0)
 	{
 		ret = false;
 	}
