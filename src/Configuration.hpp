@@ -44,6 +44,10 @@ class Configuration
 		int memoryDepth;
 		fix delay;
 		fix step;
+		bool modifiedTrigger;
+		bool modifiedSampleRate;
+		bool modifiedChannelA;
+		bool modifiedChannelB;
 
 	public:
 		Configuration(void);
@@ -126,6 +130,9 @@ class Configuration
 		void setDelay(fix d);
 		fix getStep(void);
 		void setStep(fix s);
+		bool getModifiedTrigger(void);
+		bool getModifiedSampleRate(void);
+		bool getModifiedChannel(Channels channel);
 };
 
 #endif

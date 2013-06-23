@@ -33,6 +33,10 @@ Configuration::Configuration(void)
 	memoryDepth = 1024;
 	delay = 0;
 	step = 1;
+	modifiedTrigger = true;
+   modifiedSampleRate = true;
+   modifiedChannelA = true;
+   modifiedChannelB = true;
 }
 
 fix Configuration::getOffset(Channels channel)
@@ -72,9 +76,11 @@ void Configuration::setOffset(Channels channel, fix offset)
 	{
 		case CHANNEL_A:
 			offsetA = offset;
+			modifiedChannelA = true;
 			break;
 		case CHANNEL_B:
 			offsetB = offset;
+			modifiedChannelB = true;
 			break;
 	}
 }
@@ -188,9 +194,11 @@ void Configuration::setVerticalScale(Channels channel, VerticalScales verticalSc
 	{
 		case CHANNEL_A:
 			verticalScaleA = verticalScale;
+			modifiedChannelA = true;
 			break;
 		case CHANNEL_B:
 			verticalScaleB = verticalScale;
+			modifiedChannelB = true;
 			break;
 	}
 }
@@ -343,6 +351,7 @@ void Configuration::setHorizontalScale(HorizontalScales scale)
 		scale = ONE_S;
 	}
 	horizontalScale = scale;
+	modifiedSampleRate = true;
 }
 
 Configuration::Couplings Configuration::getCoupling(Channels channel)
@@ -382,9 +391,11 @@ void Configuration::setCoupling(Channels channel, Couplings coupling)
 	{
 		case CHANNEL_A:
 			couplingA = coupling;
+			modifiedChannelA = true;
 			break;
 		case CHANNEL_B:
 			couplingB = coupling;
+			modifiedChannelB = true;
 			break;
 	}
 }
@@ -413,9 +424,11 @@ void Configuration::setChannel(Channels channel, bool isActive)
 	{
 		case CHANNEL_A:
 			channelA = isActive;
+			modifiedChannelA = true;
 			break;
 		case CHANNEL_B:
 			channelB = isActive;
+			modifiedChannelB = true;
 			break;
 	}
 }
@@ -838,31 +851,37 @@ void Configuration::setMathematic(Mathematics selected)
 void Configuration::setMode(Modes selected)
 {
 	mode = selected;
+	modifiedTrigger = true;
 }
 
 void Configuration::setTriggerMode(TriggerModes mode)
 {
 	triggerMode = mode;
+	modifiedTrigger = true;
 }
 
 void Configuration::setTriggerChannel(Channels channel)
 {
 	triggerChannel = channel;
+	modifiedTrigger = true;
 }
 
 void Configuration::setTriggerSlope(TriggerSlopes slope)
 {
 	triggerSlope = slope;
+	modifiedTrigger = true;
 }
 
 void Configuration::setTriggerNoiseReject(bool reject)
 {
 	triggerNoiseReject = reject;
+	modifiedTrigger = true;
 }
 
 void Configuration::setTriggerHighFrequencyReject(bool reject)
 {
 	triggerHighFrequencyReject = reject;
+	modifiedTrigger = true;
 }
 
 void Configuration::setTriggerLevel(fix level)
@@ -876,6 +895,7 @@ void Configuration::setTriggerLevel(fix level)
 		level = 4;
 	}
 	triggerLevel = level;
+	modifiedTrigger = true;
 }
 
 void Configuration::setTriggerHoldOff(fix holdOff)
@@ -891,6 +911,7 @@ void Configuration::setTriggerHoldOff(fix holdOff)
 		}
 	}
 	triggerHoldOff = THO;
+	modifiedTrigger = true;
 }
 
 vector<fix> Configuration::getCursor(void)
@@ -1080,5 +1101,36 @@ fix Configuration::getStep(void)
 void Configuration::setStep(fix s)
 {
 	step = s;
+}
+
+bool Configuration::getModifiedTrigger(void)
+{
+   bool tmp = modifiedTrigger;
+   modifiedTrigger = false;
+   return tmp;
+}
+
+bool Configuration::getModifiedSampleRate(void)
+{
+   bool tmp = modifiedSampleRate;
+   modifiedSampleRate = false;
+   return tmp;
+}
+
+bool Configuration::getModifiedChannel(Channels channel)
+{
+   bool tmp;
+   switch(channel)
+   {
+      case CHANNEL_A:
+         tmp = modifiedChannelA;
+         modifiedChannelA = false;
+         break;
+      case CHANNEL_B:
+         tmp = modifiedChannelB;
+         modifiedChannelB = false;
+         break;
+   }
+   return tmp;
 }
 
