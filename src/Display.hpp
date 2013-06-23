@@ -26,7 +26,7 @@ class Display
 		void print(void);
 
 	private:
-		std::vector<int> samplesToPixels(const std::vector<fix>& samples, fix offset, fix verticalScale, int pixelsPerDivision);
+		std::vector<int> samplesToPixels(const std::vector<fix>& samples, fix verticalScale, int pixelsPerDivision);
 		void clearScreen(void);
 		void updateScreen(void);
 		void printGrid(const std::vector<int>& coordenates);
