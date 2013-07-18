@@ -34,6 +34,7 @@ class State
 		bool measuresButtonActive;
 		bool mathematicsButtonActive;
 		bool modeButtonActive;
+		bool modeActive;
 		bool triggerModeActive;
 		bool triggerChannelActive;
 		bool triggerSlopeActive;
@@ -81,6 +82,7 @@ class State
 		bool getMeasuresButtonActive(void);
 		bool getMathematicsButtonActive(void);
 		bool getModeButtonActive(void);
+		bool getModeActive(void);
 		bool getTriggerModeActive(void);
 		bool getTriggerChannelActive(void);
 		bool getTriggerSlopeActive(void);
@@ -91,6 +93,7 @@ class State
 		void setMeasuresButtonActive(bool active);
 		void setMathematicsButtonActive(bool active);
 		void setModeButtonActive(bool active);
+		void setModeActive(bool active);
 		void setTriggerModeActive(bool active);
 		void setTriggerChannelActive(bool active);
 		void setTriggerSlopeActive(bool active);
@@ -102,6 +105,7 @@ class State
 		int getMouseY(void);
 		void setMouseX(int x);
 		void setMouseY(int y);
+		std::vector<std::string> getAllModes(void);
 };
 
 #endif

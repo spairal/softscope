@@ -44,6 +44,7 @@ class Touch
 		void pressModeButton(void);
 		void selectMeasure(Configuration::Measures measure);
 		void selectMathematic(Configuration::Mathematics mathematic);
+		void selectOption(int option);
 		void selectMode(Configuration::Modes mode);
 		void selectTriggerMode(Configuration::TriggerModes mode);
 		void selectTriggerChannel(Configuration::Channels channel);

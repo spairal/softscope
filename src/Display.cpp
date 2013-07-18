@@ -59,6 +59,10 @@ void Display::print(void)
 	}
 	if(state.getModeButtonActive())
 	{
+		printMenu(state.getAllModes(), state.getModeMenuCoordenates());
+	}
+	if(state.getModeActive())
+	{
 		printMenu(configuration.getAllModes(), state.getModeMenuCoordenates());
 	}
 	if(state.getAverageActive())

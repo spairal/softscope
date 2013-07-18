@@ -65,6 +65,7 @@ State::State(void)
 	measuresButtonActive = false;
 	mathematicsButtonActive = false;
 	modeButtonActive = false;
+	modeActive = false;
 	triggerModeActive = false;
 	triggerChannelActive = false;
 	triggerSlopeActive = false;
@@ -294,6 +295,11 @@ bool State::getModeButtonActive(void)
 	return modeButtonActive;
 }
 
+bool State::getModeActive(void)
+{
+	return modeActive;
+}
+
 bool State::getTriggerModeActive(void)
 {
 	return triggerModeActive;
@@ -342,6 +348,11 @@ void State::setMathematicsButtonActive(bool active)
 void State::setModeButtonActive(bool active)
 {
 	modeButtonActive = active;
+}
+
+void State::setModeActive(bool active)
+{
+	modeActive = active;
 }
 
 void State::setTriggerModeActive(bool active)
@@ -397,5 +408,19 @@ void State::setMouseX(int x)
 void State::setMouseY(int y)
 {
 	mouseY = y;
+}
+
+vector<string> State::getAllModes(void)
+{
+	vector<string> allModes;
+	allModes.push_back("Mode");
+	allModes.push_back("Trigger mode");
+	allModes.push_back("Trigger channel");
+	allModes.push_back("Trigger slope");
+	allModes.push_back("Trigger noise reject");
+	allModes.push_back("Trigger HF reject");
+	allModes.push_back("Trigger level");
+	allModes.push_back("Average");
+	return allModes;
 }
 

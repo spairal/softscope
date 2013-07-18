@@ -39,7 +39,7 @@ void Touch::parseScreen(int x, int y)
 	if(buttonPressed)
 	{
 		buttonPressed = false;
-		if(!state.getMeasuresButtonActive() && !state.getMathematicsButtonActive() && !state.getModeButtonActive() && !state.getTriggerModeActive() && !state.getTriggerChannelActive() && !state.getTriggerSlopeActive() && !state.getTriggerNoiseRejectActive() && !state.getTriggerHighFrequencyRejectActive() && !state.getAverageActive())
+		if(!state.getMeasuresButtonActive() && !state.getMathematicsButtonActive() && !state.getModeButtonActive() && !state.getModeActive() && !state.getTriggerModeActive() && !state.getTriggerChannelActive() && !state.getTriggerSlopeActive() && !state.getTriggerNoiseRejectActive() && !state.getTriggerHighFrequencyRejectActive() && !state.getAverageActive())
 		{
 			vector<int> coordenates = state.getGridCoordenates();
 			if(state.getTriggerLevelActive())
@@ -81,19 +81,21 @@ void Touch::parseScreen(int x, int y)
 	{
 		buttonReleased = false;
 		resetDrag();
-		if(state.getMeasuresButtonActive() || state.getMathematicsButtonActive() || state.getModeButtonActive() || state.getTriggerModeActive() || state.getTriggerChannelActive() || state.getTriggerSlopeActive() || state.getTriggerNoiseRejectActive() || state.getTriggerHighFrequencyRejectActive() || state.getAverageActive())
+		if(state.getMeasuresButtonActive() || state.getMathematicsButtonActive() || state.getModeButtonActive() || state.getModeActive() || state.getTriggerModeActive() || state.getTriggerChannelActive() || state.getTriggerSlopeActive() || state.getTriggerNoiseRejectActive() || state.getTriggerHighFrequencyRejectActive() || state.getAverageActive())
 		{
 			vector<int> measuresMenuCoordenates = state.getMeasuresMenuCoordenates();
 			vector<int> mathematicsMenuCoordenates = state.getMathematicsMenuCoordenates();
-			vector<int> modeMenuCoordenates = state.getModeMenuCoordenates();
-			vector<int> triggerModeCoordenates = modeMenuCoordenates;
-			vector<int> triggerChannelCoordenates = modeMenuCoordenates;
-			vector<int> triggerSlopeCoordenates = modeMenuCoordenates;
-			vector<int> triggerNoiseRejectCoordenates = modeMenuCoordenates;
-			vector<int> triggerHighFrequencyRejectCoordenates = modeMenuCoordenates;
-			vector<int> averageCoordenates = modeMenuCoordenates;
+			vector<int> optionMenuCoordenates = state.getModeMenuCoordenates();
+			vector<int> modeMenuCoordenates = optionMenuCoordenates;
+			vector<int> triggerModeCoordenates = optionMenuCoordenates;
+			vector<int> triggerChannelCoordenates = optionMenuCoordenates;
+			vector<int> triggerSlopeCoordenates = optionMenuCoordenates;
+			vector<int> triggerNoiseRejectCoordenates = optionMenuCoordenates;
+			vector<int> triggerHighFrequencyRejectCoordenates = optionMenuCoordenates;
+			vector<int> averageCoordenates = optionMenuCoordenates;
 			measuresMenuCoordenates[2] = measuresMenuCoordenates[3] - (measuresMenuCoordenates[3] - measuresMenuCoordenates[2]) * configuration.getAllMeasures().size();
 			mathematicsMenuCoordenates[2] = mathematicsMenuCoordenates[3] - (mathematicsMenuCoordenates[3] - mathematicsMenuCoordenates[2]) * configuration.getAllMathematics().size();
+			optionMenuCoordenates[2] = optionMenuCoordenates[3] - (optionMenuCoordenates[3] - optionMenuCoordenates[2]) * state.getAllModes().size();
 			modeMenuCoordenates[2] = modeMenuCoordenates[3] - (modeMenuCoordenates[3] - modeMenuCoordenates[2]) * configuration.getAllModes().size();
 			triggerModeCoordenates[2] = triggerModeCoordenates[3] - (triggerModeCoordenates[3] - triggerModeCoordenates[2]) * configuration.getAllTriggerModes().size();
 			triggerChannelCoordenates[2] = triggerChannelCoordenates[3] - (triggerChannelCoordenates[3] - triggerChannelCoordenates[2]) * configuration.getAllChannels().size();
@@ -111,7 +113,12 @@ void Touch::parseScreen(int x, int y)
 				vector<int> coordenates = state.getMathematicsMenuCoordenates();
 				selectMathematic((Configuration::Mathematics)(configuration.getAllMathematics().size() - (coordenates[3] - y) / (coordenates[3] - coordenates[2]) - 1));
 			}
-			else if(state.getModeButtonActive() && isIn(x, y, modeMenuCoordenates))
+			else if(state.getModeButtonActive() && isIn(x, y, optionMenuCoordenates))
+			{
+				vector<int> coordenates = state.getModeMenuCoordenates();
+				selectOption(state.getAllModes().size() - (coordenates[3] - y) / (coordenates[3] - coordenates[2]) - 1);
+			}
+			else if(state.getModeActive() && isIn(x, y, modeMenuCoordenates))
 			{
 				vector<int> coordenates = state.getModeMenuCoordenates();
 				selectMode((Configuration::Modes)(configuration.getAllModes().size() - (coordenates[3] - y) / (coordenates[3] - coordenates[2]) - 1));
@@ -313,6 +320,7 @@ void Touch::resetButtons(void)
 	state.setMeasuresButtonActive(false);
 	state.setMathematicsButtonActive(false);
 	state.setModeButtonActive(false);
+	state.setModeActive(false);
 	state.setTriggerModeActive(false);
 	state.setTriggerChannelActive(false);
 	state.setTriggerSlopeActive(false);
@@ -375,6 +383,7 @@ void Touch::pressMeasuresButton(void)
 	}
 	state.setMathematicsButtonActive(false);
 	state.setModeButtonActive(false);
+	state.setModeActive(false);
 	state.setTriggerModeActive(false);
 	state.setTriggerChannelActive(false);
 	state.setTriggerSlopeActive(false);
@@ -396,6 +405,7 @@ void Touch::pressMathematicsButton(void)
 	}
 	state.setMeasuresButtonActive(false);
 	state.setModeButtonActive(false);
+	state.setModeActive(false);
 	state.setTriggerModeActive(false);
 	state.setTriggerChannelActive(false);
 	state.setTriggerSlopeActive(false);
@@ -417,6 +427,7 @@ void Touch::pressModeButton(void)
 	}
 	state.setMeasuresButtonActive(false);
 	state.setMathematicsButtonActive(false);
+	state.setModeActive(false);
 	state.setTriggerModeActive(false);
 	state.setTriggerChannelActive(false);
 	state.setTriggerSlopeActive(false);
@@ -438,21 +449,51 @@ void Touch::selectMathematic(Configuration::Mathematics mathematic)
 	configuration.setMathematic(mathematic);
 }
 
-void Touch::selectMode(Configuration::Modes mode)
+void Touch::selectOption(int option)
 {
 	state.setModeButtonActive(false);
+	switch(option)
+	{
+		case 0:
+			state.setModeActive(true);
+			break;
+		case 1:
+			state.setTriggerModeActive(true);
+			break;
+		case 2:
+			state.setTriggerChannelActive(true);
+			break;
+		case 3:
+			state.setTriggerSlopeActive(true);
+			break;
+		case 4:
+			state.setTriggerNoiseRejectActive(true);
+			break;
+		case 5:
+			state.setTriggerHighFrequencyRejectActive(true);
+			break;
+		case 6:
+			state.setTriggerLevelActive(true);
+			break;
+		case 7:
+			state.setAverageActive(true);
+			break;
+	}
+}
+
+void Touch::selectMode(Configuration::Modes mode)
+{
+	state.setModeActive(false);
 	configuration.setMode(mode);
 	switch(mode)
 	{
 		case Configuration::RUN:
-			state.setAverageActive(true);
 			configuration.setDelay(0);
 			configuration.setStep(1);
 			break;
 		case Configuration::STOP:
 			break;
 		case Configuration::SINGLE:
-			state.setTriggerModeActive(true);
 			configuration.setDelay(0);
 			configuration.setStep(1);
 			break;
@@ -467,42 +508,36 @@ void Touch::selectTriggerMode(Configuration::TriggerModes mode)
 {
 	state.setTriggerModeActive(false);
 	configuration.setTriggerMode(mode);
-	state.setTriggerChannelActive(true);
 }
 
 void Touch::selectTriggerChannel(Configuration::Channels channel)
 {
 	state.setTriggerChannelActive(false);
 	configuration.setTriggerChannel(channel);
-	state.setTriggerSlopeActive(true);
 }
 
 void Touch::selectTriggerSlope(Configuration::TriggerSlopes slope)
 {
 	state.setTriggerSlopeActive(false);
 	configuration.setTriggerSlope(slope);
-	state.setTriggerNoiseRejectActive(true);
 }
 
 void Touch::selectTriggerNoiseReject(bool reject)
 {
 	state.setTriggerNoiseRejectActive(false);
 	configuration.setTriggerNoiseReject(reject);
-	state.setTriggerHighFrequencyRejectActive(true);
 }
 
 void Touch::selectTriggerHighFrequencyReject(bool reject)
 {
 	state.setTriggerHighFrequencyRejectActive(false);
 	configuration.setTriggerHighFrequencyReject(reject);
-	state.setTriggerLevelActive(true);
 }
 
 void Touch::selectAverage(Configuration::Averages average)
 {
 	state.setAverageActive(false);
 	configuration.setAverage(average);
-	state.setTriggerModeActive(true);
 }
 
 bool Touch::isIn(int x, int y, const vector<int>& coordenates)

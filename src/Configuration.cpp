@@ -784,40 +784,40 @@ vector<string> Configuration::getAllModes(void)
 vector<string> Configuration::getAllTriggerModes(void)
 {
 	vector<string> allModes;
-	allModes.push_back("Trigger mode: Normal");
-	allModes.push_back("Trigger mode: Automatic");
+	allModes.push_back("Normal");
+	allModes.push_back("Automatic");
 	return allModes;
 }
 
 vector<string> Configuration::getAllChannels(void)
 {
 	vector<string> allChannels;
-	allChannels.push_back("Trigger channel: A");
-	allChannels.push_back("Trigger channel: B");
+	allChannels.push_back("Channel A");
+	allChannels.push_back("Channel B");
 	return allChannels;
 }
 
 vector<string> Configuration::getAllTriggerSlopes(void)
 {
 	vector<string> allSlopes;
-	allSlopes.push_back("Trigger slope: Positive");
-	allSlopes.push_back("Trigger slope: Negative");
+	allSlopes.push_back("Positive");
+	allSlopes.push_back("Negative");
 	return allSlopes;
 }
 
 vector<string> Configuration::getAllTriggerNoiseRejects(void)
 {
 	vector<string> allNoiseReject;
-	allNoiseReject.push_back("Trigger noise reject: off");
-	allNoiseReject.push_back("Trigger noise reject: on");
+	allNoiseReject.push_back("Off");
+	allNoiseReject.push_back("On");
 	return allNoiseReject;
 }
 
 vector<string> Configuration::getAllTriggerHighFrequencyRejects(void)
 {
 	vector<string> allHighFrequencyReject;
-	allHighFrequencyReject.push_back("Trigger HF reject: off");
-	allHighFrequencyReject.push_back("Trigger HF reject: on");
+	allHighFrequencyReject.push_back("Off");
+	allHighFrequencyReject.push_back("On");
 	return allHighFrequencyReject;
 }
 
