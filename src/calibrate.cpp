@@ -73,6 +73,8 @@ int main(int argc, char** argv)
 			cout << "xo2 = " << xo2 << "; yo2 = " << yo2 << endl;
 		}
 	}
+	miniFB.clearScreen();
+	miniFB.updateScreen();
 	fix ax = fix(xo2 - xo1) / fix(xi2 - xi1);
 	fix bx = fix(xi2 * xo1 - xi1 * xo2) / fix(xi2 - xi1);
 	fix ay = fix(yo2 - yo1) / fix(yi2 - yi1);
