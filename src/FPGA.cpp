@@ -60,9 +60,9 @@ void FPGA::fetchSamples(void)
 					{
 						samplesB[i] = samplesB[i + N];
 					}
-					for(; i < configuration.getMemoryDepth(); i++)
+					for(int j = 0; (j + i) < configuration.getMemoryDepth(); j++)
 					{
-						samplesB[i] = configuration.getVerticalScaleValue(Configuration::CHANNEL_B) * (channelBBuffer[i] - 128) / 32;
+						samplesB[j + i] = configuration.getVerticalScaleValue(Configuration::CHANNEL_B) * (channelBBuffer[j] - 128) / 32;
 					}
 					samples.setSamples(Configuration::CHANNEL_B, samplesB);
 				}
