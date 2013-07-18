@@ -221,7 +221,7 @@ void Display::printMenu(const vector<string>& options, const vector<int>& coorde
 
 void Display::printAlert(string text, const vector<int>& coordenates)
 {
-	miniFB.drawText(coordenates[0] + state.getPixelsPerDivision(), coordenates[2] - state.getPixelsPerDivision() - miniFB.getTextHeight(text), text, state.getColorGeneral());
+	miniFB.drawText(coordenates[0] + state.getPixelsPerDivision(), coordenates[2] + state.getPixelsPerDivision() - miniFB.getTextHeight(text), text, state.getColorGeneral());
 }
 
 void Display::printSamples(const std::vector<int>& samples, int delay, int memoryDepth, fix step, unsigned char color, const vector<int>& coordenates)
