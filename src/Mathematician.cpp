@@ -69,7 +69,7 @@ vector<fix> Mathematician::getFFT(void)
 		fftw_execute(p);
 		for(int i = 0; i < N; i++)
 		{
-			fft[i] = verticalScale * 20 * log10(sqrt((float)(pow(out[i][0], 2) + pow(out[i][1], 2))) / M) / pixelsPerDivision;
+			fft[i] = verticalScale * 20 * log10(sqrt((float)(pow(out[i][0], 2) + pow(out[i][1], 2))) / M + 0.000001f) / pixelsPerDivision;
 		}
 		fftw_destroy_plan(p);
 		fftw_free(in);

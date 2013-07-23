@@ -297,7 +297,7 @@ int Measurer::getMaxCorrelation(const vector<fix>& signalA, const vector<fix>& s
 			correlation += (signalA[j] * signalB[j + i]);
 		}
 		correlation /= N;
-		if(correlation > maxCorrelation)
+		if(correlation >= maxCorrelation)
 		{
 			maxCorrelation = correlation;
 			maxI = i;
