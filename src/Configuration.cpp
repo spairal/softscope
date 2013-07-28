@@ -342,9 +342,18 @@ string Configuration::getHorizontalScaleString(void)
 
 void Configuration::setHorizontalScale(HorizontalScales scale)
 {
-	if(scale < ONE_US)
+	HorizontalScales minScale;
+	if(mode == ROLL)
 	{
-		scale = ONE_US;
+	   minScale = HUNDRED_MS;
+	}
+	else
+	{
+	   minScale = ONE_US;
+	}
+	if(scale < minScale)
+	{
+		scale = minScale;
 	}
 	if(scale > ONE_S)
 	{
@@ -852,6 +861,7 @@ void Configuration::setMode(Modes selected)
 {
 	mode = selected;
 	modifiedTrigger = true;
+	setHorizontalScale(horizontalScale);
 }
 
 void Configuration::setTriggerMode(TriggerModes mode)
