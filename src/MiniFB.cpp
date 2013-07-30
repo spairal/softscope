@@ -84,7 +84,11 @@ void MiniFB::drawPixel(int x, int y, unsigned char color)
 
 void MiniFB::drawLine(int x1, int y1, int x2, int y2, unsigned char color)
 {
-	if(abs(x2 - x1) > abs(y2 - y1))
+	if((abs(x2 - x1) == 0) && (abs(y2 - y1) == 0))
+	{
+		drawPixel(x1, y1, color);
+	}
+	else if(abs(x2 - x1) > abs(y2 - y1))
 	{
 		int xStep = (x1 < x2) ? 1 : -1;
 		fix y = y1 + 0.5f;
