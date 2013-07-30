@@ -133,12 +133,8 @@ void Display::printGrid(const vector<int>& coordenates)
 void Display::printSliders(const vector<int>& coordenates)
 {
 	unsigned char color = miniFB.thinColor(state.getColorGeneral(), 1);
-	miniFB.drawRectangleBorder(coordenates[0] + 2, coordenates[2] + 2, coordenates[1] - state.getPixelsPerDivision() - 2, coordenates[2] + state.getPixelsPerDivision() - 2, color);
-	miniFB.drawRectangleBorder(coordenates[1] - state.getPixelsPerDivision() + 2, coordenates[2] + state.getPixelsPerDivision() + 2, coordenates[1] - 2, coordenates[3] - 2, color);
-	miniFB.drawText(coordenates[0] + state.getPixelsPerDivision() / 2 - miniFB.getTextWidth("-") / 2, coordenates[2] + state.getPixelsPerDivision() / 2 - miniFB.getTextHeight("-") / 2, "-", color);
-	miniFB.drawText(coordenates[1] - 3 * state.getPixelsPerDivision() / 2 - miniFB.getTextWidth("+") / 2, coordenates[2] + state.getPixelsPerDivision() / 2 - miniFB.getTextHeight("+") / 2, "+", color);
-	miniFB.drawText(coordenates[1] - state.getPixelsPerDivision() / 2 - miniFB.getTextWidth("-") / 2, coordenates[3] - state.getPixelsPerDivision() / 2 - miniFB.getTextHeight("-") / 2, "-", color);
-	miniFB.drawText(coordenates[1] - state.getPixelsPerDivision() / 2 - miniFB.getTextWidth("+") / 2, coordenates[2] + 3 * state.getPixelsPerDivision() / 2 - miniFB.getTextHeight("+") / 2, "+", color);
+	miniFB.drawRectangleBorder(coordenates[0] + 2, coordenates[2] + 2, coordenates[1] - 2 * state.getPixelsPerDivision() - 2, coordenates[2] + 2 * state.getPixelsPerDivision() - 2, color);
+	miniFB.drawRectangleBorder(coordenates[1] - 2 * state.getPixelsPerDivision() + 2, coordenates[2] + 2 * state.getPixelsPerDivision() + 2, coordenates[1] - 2, coordenates[3] - 2, color);
 }
 
 void Display::printOffset(int offsetValue, string offsetString, unsigned char color, const vector<int>& coordenates)
@@ -181,8 +177,8 @@ void Display::printChannelButton(string channel, bool isActive, bool isSelected,
 	{
 		fillColor = miniFB.thinColor(color, 3);
 	}
-	miniFB.drawRectangle(coordenates[0] + (coordenates[3] - coordenates[2]) / 4 , (3 * coordenates[2] + coordenates[3]) / 4, coordenates[0] + 3 * (coordenates[3] - coordenates[2]) / 4, (coordenates[2] + 3 * coordenates[3]) / 4, fillColor, color);
-	miniFB.drawText(coordenates[0] + (coordenates[3] - coordenates[2]), (coordenates[2] + coordenates[3] - miniFB.getTextHeight(channel)) / 2, channel, color);
+	miniFB.drawRectangle(coordenates[0] + (coordenates[3] - coordenates[2]) / 8 , (3 * coordenates[2] + coordenates[3]) / 4, coordenates[0] + 3 * (coordenates[3] - coordenates[2]) / 8, (coordenates[2] + 3 * coordenates[3]) / 4, fillColor, color);
+	miniFB.drawText(coordenates[0] + (coordenates[3] - coordenates[2]) / 2, (coordenates[2] + coordenates[3] - miniFB.getTextHeight(channel)) / 2, channel, color);
 }
 
 void Display::printCouplingButton(string text, unsigned char color, const vector<int>& coordenates)

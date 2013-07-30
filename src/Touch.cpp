@@ -59,9 +59,9 @@ void Touch::parseScreen(int x, int y)
 			else
 			{
 				vector<int> verticalScaleCoordenates = coordenates;
-				verticalScaleCoordenates[0] = verticalScaleCoordenates[1] - state.getPixelsPerDivision();
+				verticalScaleCoordenates[0] = verticalScaleCoordenates[1] - 2 * state.getPixelsPerDivision();
 				vector<int> horizontalScaleCoordenates = coordenates;
-				horizontalScaleCoordenates[3] = horizontalScaleCoordenates[2] + state.getPixelsPerDivision();
+				horizontalScaleCoordenates[3] = horizontalScaleCoordenates[2] + 2 * state.getPixelsPerDivision();
 				if(isIn(x, y, verticalScaleCoordenates))
 				{
 					startDragVerticalScale(y);
