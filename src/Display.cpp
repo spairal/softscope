@@ -149,12 +149,12 @@ void Display::printVerticalScale(string verticalScale, unsigned char color, cons
 
 void Display::printDelay(int delayValue, std::string delayString, const vector<int>& coordenates)
 {
-	miniFB.drawText((coordenates[0] + coordenates[1]) / 2 + delayValue, coordenates[3] - miniFB.getTextHeight(delayString) -5, delayString, state.getColorGeneral());
+	miniFB.drawText((coordenates[0] + coordenates[1]) / 2 + delayValue, coordenates[3] - miniFB.getTextHeight(delayString) - 5, delayString, state.getColorGeneral());
 }
 
 void Display::printHorizontalScale(string horizontalScale, const vector<int>& coordenates)
 {
-	miniFB.drawText((coordenates[0] + coordenates[1]) / 2 + 5, coordenates[2] + 5, horizontalScale, state.getColorGeneral());
+	miniFB.drawText((coordenates[0] + coordenates[1]) / 2 + 5, coordenates[2] + state.getPixelsPerDivision() - miniFB.getTextHeight(delayString) - 5, horizontalScale, state.getColorGeneral());
 }
 
 void Display::printChannelButton(string channel, bool isActive, bool isSelected, unsigned char color, const vector<int>& coordenates)
