@@ -83,79 +83,59 @@ void Touch::parseScreen(int x, int y)
 		resetDrag();
 		if(state.getMeasuresButtonActive() || state.getMathematicsButtonActive() || state.getModeButtonActive() || state.getModeActive() || state.getTriggerModeActive() || state.getTriggerChannelActive() || state.getTriggerSlopeActive() || state.getTriggerNoiseRejectActive() || state.getTriggerHighFrequencyRejectActive() || state.getAverageActive())
 		{
-			vector<int> measuresMenuCoordenates = state.getMeasuresMenuCoordenates();
-			vector<int> mathematicsMenuCoordenates = state.getMathematicsMenuCoordenates();
-			vector<int> optionMenuCoordenates = state.getModeMenuCoordenates();
-			vector<int> modeMenuCoordenates = optionMenuCoordenates;
-			vector<int> triggerModeCoordenates = optionMenuCoordenates;
-			vector<int> triggerChannelCoordenates = optionMenuCoordenates;
-			vector<int> triggerSlopeCoordenates = optionMenuCoordenates;
-			vector<int> triggerNoiseRejectCoordenates = optionMenuCoordenates;
-			vector<int> triggerHighFrequencyRejectCoordenates = optionMenuCoordenates;
-			vector<int> averageCoordenates = optionMenuCoordenates;
-			measuresMenuCoordenates[2] = measuresMenuCoordenates[3] - (measuresMenuCoordenates[3] - measuresMenuCoordenates[2]) * configuration.getAllMeasures().size();
-			mathematicsMenuCoordenates[2] = mathematicsMenuCoordenates[3] - (mathematicsMenuCoordenates[3] - mathematicsMenuCoordenates[2]) * configuration.getAllMathematics().size();
-			optionMenuCoordenates[2] = optionMenuCoordenates[3] - (optionMenuCoordenates[3] - optionMenuCoordenates[2]) * state.getAllModes().size();
-			modeMenuCoordenates[2] = modeMenuCoordenates[3] - (modeMenuCoordenates[3] - modeMenuCoordenates[2]) * configuration.getAllModes().size();
-			triggerModeCoordenates[2] = triggerModeCoordenates[3] - (triggerModeCoordenates[3] - triggerModeCoordenates[2]) * configuration.getAllTriggerModes().size();
-			triggerChannelCoordenates[2] = triggerChannelCoordenates[3] - (triggerChannelCoordenates[3] - triggerChannelCoordenates[2]) * configuration.getAllChannels().size();
-			triggerSlopeCoordenates[2] = triggerSlopeCoordenates[3] - (triggerSlopeCoordenates[3] - triggerSlopeCoordenates[2]) * configuration.getAllTriggerSlopes().size();
-			triggerNoiseRejectCoordenates[2] = triggerNoiseRejectCoordenates[3] - (triggerNoiseRejectCoordenates[3] - triggerNoiseRejectCoordenates[2]) * configuration.getAllTriggerNoiseRejects().size();
-			triggerHighFrequencyRejectCoordenates[2] = triggerHighFrequencyRejectCoordenates[3] - (triggerHighFrequencyRejectCoordenates[3] - triggerHighFrequencyRejectCoordenates[2]) * configuration.getAllTriggerHighFrequencyRejects().size();
-			averageCoordenates[2] = averageCoordenates[3] - (averageCoordenates[3] - averageCoordenates[2]) * configuration.getAllAverages().size();
-			if(state.getMeasuresButtonActive() && isIn(x, y, measuresMenuCoordenates))
+			vector<int> coordenates = state.getGridCoordenates();
+			coordenates[1] = coordenates[1] - state.getPixelsPerDivision();
+			if(isIn(x, y, coordenates))
 			{
-				vector<int> coordenates = state.getMeasuresMenuCoordenates();
-				selectMeasure((Configuration::Measures)(configuration.getAllMeasures().size() - (coordenates[3]- y) / (coordenates[3] - coordenates[2]) - 1));
+			   int option = 3 * (y / (2 * state.getPixelsPerDivision())) + x / (3 * state.getPixelsPerDivision());
+			   if(state.getMeasuresButtonActive() && (option < configuration.getAllMeasures().size()))
+			   {
+				   selectMeasure((Configuration::Measures)option);
+			   }
+			   else if(state.getMathematicsButtonActive() && (option < configuration.getAllMathematics().size()))
+			   {
+				   selectMathematic((Configuration::Mathematics)option);
+			   }
+			   else if(state.getModeButtonActive() && (option < state.getAllModes().size()))
+			   {
+				   selectOption(option);
+			   }
+			   else if(state.getModeActive() && (option < configuration.getAllModes().size()))
+			   {
+				   selectMode((Configuration::Modes)option);
+			   }
+			   else if(state.getTriggerModeActive() && (option < configuration.getAllTriggerModes().size()))
+			   {
+				   selectTriggerMode((Configuration::TriggerModes)option);
+			   }
+			   else if(state.getTriggerChannelActive() && (option < configuration.getAllChannels().size()))
+			   {
+				   selectTriggerChannel((Configuration::Channels)option);
+			   }
+			   else if(state.getTriggerSlopeActive() && (option < configuration.getAllTriggerSlopes().size()))
+			   {
+				   selectTriggerSlope((Configuration::TriggerSlopes)option);
+			   }
+			   else if(state.getTriggerNoiseRejectActive() && (option < configuration.getAllTriggerNoiseRejects().size()))
+			   {
+				   selectTriggerNoiseReject((option < 0.5) ? false : true);
+			   }
+			   else if(state.getTriggerHighFrequencyRejectActive() && (option < configuration.getAllTriggerHighFrequencyRejects().size()))
+			   {
+				   selectTriggerHighFrequencyReject((option < 0.5) ? false : true);
+			   }
+			   else if(state.getAverageActive() && (option < configuration.getAllAverages().size()))
+			   {
+				   selectAverage((Configuration::Averages)option);
+			   }
+			   else
+			   {
+			      resetButtons();
+			   }
 			}
-			else if(state.getMathematicsButtonActive() && isIn(x, y, mathematicsMenuCoordenates))
+			else
 			{
-				vector<int> coordenates = state.getMathematicsMenuCoordenates();
-				selectMathematic((Configuration::Mathematics)(configuration.getAllMathematics().size() - (coordenates[3] - y) / (coordenates[3] - coordenates[2]) - 1));
-			}
-			else if(state.getModeButtonActive() && isIn(x, y, optionMenuCoordenates))
-			{
-				vector<int> coordenates = state.getModeMenuCoordenates();
-				selectOption(state.getAllModes().size() - (coordenates[3] - y) / (coordenates[3] - coordenates[2]) - 1);
-			}
-			else if(state.getModeActive() && isIn(x, y, modeMenuCoordenates))
-			{
-				vector<int> coordenates = state.getModeMenuCoordenates();
-				selectMode((Configuration::Modes)(configuration.getAllModes().size() - (coordenates[3] - y) / (coordenates[3] - coordenates[2]) - 1));
-			}
-			else if(state.getTriggerModeActive() && isIn(x, y, triggerModeCoordenates))
-			{
-				vector<int> coordenates = state.getModeMenuCoordenates();
-				selectTriggerMode((Configuration::TriggerModes)(configuration.getAllTriggerModes().size() - (coordenates[3] - y) / (coordenates[3] - coordenates[2]) - 1));
-			}
-			else if(state.getTriggerChannelActive() && isIn(x, y, triggerChannelCoordenates))
-			{
-				vector<int> coordenates = state.getModeMenuCoordenates();
-				selectTriggerChannel((Configuration::Channels)(configuration.getAllChannels().size() - (coordenates[3] - y) / (coordenates[3] - coordenates[2]) - 1));
-			}
-			else if(state.getTriggerSlopeActive() && isIn(x, y, triggerSlopeCoordenates))
-			{
-				vector<int> coordenates = state.getModeMenuCoordenates();
-				selectTriggerSlope((Configuration::TriggerSlopes)(configuration.getAllTriggerSlopes().size() - (coordenates[3] - y) / (coordenates[3] - coordenates[2]) - 1));
-			}
-			else if(state.getTriggerNoiseRejectActive() && isIn(x, y, triggerNoiseRejectCoordenates))
-			{
-				vector<int> coordenates = state.getModeMenuCoordenates();
-				selectTriggerNoiseReject(((configuration.getAllTriggerModes().size() - (coordenates[3] - y) / (coordenates[3] - coordenates[2]) - 1) < 0.5) ? false : true);
-			}
-			else if(state.getTriggerHighFrequencyRejectActive() && isIn(x, y, triggerHighFrequencyRejectCoordenates))
-			{
-				vector<int> coordenates = state.getModeMenuCoordenates();
-				selectTriggerHighFrequencyReject(((configuration.getAllTriggerModes().size() - (coordenates[3] - y) / (coordenates[3] - coordenates[2]) - 1) < 0.5) ? false : true);
-			}
-			else if(state.getAverageActive() && isIn(x, y, averageCoordenates))
-			{
-				vector<int> coordenates = state.getModeMenuCoordenates();
-				selectAverage((Configuration::Averages)(configuration.getAllAverages().size() - (coordenates[3] - y) / (coordenates[3] - coordenates[2]) - 1));
-			}
-			else if(!isIn(x, y, state.getMeasuresCoordenates()) && !isIn(x, y, state.getMathematicsCoordenates()) && !isIn(x, y, state.getModeCoordenates()))
-			{
-				resetButtons();
+			   resetButtons();
 			}
 		}
 		else

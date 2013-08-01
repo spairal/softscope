@@ -28,26 +28,14 @@ State::State(void)
 	measuresCoordenates.push_back(212);
 	measuresCoordenates.push_back(400);
 	measuresCoordenates.push_back(479);
-	measuresMenuCoordenates.push_back(0);
-	measuresMenuCoordenates.push_back(212);
-	measuresMenuCoordenates.push_back(370);
-	measuresMenuCoordenates.push_back(399);
 	mathematicsCoordenates.push_back(213);
 	mathematicsCoordenates.push_back(426);
 	mathematicsCoordenates.push_back(400);
 	mathematicsCoordenates.push_back(479);
-	mathematicsMenuCoordenates.push_back(213);
-	mathematicsMenuCoordenates.push_back(426);
-	mathematicsMenuCoordenates.push_back(370);
-	mathematicsMenuCoordenates.push_back(399);
 	modeCoordenates.push_back(427);
 	modeCoordenates.push_back(639);
 	modeCoordenates.push_back(400);
 	modeCoordenates.push_back(479);
-	modeMenuCoordenates.push_back(427);
-	modeMenuCoordenates.push_back(639);
-	modeMenuCoordenates.push_back(370);
-	modeMenuCoordenates.push_back(399);
 	colorGeneral = 0xFF;
 	colorA = 0x07;
 	colorB = 0xE0;
@@ -130,21 +118,6 @@ vector<int> State::getMathematicsCoordenates(void)
 vector<int> State::getModeCoordenates(void)
 {
 	return modeCoordenates;
-}
-
-vector<int> State::getMeasuresMenuCoordenates(void)
-{
-	return measuresMenuCoordenates;
-}
-
-vector<int> State::getMathematicsMenuCoordenates(void)
-{
-	return mathematicsMenuCoordenates;
-}
-
-vector<int> State::getModeMenuCoordenates(void)
-{
-	return modeMenuCoordenates;
 }
 
 int State::getColorGeneral(void)

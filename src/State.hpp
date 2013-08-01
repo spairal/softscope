@@ -13,11 +13,8 @@ class State
 		std::vector<int> couplingCoordenatesA;
 		std::vector<int> couplingCoordenatesB;
 		std::vector<int> measuresCoordenates;
-		std::vector<int> measuresMenuCoordenates;
 		std::vector<int> mathematicsCoordenates;
-		std::vector<int> mathematicsMenuCoordenates;
 		std::vector<int> modeCoordenates;
-		std::vector<int> modeMenuCoordenates;
 		unsigned char colorGeneral;
 		unsigned char colorA;
 		unsigned char colorB;
@@ -54,9 +51,6 @@ class State
 		std::vector<int> getMeasuresCoordenates(void);
 		std::vector<int> getMathematicsCoordenates(void);
 		std::vector<int> getModeCoordenates(void);
-		std::vector<int> getMeasuresMenuCoordenates(void);
-		std::vector<int> getMathematicsMenuCoordenates(void);
-		std::vector<int> getModeMenuCoordenates(void);
 		int getColorGeneral(void);
 		int getColor(Configuration::Channels channel);
 		int getColorMathematics(void);

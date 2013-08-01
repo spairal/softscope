@@ -51,43 +51,43 @@ void Display::print(void)
 	}
 	if(state.getMeasuresButtonActive())
 	{
-		printMenu(configuration.getAllMeasures(), state.getMeasuresMenuCoordenates());
+		printMenu(configuration.getAllMeasures(), state.getGridCoordenates());
 	}
 	if(state.getMathematicsButtonActive())
 	{
-		printMenu(configuration.getAllMathematics(), state.getMathematicsMenuCoordenates());
+		printMenu(configuration.getAllMathematics(), state.getGridCoordenates());
 	}
 	if(state.getModeButtonActive())
 	{
-		printMenu(state.getAllModes(), state.getModeMenuCoordenates());
+		printMenu(state.getAllModes(), state.getGridCoordenates());
 	}
 	if(state.getModeActive())
 	{
-		printMenu(configuration.getAllModes(), state.getModeMenuCoordenates());
+		printMenu(configuration.getAllModes(), state.getGridCoordenates());
 	}
 	if(state.getAverageActive())
 	{
-		printMenu(configuration.getAllAverages(), state.getModeMenuCoordenates());
+		printMenu(configuration.getAllAverages(), state.getGridCoordenates());
 	}
 	if(state.getTriggerModeActive())
 	{
-		printMenu(configuration.getAllTriggerModes(), state.getModeMenuCoordenates());
+		printMenu(configuration.getAllTriggerModes(), state.getGridCoordenates());
 	}
 	if(state.getTriggerChannelActive())
 	{
-		printMenu(configuration.getAllChannels(), state.getModeMenuCoordenates());
+		printMenu(configuration.getAllChannels(), state.getGridCoordenates());
 	}
 	if(state.getTriggerSlopeActive())
 	{
-		printMenu(configuration.getAllTriggerSlopes(), state.getModeMenuCoordenates());
+		printMenu(configuration.getAllTriggerSlopes(), state.getGridCoordenates());
 	}
 	if(state.getTriggerNoiseRejectActive())
 	{
-		printMenu(configuration.getAllTriggerNoiseRejects(), state.getModeMenuCoordenates());
+		printMenu(configuration.getAllTriggerNoiseRejects(), state.getGridCoordenates());
 	}
 	if(state.getTriggerHighFrequencyRejectActive())
 	{
-		printMenu(configuration.getAllTriggerHighFrequencyRejects(), state.getModeMenuCoordenates());
+		printMenu(configuration.getAllTriggerHighFrequencyRejects(), state.getGridCoordenates());
 	}
 	if(state.getTriggerLevelActive())
 	{
@@ -154,7 +154,7 @@ void Display::printDelay(int delayValue, std::string delayString, const vector<i
 
 void Display::printHorizontalScale(string horizontalScale, const vector<int>& coordenates)
 {
-	miniFB.drawText((coordenates[0] + coordenates[1]) / 2 + 5, coordenates[2] + state.getPixelsPerDivision() - miniFB.getTextHeight(delayString) - 5, horizontalScale, state.getColorGeneral());
+	miniFB.drawText((coordenates[0] + coordenates[1]) / 2 + 5, coordenates[2] + state.getPixelsPerDivision() - miniFB.getTextHeight(horizontalScale) - 5, horizontalScale, state.getColorGeneral());
 }
 
 void Display::printChannelButton(string channel, bool isActive, bool isSelected, unsigned char color, const vector<int>& coordenates)
@@ -208,10 +208,19 @@ void Display::printButton(string title, string text, bool isActive, const vector
 void Display::printMenu(const vector<string>& options, const vector<int>& coordenates)
 {
 	unsigned char color = state.getColorGeneral();
-	miniFB.drawRectangle(coordenates[0], coordenates[3] - options.size() * (coordenates[3] - coordenates[2]), coordenates[1], coordenates[3], miniFB.thinColor(color, 3), color);
+	int ppd = state.getPixelsPerDivision();
+	int n = 0;
+	int m = 0;
 	for(int i = 0; i < options.size(); i++)
 	{
-		miniFB.drawText((coordenates[0] + coordenates[1] - miniFB.getTextWidth(options[i])) / 2, coordenates[3] - (options.size() - i - 0.5) * (coordenates[3] - coordenates[2]) - miniFB.getTextHeight(options[i]) / 2, options[i], color);
+	   miniFB.drawRectangle(coordenates[0] + 3 * n * ppd, coordenates[2] + 2 * m * ppd, coordenates[0] + 3 * (n + 1) * ppd - 1, coordenates[2] + 2 * (m + 1) * ppd - 1, miniFB.thinColor(color, 3), color);
+		miniFB.drawText(coordenates[0] + 3 * n * ppd + (3 * ppd - miniFB.getTextWidth(options[i])) / 2, coordenates[2] + 2 * m * ppd + (2 * ppd - miniFB.getTextHeight(options[i])) / 2, options[i], color);
+	   n++;
+	   if(n >= 3)
+	   {
+	      n = 0;
+	      m++;
+	   }
 	}
 }
 
