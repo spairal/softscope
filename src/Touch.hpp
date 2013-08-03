@@ -3,7 +3,6 @@
 
 #include <Configuration.hpp>
 #include <State.hpp>
-#include <Samples.hpp>
 #include <MiniInput.hpp>
 #include <vector>
 
@@ -12,13 +11,12 @@ class Touch
 	private:
 		Configuration& configuration;
 		State& state;
-		Samples& samples;
 		MiniInput miniInput;
 		bool buttonPressed;
 		bool buttonReleased;
 
 	public:
-		Touch(Configuration& configuration, State& state, Samples& samples);
+		Touch(Configuration& configuration, State& state);
 		void getInput(void);
 
 	private:

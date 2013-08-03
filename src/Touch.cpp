@@ -3,7 +3,7 @@
 
 using namespace std;
 
-Touch::Touch(Configuration& configuration, State& state, Samples& samples) : configuration(configuration), state(state), samples(samples), miniInput("/dev/input/event0")
+Touch::Touch(Configuration& configuration, State& state) : configuration(configuration), state(state), miniInput("/dev/input/event0")
 {
 	buttonPressed = false;
 	buttonReleased = false;

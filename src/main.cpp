@@ -15,8 +15,8 @@ int main(int argc, char** argv)
 	Configuration configuration;
 	State state;
 	Samples samples;
-	Touch touch(configuration, state, samples);
-	FPGA fpga(configuration, state, samples);
+	Touch touch(configuration, state);
+	FPGA fpga(configuration, samples);
 	Display display(configuration, state, samples);
 	while(true)
 	{

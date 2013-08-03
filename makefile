@@ -134,10 +134,10 @@ $(SOURCE)/Measurer.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURC
 $(SOURCE)/Mathematician.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp $(SOURCE)/fix.hpp
 	$(TOUCH) $(SOURCE)/Mathematician.hpp
 
-$(SOURCE)/Touch.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp $(SOURCE)/MiniInput.hpp
+$(SOURCE)/Touch.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/MiniInput.hpp
 	$(TOUCH) $(SOURCE)/Touch.hpp
 
-$(SOURCE)/FPGA.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp $(SOURCE)/MiniWahoo.hpp $(SOURCE)/fix.hpp
+$(SOURCE)/FPGA.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/Samples.hpp $(SOURCE)/MiniWahoo.hpp $(SOURCE)/fix.hpp
 	$(TOUCH) $(SOURCE)/FPGA.hpp
 
 $(SOURCE)/Display.hpp : $(SOURCE)/Configuration.hpp $(SOURCE)/State.hpp $(SOURCE)/Samples.hpp $(SOURCE)/Measurer.hpp $(SOURCE)/MiniFB.hpp $(SOURCE)/fix.hpp

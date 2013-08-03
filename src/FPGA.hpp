@@ -2,7 +2,6 @@
 #define FPGA_HPP
 
 #include <Configuration.hpp>
-#include <State.hpp>
 #include <Samples.hpp>
 #include <MiniWahoo.hpp>
 #include <fix.hpp>
@@ -11,14 +10,13 @@ class FPGA
 {
 	private:
 		Configuration& configuration;
-		State& state;
 		Samples& samples;
 		MiniWahoo miniWahoo;
 		char* channelABuffer;
 		char* channelBBuffer;
 
 	public:
-		FPGA(Configuration& configuration, State& state, Samples& samples);
+		FPGA(Configuration& configuration, Samples& samples);
 		void fetchSamples(void);
 	
 	private:

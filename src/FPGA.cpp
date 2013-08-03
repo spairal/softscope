@@ -3,7 +3,7 @@
 
 using namespace std;
 
-FPGA::FPGA(Configuration& configuration, State& state, Samples& samples) : configuration(configuration), state(state), samples(samples), miniWahoo("/sys/class/spi_master/spi1/device/spi1.0")
+FPGA::FPGA(Configuration& configuration, Samples& samples) : configuration(configuration), samples(samples), miniWahoo("/sys/class/spi_master/spi1/device/spi1.0")
 {
 	channelABuffer = miniWahoo.getChannelDataBuffer(Configuration::CHANNEL_A);
 	channelBBuffer = miniWahoo.getChannelDataBuffer(Configuration::CHANNEL_B);
