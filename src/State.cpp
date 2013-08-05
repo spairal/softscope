@@ -72,7 +72,7 @@ vector<int> State::getGridCoordenates(void)
 
 int State::getPixelsPerDivision(void)
 {
-	return (gridCoordenates[1] - gridCoordenates[0]) / 10;
+	return (gridCoordenates[1] - gridCoordenates[0] + 1) / 10;
 }
 
 vector<int> State::getChannelCoordenates(Configuration::Channels channel)
@@ -387,12 +387,12 @@ vector<string> State::getAllModes(void)
 {
 	vector<string> allModes;
 	allModes.push_back("Mode");
-	allModes.push_back("Trigger mode");
-	allModes.push_back("Trigger channel");
-	allModes.push_back("Trigger slope");
-	allModes.push_back("Trigger noise reject");
-	allModes.push_back("Trigger HF reject");
-	allModes.push_back("Trigger level");
+	allModes.push_back("Trigger\nmode");
+	allModes.push_back("Trigger\nchannel");
+	allModes.push_back("Trigger\nslope");
+	allModes.push_back("Trigger\nnoise reject");
+	allModes.push_back("Trigger\nHF reject");
+	allModes.push_back("Trigger\nlevel");
 	allModes.push_back("Average");
 	return allModes;
 }

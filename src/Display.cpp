@@ -120,11 +120,11 @@ void Display::updateScreen(void)
 void Display::printGrid(const vector<int>& coordenates)
 {
 	unsigned char color = miniFB.thinColor(state.getColorGeneral(), 1);
-	for(int x = coordenates[0]; x <= coordenates[1]; x += ((coordenates[1] - coordenates[0]) / 10))
+	for(int x = coordenates[0]; x <= coordenates[1]; x += state.getPixelsPerDivision())
 	{
 		miniFB.drawLine(x, coordenates[2], x, coordenates[3], color);
 	}
-	for(int y = coordenates[2]; y <= coordenates[3]; y += ((coordenates[3] - coordenates[2]) / 8))
+	for(int y = coordenates[2]; y <= coordenates[3]; y += state.getPixelsPerDivision())
 	{
 		miniFB.drawLine(coordenates[0], y, coordenates[1], y, color);
 	}
