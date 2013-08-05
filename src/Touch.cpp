@@ -133,7 +133,7 @@ void Touch::parseScreen(int x, int y)
 			      resetButtons();
 			   }
 			}
-			else
+			else if(!isIn(x, y, state.getMeasuresCoordenates()) && !isIn(x, y, state.getMathematicsCoordenates()) && !isIn(x, y, state.getModeCoordenates()))
 			{
 			   resetButtons();
 			}
