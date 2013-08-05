@@ -87,7 +87,7 @@ void Touch::parseScreen(int x, int y)
 			coordenates[1] = coordenates[1] - state.getPixelsPerDivision();
 			if(isIn(x, y, coordenates))
 			{
-			   int option = 3 * (y / (2 * state.getPixelsPerDivision())) + x / (3 * state.getPixelsPerDivision());
+			   int option = 3 * ((y - coordenates[2]) / (2 * state.getPixelsPerDivision())) + (x - coordenates[0]) / (3 * state.getPixelsPerDivision());
 			   if(state.getMeasuresButtonActive() && (option < configuration.getAllMeasures().size()))
 			   {
 				   selectMeasure((Configuration::Measures)option);
