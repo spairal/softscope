@@ -102,7 +102,7 @@ Configuration::VerticalScales Configuration::getVerticalScale(Channels channel)
 
 fix Configuration::getVerticalScaleValue(Channels channel)
 {
-	fix scale;
+	fix scale = 1;
 	VerticalScales verticalScale = getVerticalScale(channel);
 	switch(verticalScale)
 	{
