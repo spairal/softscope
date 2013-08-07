@@ -735,7 +735,7 @@ string Configuration::getTriggerSlopeString(void)
 
 string Configuration::getTriggerLevelString(void)
 {
-	return voltageToString(getVerticalScaleValue(triggerChannel) * triggerLevel);
+	return voltageToString(getVerticalScaleValue(triggerChannel) * triggerLevel - getOffset(triggerChannel));
 }
 
 string Configuration::getTriggerNoiseRejectString(void)

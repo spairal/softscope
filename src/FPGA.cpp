@@ -23,7 +23,7 @@ void FPGA::fetchSamples(void)
    {
 	   miniWahoo.setChannelConf(Configuration::CHANNEL_A, quantize(configuration.getChannel(Configuration::CHANNEL_A)), quantize(configuration.getVerticalScale(Configuration::CHANNEL_A), 1, 4), quantize(configuration.getCoupling(Configuration::CHANNEL_A) == Configuration::AC), quantize(configuration.getOffset(Configuration::CHANNEL_A) + 40, 0.0003125f, 18));
 	}
-	if(configuration.getModifiedChannel(Configuration::CHANNEL_A))
+	if(configuration.getModifiedChannel(Configuration::CHANNEL_B))
    {
 	   miniWahoo.setChannelConf(Configuration::CHANNEL_B, quantize(configuration.getChannel(Configuration::CHANNEL_B)), quantize(configuration.getVerticalScale(Configuration::CHANNEL_B), 1, 4), quantize(configuration.getCoupling(Configuration::CHANNEL_B) == Configuration::AC), quantize(configuration.getOffset(Configuration::CHANNEL_B) + 40, 0.0003125f, 18));
 	}

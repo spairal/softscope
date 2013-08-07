@@ -292,7 +292,7 @@ void Touch::dragTriggerLevel(int x, int y)
 {
 	vector<int> coordenates = state.getGridCoordenates();
 	configuration.setTriggerHoldOff(configuration.getHorizontalScaleValue() * fix(x - coordenates[0]) / state.getPixelsPerDivision());
-	configuration.setTriggerLevel(fix(coordenates[2] + 4 * state.getPixelsPerDivision() - y) / state.getPixelsPerDivision() - configuration.getOffset(configuration.getTriggerChannel()) / configuration.getVerticalScaleValue(configuration.getTriggerChannel()));
+	configuration.setTriggerLevel(fix(coordenates[2] + 4 * state.getPixelsPerDivision() - y) / state.getPixelsPerDivision());
 }
 
 void Touch::resetButtons(void)
