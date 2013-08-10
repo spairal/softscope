@@ -13,36 +13,36 @@
 
 class Display
 {
-	private:
-		Configuration& configuration;
-		State& state;
-		Samples& samples;
-		Measurer measurer;
-		Mathematician mathematician;
-		MiniFB miniFB;
+   private:
+      Configuration& configuration;
+      State& state;
+      Samples& samples;
+      Measurer measurer;
+      Mathematician mathematician;
+      MiniFB miniFB;
 
-	public:
-		Display(Configuration& configuration, State& state, Samples& samples);
-		void print(void);
+   public:
+      Display(Configuration& configuration, State& state, Samples& samples);
+      void print(void);
 
-	private:
-		std::vector<int> samplesToPixels(const std::vector<fix>& samples, fix verticalScale, int pixelsPerDivision);
-		void clearScreen(void);
-		void updateScreen(void);
-		void printGrid(const std::vector<int>& coordenates);
-		void printSliders(const std::vector<int>& coordenates);
-		void printOffset(int offsetValue, std::string offsetString, unsigned char color, const std::vector<int>& coordenates);
-		void printVerticalScale(std::string verticalScale, unsigned char color, const std::vector<int>& coordenates);
-		void printDelay(int delayValue, std::string delayString, const std::vector<int>& coordenates);
-		void printHorizontalScale(std::string horizontalScale, const std::vector<int>& coordenates);
-		void printChannelButton(std::string channel, bool isActive, bool isSelected, unsigned char color, const std::vector<int>& coordenates);
-		void printCouplingButton(std::string text, unsigned char color, const std::vector<int>& coordenates);
-		void printButton(std::string title, std::string text, bool isActive, const std::vector<int>& coordenates);
-		void printMenu(const std::vector<std::string>& options, const std::vector<int>& coordenates);
-		void printAlert(std::string text, const std::vector<int>& coordenates);
-		void printSamples(const std::vector<int>& samples, int delay, int memoryDepth, fix step, unsigned char color, const std::vector<int>& coordenates);
-		void printCursor(const std::vector<int>& coordenates);
-		void printMouse(int x, int y);
+   private:
+      std::vector<int> samplesToPixels(const std::vector<fix>& samples, fix verticalScale, int pixelsPerDivision);
+      void clearScreen(void);
+      void updateScreen(void);
+      void printGrid(const std::vector<int>& coordenates);
+      void printSliders(const std::vector<int>& coordenates);
+      void printOffset(int offsetValue, std::string offsetString, unsigned char color, const std::vector<int>& coordenates);
+      void printVerticalScale(std::string verticalScale, unsigned char color, const std::vector<int>& coordenates);
+      void printDelay(int delayValue, std::string delayString, const std::vector<int>& coordenates);
+      void printHorizontalScale(std::string horizontalScale, const std::vector<int>& coordenates);
+      void printChannelButton(std::string channel, bool isActive, bool isSelected, unsigned char color, const std::vector<int>& coordenates);
+      void printCouplingButton(std::string text, unsigned char color, const std::vector<int>& coordenates);
+      void printButton(std::string title, std::string text, bool isActive, const std::vector<int>& coordenates);
+      void printMenu(const std::vector<std::string>& options, const std::vector<int>& coordenates);
+      void printAlert(std::string text, const std::vector<int>& coordenates);
+      void printSamples(const std::vector<int>& samples, int delay, int memoryDepth, fix step, unsigned char color, const std::vector<int>& coordenates);
+      void printCursor(const std::vector<int>& coordenates);
+      void printMouse(int x, int y);
 };
 
 #endif
