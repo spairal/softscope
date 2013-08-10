@@ -67,7 +67,7 @@ void* updateInput(void* arg)
    while(read(miniInput->fd, &(miniInput->ie), sizeof(struct input_event)))
    {
       switch (miniInput->ie.type)
-      {   
+      {
          case EV_SYN:
             break;
          case EV_KEY:
@@ -79,7 +79,6 @@ void* updateInput(void* arg)
                   break;
                case 1:
                   miniInput->pressed = true;
-                  miniInput->drag = true;
                   break;
             }
             break;
@@ -118,6 +117,7 @@ void* updateInput(void* arg)
                   }
                   break;
             }
+            miniInput->drag = true;
             break;
       }   
    }
