@@ -11,6 +11,7 @@ void Display::print(void)
 {
    clearScreen();
    printGrid(state.getGridCoordenates());
+   printTriggerLevel(state.getGridCoordenates(), state.getColor(configuration.getTriggerChannel()));
    printSliders(state.getGridCoordenates());
    if(configuration.getChannel(state.getUnselectedChannel()))
    {
@@ -128,6 +129,12 @@ void Display::printGrid(const vector<int>& coordenates)
    {
       miniFB.drawLine(coordenates[0], y, coordenates[1], y, color);
    }
+}
+
+void Display::printTriggerLevel(const vector<int>& coordenates, unsigned char color)
+{
+   int y = coordenates[2] + (int) (state.getPixelsPerDivision() * (4 - configuration.getTriggerLevel()));
+   miniFB.drawLine(coordenates[0], y, coordenates[1], y, miniFB.thinColor(color, 1));
 }
 
 void Display::printSliders(const vector<int>& coordenates)
