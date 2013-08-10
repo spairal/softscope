@@ -1,13 +1,38 @@
 #include <Configuration.hpp>
 #include <sstream>
 #include <cmath>
+#include <fstream>
 
 using namespace std;
 
 Configuration::Configuration(void)
 {
    offsetA = 0;
+   ifstream aFile("offsetA.txt");
+   if(aFile.is_open())
+   {
+      float bt;
+      float pt;
+      float nt;
+      aFile >> bt >> pt >> nt;
+      offsetAb = bt;
+      offsetAp = pt;
+      offsetAn = nt;
+      aFile.close();
+   }
    offsetB = 0;
+   ifstream bFile("offsetB.txt");
+   if(bFile.is_open())
+   {
+      float bt;
+      float pt;
+      float nt;
+      bFile >> bt >> pt >> nt;
+      offsetBb = bt;
+      offsetBp = pt;
+      offsetBn = nt;
+      bFile.close();
+   }
    verticalScaleA = ONE_V;
    verticalScaleB = ONE_V;
    horizontalScale = HUNDRED_MS;
@@ -64,6 +89,31 @@ string Configuration::getOffsetString(Channels channel)
 
 void Configuration::setOffset(Channels channel, fix offset)
 {
+   fix b;
+   fix p;
+   fix n;
+   switch(channel)
+   {
+      case CHANNEL_A:
+         b = offsetAb;
+         p = offsetAp;
+         n = offsetAn;
+         break;
+      case CHANNEL_B:
+         b = offsetBb;
+         p = offsetBp;
+         n = offsetBn;
+         break;
+   }
+   offset -= b;
+   if(offset > 0)
+   {
+      offset /= p;
+   }
+   else
+   {
+      offset /= n;
+   }
    if(offset < -40)
    {
       offset = -40;

@@ -21,7 +21,13 @@ class Configuration
 
    private:
       fix offsetA;
+      fix offsetAb;
+      fix offsetAp;
+      fix offsetAn;
       fix offsetB;
+      fix offsetBb;
+      fix offsetBp;
+      fix offsetBn;
       VerticalScales verticalScaleA;
       VerticalScales verticalScaleB;
       HorizontalScales horizontalScale;
