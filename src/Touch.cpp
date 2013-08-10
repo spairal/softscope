@@ -60,8 +60,10 @@ void Touch::parseScreen(int x, int y)
          {
             vector<int> verticalScaleCoordenates = coordenates;
             verticalScaleCoordenates[0] = verticalScaleCoordenates[1] - 2 * state.getPixelsPerDivision();
+            verticalScaleCoordenates[2] = verticalScaleCoordenates[2] + 2 * state.getPixelsPerDivision();
             vector<int> horizontalScaleCoordenates = coordenates;
             horizontalScaleCoordenates[3] = horizontalScaleCoordenates[2] + 2 * state.getPixelsPerDivision();
+            horizontalScaleCoordenates[1] = horizontalScaleCoordenates[1] - 2 * state.getPixelsPerDivision();
             if(isIn(x, y, verticalScaleCoordenates))
             {
                startDragVerticalScale(y);
@@ -155,6 +157,13 @@ void Touch::parseScreen(int x, int y)
          if(isIn(x, y, state.getCouplingCoordenates(Configuration::CHANNEL_B)))
          {
             pressCouplingButton(Configuration::CHANNEL_B);
+         }
+         vector<int> coordenates = state.getGridCoordenates();
+         coordenates[0] = coordenates[1] - 2 * state.getPixelsPerDivision();
+         coordenates[3] = coordenates[2] + 2 * state.getPixelsPerDivision();
+         if(isIn(x, y, coordenates))
+         {
+            pressResetButton();
          }
       }
       if(isIn(x, y, state.getMeasuresCoordenates()))
@@ -349,6 +358,13 @@ void Touch::pressCouplingButton(Configuration::Channels channel)
          configuration.setCoupling(channel, Configuration::AC);
          break;
    }
+}
+
+void Touch::pressResetButton(void)
+{
+   configuration.setDelay(0);
+   configuration.setOffset(Configuration::CHANNEL_A, 0);
+   configuration.setOffset(Configuration::CHANNEL_B, 0);
 }
 
 void Touch::pressMeasuresButton(void)

@@ -37,6 +37,7 @@ class Touch
       void resetButtons(void);
       void pressChannelButton(Configuration::Channels channel);
       void pressCouplingButton(Configuration::Channels channel);
+      void pressResetButton(void);
       void pressMeasuresButton(void);
       void pressMathematicsButton(void);
       void pressModeButton(void);

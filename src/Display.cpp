@@ -142,6 +142,8 @@ void Display::printSliders(const vector<int>& coordenates)
    unsigned char color = miniFB.thinColor(state.getColorGeneral(), 1);
    miniFB.drawRectangleBorder(coordenates[0] + 2, coordenates[2] + 2, coordenates[1] - 2 * state.getPixelsPerDivision() - 2, coordenates[2] + 2 * state.getPixelsPerDivision() - 2, color);
    miniFB.drawRectangleBorder(coordenates[1] - 2 * state.getPixelsPerDivision() + 2, coordenates[2] + 2 * state.getPixelsPerDivision() + 2, coordenates[1] - 2, coordenates[3] - 2, color);
+   miniFB.drawRectangleBorder(coordenates[1] - 2 * state.getPixelsPerDivision() + 2, coordenates[2] + 2, coordenates[1] - 2, coordenates[2] + 2 * state.getPixelsPerDivision() - 2, color);
+   miniFB.drawText(coordenates[1] - state.getPixelsPerDivision() + 5, coordenates[2] + state.getPixelsPerDivision() - miniFB.getTextHeight("Reset") - 5, "Reset", color);
 }
 
 void Display::printOffset(int offsetValue, string offsetString, unsigned char color, const vector<int>& coordenates)
