@@ -7,14 +7,14 @@
 
 class Samples
 {
-	private:
-		std::vector<fix> samplesA;
-		std::vector<fix> samplesB;
+   private:
+      std::vector<fix> samplesA;
+      std::vector<fix> samplesB;
 
-	public:
-		Samples(void);
-		std::vector<fix> getSamples(Configuration::Channels channel);
-		void setSamples(Configuration::Channels channel, const std::vector<fix>& samples);
+   public:
+      Samples(void);
+      std::vector<fix> getSamples(Configuration::Channels channel);
+      void setSamples(Configuration::Channels channel, const std::vector<fix>& samples);
 };
 
 #endif
