@@ -7,30 +7,26 @@ using namespace std;
 
 Configuration::Configuration(void)
 {
-   offsetA = 0;
    ifstream aFile("offsetA.txt");
    if(aFile.is_open())
    {
+      float at;
       float bt;
-      float pt;
-      float nt;
-      aFile >> bt >> pt >> nt;
+      aFile >> at >> bt;
+      offsetA = - bt / at;
+      offsetAa = at;
       offsetAb = bt;
-      offsetAp = pt;
-      offsetAn = nt;
       aFile.close();
    }
-   offsetB = 0;
    ifstream bFile("offsetB.txt");
    if(bFile.is_open())
    {
+      float at;
       float bt;
-      float pt;
-      float nt;
-      bFile >> bt >> pt >> nt;
+      bFile >> at >> bt;
+      offsetB = - bt / at;
+      offsetBa = at;
       offsetBb = bt;
-      offsetBp = pt;
-      offsetBn = nt;
       bFile.close();
    }
    verticalScaleA = ONE_V;
@@ -82,38 +78,49 @@ fix Configuration::getOffset(Channels channel)
    return offset;
 }
 
+fix Configuration::getOffsetValue(Channels channel)
+{
+	fix offset = getOffset(channel);
+	fix a;
+   fix b;
+   switch(channel)
+   {
+      case CHANNEL_A:
+         a = offsetAa;
+         b = offsetAb;
+         break;
+      case CHANNEL_B:
+         a = offsetBa;
+         b = offsetBb;
+         break;
+   }
+   offset *= a;
+   offset += b;
+   return offset;
+}
+
 string Configuration::getOffsetString(Channels channel)
 {
-   return voltageToString(getOffset(channel));
+   return voltageToString(getOffsetValue(channel));
 }
 
 void Configuration::setOffset(Channels channel, fix offset)
 {
+   fix a;
    fix b;
-   fix p;
-   fix n;
    switch(channel)
    {
       case CHANNEL_A:
+         a = offsetAa;
          b = offsetAb;
-         p = offsetAp;
-         n = offsetAn;
          break;
       case CHANNEL_B:
+         a = offsetBa;
          b = offsetBb;
-         p = offsetBp;
-         n = offsetBn;
          break;
    }
    offset -= b;
-   if(offset > 0)
-   {
-      offset /= p;
-   }
-   else
-   {
-      offset /= n;
-   }
+   offset /= a;
    if(offset < -40)
    {
       offset = -40;
@@ -548,8 +555,8 @@ string Configuration::getCursorsString(Channels channel)
    ss << "Cursors:" << endl;
    ss << "x1 = " << timeToString(getHorizontalScaleValue() * (cursor[0] - delay)) << endl;
    ss << "x2 = " << timeToString(getHorizontalScaleValue() * (cursor[1] - delay)) << endl;
-   ss << "y1 = " << voltageToString(getVerticalScaleValue(channel) * cursor[2] - getOffset(channel)) << endl;
-   ss << "y2 = " << voltageToString(getVerticalScaleValue(channel) * cursor[3] - getOffset(channel));
+   ss << "y1 = " << voltageToString(getVerticalScaleValue(channel) * cursor[2] - getOffsetValue(channel)) << endl;
+   ss << "y2 = " << voltageToString(getVerticalScaleValue(channel) * cursor[3] - getOffsetValue(channel));
    return ss.str();
 }
 
@@ -785,7 +792,7 @@ string Configuration::getTriggerSlopeString(void)
 
 string Configuration::getTriggerLevelString(void)
 {
-   return voltageToString(getVerticalScaleValue(triggerChannel) * triggerLevel - getOffset(triggerChannel));
+   return voltageToString(getVerticalScaleValue(triggerChannel) * triggerLevel - getOffsetValue(triggerChannel));
 }
 
 string Configuration::getTriggerNoiseRejectString(void)

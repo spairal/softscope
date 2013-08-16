@@ -37,9 +37,9 @@ State::State(void)
    modeCoordenates.push_back(400);
    modeCoordenates.push_back(479);
    colorGeneral = 0xFF;
-   colorA = 0x07;
-   colorB = 0xE0;
-   colorMathematics = 0xF8;
+   colorA = 0xE0;
+   colorB = 0xF8;
+   colorMathematics = 0x07;
    cursorDrag = false;
    offsetDrag = false;
    verticalScaleDrag = false;
