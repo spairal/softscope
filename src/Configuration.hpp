@@ -21,13 +21,11 @@ class Configuration
 
    private:
       fix offsetA;
+      fix offsetAa;
       fix offsetAb;
-      fix offsetAp;
-      fix offsetAn;
       fix offsetB;
+      fix offsetBa;
       fix offsetBb;
-      fix offsetBp;
-      fix offsetBn;
       VerticalScales verticalScaleA;
       VerticalScales verticalScaleB;
       HorizontalScales horizontalScale;
@@ -58,6 +56,7 @@ class Configuration
    public:
       Configuration(void);
       fix getOffset(Channels channel);
+      fix getOffsetValue(Channels channel);
       std::string getOffsetString(Channels channel);
       void setOffset(Channels channel, fix offset);
       VerticalScales getVerticalScale(Channels channel);

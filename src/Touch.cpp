@@ -263,7 +263,7 @@ void Touch::dragOffset(int x, int y)
    vector<int> initialOffset = state.getInitialOffset();
    if(state.getSelectedChannel() != Configuration::NO_CHANNEL)
    {
-      configuration.setOffset(state.getSelectedChannel(), configuration.getOffset(state.getSelectedChannel()) + configuration.getVerticalScaleValue(state.getSelectedChannel()) * (initialOffset[1] - y) / state.getPixelsPerDivision());
+      configuration.setOffset(state.getSelectedChannel(), configuration.getOffsetValue(state.getSelectedChannel()) + configuration.getVerticalScaleValue(state.getSelectedChannel()) * (initialOffset[1] - y) / state.getPixelsPerDivision());
       initialOffset[1] = y;
    }
    configuration.setDelay(configuration.getDelay() + fix(x - initialOffset[0]) / state.getPixelsPerDivision());

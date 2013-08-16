@@ -27,7 +27,7 @@ void Display::print(void)
    }
    if(state.getSelectedChannel() != Configuration::NO_CHANNEL)
    {
-      printOffset((configuration.getOffset(state.getSelectedChannel()) / configuration.getVerticalScaleValue(state.getSelectedChannel()) * state.getPixelsPerDivision()).min(3.5f * state.getPixelsPerDivision()).max(-4.0f * state.getPixelsPerDivision()), configuration.getOffsetString(state.getSelectedChannel()), state.getColor(state.getSelectedChannel()), state.getGridCoordenates());
+      printOffset((configuration.getOffsetValue(state.getSelectedChannel()) / configuration.getVerticalScaleValue(state.getSelectedChannel()) * state.getPixelsPerDivision()).min(3.5f * state.getPixelsPerDivision()).max(-4.0f * state.getPixelsPerDivision()), configuration.getOffsetString(state.getSelectedChannel()), state.getColor(state.getSelectedChannel()), state.getGridCoordenates());
       printVerticalScale(configuration.getVerticalScaleString(state.getSelectedChannel()), state.getColor(state.getSelectedChannel()), state.getGridCoordenates());
    }
    printHorizontalScale(configuration.getHorizontalScaleString(), state.getGridCoordenates());
