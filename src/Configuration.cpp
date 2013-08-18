@@ -573,6 +573,9 @@ string Configuration::getMathematicString(void)
       case NOMATHEMATIC:
          mathematicString = "No Mathematic";
          break;
+      case SUM:
+         mathematicString = "Sum";
+         break;
       case DIFFERENCE:
          mathematicString = "Difference";
          break;
@@ -832,6 +835,7 @@ vector<string> Configuration::getAllMathematics(void)
 {
    vector<string> allMathematics;
    allMathematics.push_back("No Mathematic");
+   allMathematics.push_back("Sum");
    allMathematics.push_back("Difference");
    allMathematics.push_back("FFT");
    return allMathematics;
