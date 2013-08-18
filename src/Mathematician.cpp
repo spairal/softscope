@@ -13,12 +13,31 @@ vector<fix> Mathematician::getSamples(void)
    vector<fix> signal(10 * state.getPixelsPerDivision(), 0);
    switch(configuration.getMathematic())
    {
+      case Configuration::SUM:
+         signal = getSum();
+         break;
       case Configuration::DIFFERENCE:
          signal = getDifference();
          break;
       case Configuration::FFT:
          signal = getFFT();
          break;
+   }
+   return signal;
+}
+
+vector<fix> Mathematician::getSum(void)
+{
+   vector<fix> signal(10 * state.getPixelsPerDivision() + 1, 0);
+   if(configuration.getChannel(Configuration::CHANNEL_A) && configuration.getChannel(Configuration::CHANNEL_B))
+   {
+      vector<fix> signalA = samples.getSamples(state.getSelectedChannel());
+      int delay = configuration.getMemoryDepth() / 2 - round(configuration.getDelay() * state.getPixelsPerDivision()) - 5 * state.getPixelsPerDivision();
+      vector<fix> signalB = samples.getSamples(state.getUnselectedChannel());
+      for(int i = 0; i < signal.size(); i++)
+      {
+         signal[i] = signalA[delay + i] + signalB[delay + i];
+      }
    }
    return signal;
 }
