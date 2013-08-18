@@ -18,6 +18,7 @@ class Mathematician
       std::vector<fix> getSamples(void);
 
    private:
+      std::vector<fix> getSum(void);
       std::vector<fix> getDifference(void);
       std::vector<fix> getFFT(void);
       std::vector<fix> hamming(int N);
