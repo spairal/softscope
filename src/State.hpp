@@ -43,6 +43,8 @@ class State
       int mouseY;
 
    public:
+      bool shutdown;
+      
       State(void);
       std::vector<int> getGridCoordenates(void);
       int getPixelsPerDivision(void);
