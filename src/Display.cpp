@@ -90,7 +90,11 @@ void Display::print(void)
    {
       printMenu(configuration.getAllTriggerHighFrequencyRejects(), state.getGridCoordenates());
    }
-   if(state.getTriggerLevelActive())
+   if(state.shutdown)
+   {
+      printAlert("Shutting down", state.getGridCoordenates());
+   }
+   else if(state.getTriggerLevelActive())
    {
       printAlert("Select the trigger level and hold off", state.getGridCoordenates());
    }

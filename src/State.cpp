@@ -63,6 +63,7 @@ State::State(void)
    averageActive = false;
    mouseX = 0;
    mouseY = 0;
+   shutdown = false;
 }
 
 vector<int> State::getGridCoordenates(void)
